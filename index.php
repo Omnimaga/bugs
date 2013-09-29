@@ -5,6 +5,6 @@
 		<script src="index.js"></script>
 	</head>
 	<body>
-		
+		<!-- TODO add containers for content -->
 	</body>
 </html>
