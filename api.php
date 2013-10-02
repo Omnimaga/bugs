@@ -3,7 +3,7 @@
 	// TODO - Add API handling.
 	$method = $_SERVER['REQUEST_METHOD'];
 	if(isset($_GET['type'])){
-		if(isset($_GET['id']){
+		if(isset($_GET['id'])){
 			$id = $_GET['id'];
 			switch($_GET['type']){
 				case 'user':
