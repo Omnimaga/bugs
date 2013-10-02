@@ -22,12 +22,12 @@
 					// TODO - handle admin requests
 				break;
 				default:
-					// TODO - handle type invalid
+					die("invalid type");
 			}
 		}else{
-			// TODO - handle id missing
+			die("id missing");
 		}
 	}else{
-		// TODO - handle type missing
+		die("type missing");
 	}
 ?>
