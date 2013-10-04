@@ -1,8 +1,16 @@
-# TODO - Add redirects
-RewriteEngine On
-RewriteBase /
-RewriteRule /\~(.+)		index.php?type=user&id=$1
-RewriteRule /\+(.+)		index.php?type=group&id=$1
-RewriteRule /\!(.+)		index.php?type=issue&id=$1
-RewriteRule /scrum\/(.+)	index.php?type=scrum&id=$1
-RewriteRule /admin\/(.+)	index.php?type=admin&id=$1
+# Redirects
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteBase /
+	RewriteRule /\~(.+)		index.php?type=user&id=$1
+	RewriteRule /\+(.+)		index.php?type=group&id=$1
+	RewriteRule /\!(.+)		index.php?type=issue&id=$1
+	RewriteRule /scrum\/(.+)	index.php?type=scrum&id=$1
+	RewriteRule /admin\/(.+)	index.php?type=admin&id=$1
+</IfModule>
+# File security
+<FilesMatch ".(bak|config|sql|fla|psd|ini|log|sh|inc|~|swp)$">
+    Order allow,deny
+    Deny from all
+    Satisfy All
+</FilesMatch>
