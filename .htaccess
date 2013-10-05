@@ -4,7 +4,7 @@
 	RewriteBase /
 	RewriteRule ^\~([^/]*)$ /index.php?type=user&id=$1 [L]
 	RewriteRule ^\+([^/]*)$ /index.php?type=group&id=$1 [L]
-	RewriteRule ^([^/]*)$ /index.php?type=issue&id=$1 [L]
+	RewriteRule ^\!([^/]*)$ /index.php?type=issue&id=$1 [L]
 	RewriteRule ^([^/]*)/([^/]*)$ /index.php?type=$1&id=$2 [L]
 	RewriteRule ^([^/]*)/([^/]*)$ /index.php?type=$1&id=$2 [L]
 	RewriteRule ^install/([^/]*)$ /install/index.php?id=$1 [L]
