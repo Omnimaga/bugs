@@ -6,5 +6,8 @@
 	</head>
 	<body>
 		<!-- TODO add containers for content -->
+		<?php
+			print_r($_GET);
+		?>
 	</body>
 </html>
