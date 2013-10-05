@@ -2,12 +2,12 @@
 <IfModule mod_rewrite.c>
 	RewriteEngine On
 	RewriteBase /
-	RewriteRule /install\/(.+) install/index.php?type=install&id=$1
-	RewriteRule /\~(.+)		index.php?type=user&id=$1
-	RewriteRule /\+(.+)		index.php?type=group&id=$1
-	RewriteRule /\!(.+)		index.php?type=issue&id=$1
-	RewriteRule /scrum\/(.+)	index.php?type=scrum&id=$1
-	RewriteRule /admin\/(.+)	index.php?type=admin&id=$1
+	RewriteRule install/(.+)	install/index.php?type=install&id=$1
+	RewriteRule ^\~([^/]*)$ /index.php?type=user&id=$1 [L]
+	RewriteRule ^\+([^/]*)$ /index.php?type=group&id=$1 [L]
+	RewriteRule ^([^/]*)$ /index.php?type=issue&id=$1 [L]
+	RewriteRule ^([^/]*)/([^/]*)$ /index.php?type=$1&id=$2 [L]
+	RewriteRule ^([^/]*)/([^/]*)$ /index.php?type=$1&id=$2 [L]
 </IfModule>
 # File security
 <FilesMatch ".(bak|config|sql|fla|psd|ini|log|sh|inc|~|swp)$">
