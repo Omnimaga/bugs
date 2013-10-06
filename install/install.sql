@@ -1,3 +1,13 @@
+-- phpMyAdmin SQL Dump
+-- version 4.0.4.1
+-- http://www.phpmyadmin.net
+--
+-- Host: 127.0.0.1
+-- Generation Time: Oct 06, 2013 at 10:22 PM
+-- Server version: 5.6.11
+-- PHP Version: 5.5.3
+
+SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
@@ -7,18 +17,12 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
 
---
--- Database: `$DATABASENAME`
---
-CREATE DATABASE IF NOT EXISTS `$DATABASENAME` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `$DATABASENAME`;
-
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `issues`
 --
--- Creation: Oct 04, 2013 at 03:32 AM
+-- Creation: Oct 06, 2013 at 08:17 PM
 --
 
 DROP TABLE IF EXISTS `issues`;
@@ -47,7 +51,7 @@ CREATE TABLE IF NOT EXISTS `issues` (
 --
 -- Table structure for table `messages`
 --
--- Creation: Oct 05, 2013 at 02:24 AM
+-- Creation: Oct 06, 2013 at 08:21 PM
 --
 
 DROP TABLE IF EXISTS `messages`;
@@ -82,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `messages` (
 --
 -- Table structure for table `rels`
 --
--- Creation: Oct 06, 2013 at 06:52 PM
+-- Creation: Oct 06, 2013 at 08:21 PM
 --
 
 DROP TABLE IF EXISTS `rels`;
@@ -112,7 +116,7 @@ CREATE TABLE IF NOT EXISTS `rels` (
 --
 -- Table structure for table `scrums`
 --
--- Creation: Oct 04, 2013 at 03:33 AM
+-- Creation: Oct 06, 2013 at 08:17 PM
 --
 
 DROP TABLE IF EXISTS `scrums`;
@@ -136,7 +140,7 @@ CREATE TABLE IF NOT EXISTS `scrums` (
 --
 -- Table structure for table `users`
 --
--- Creation: Oct 04, 2013 at 03:23 AM
+-- Creation: Oct 06, 2013 at 08:17 PM
 --
 
 DROP TABLE IF EXISTS `users`;
@@ -184,6 +188,7 @@ ALTER TABLE `rels`
 --
 ALTER TABLE `scrums`
   ADD CONSTRAINT `scrums_ibfk_1` FOREIGN KEY (`u_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+SET FOREIGN_KEY_CHECKS=1;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

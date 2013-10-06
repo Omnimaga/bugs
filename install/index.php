@@ -8,9 +8,5 @@
 		<script src="../js/install.js"></script>
 	</head>
 	<body>
-		<!-- TODO add containers for content -->
-		<?php
-			print_r($_GET);
-		?>
 	</body>
 </html>

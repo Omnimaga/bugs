@@ -1,0 +1,49 @@
+<style>
+	#config{
+		display: table;
+	}
+	#config>div{
+		display: table-row;
+	}
+	#config>div>span{
+		display: table-cell;
+	}
+</style>
+<form id="config">
+	<h2>
+		Database
+	</h2>
+	<div>
+		<span>
+			Host:
+		</span>
+		<span>
+			<input name="dbhost" type="string"/>
+		</span>
+	</div>
+	<div>
+		<span>
+			DB Name:
+		</span>
+		<span>
+			<input name="dbname" type="string"/>
+		</span>
+	</div>
+	<div>
+		<span>
+			Username:
+		</span>
+		<span>
+			<input name="dbuser" type="string"/>
+		</span>
+	</div>
+	<div>
+		<span>
+			Password:
+		</span>
+		<span>
+			<input name="dbpass" type="password"/>
+		</span>
+	</div>
+</form>
+<button value="Install" id="install">Install</button>
