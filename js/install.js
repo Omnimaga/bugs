@@ -2,16 +2,16 @@
 	var State = History.getState();
 	$(document).ready(function(){
 		if($.isEmptyObject(State.data)){
-			History.pushState({
+			History.replaceState({
 				type: 'install',
 				id: 'config'
-			},'Bugs','config');
+			},'Bugs');
 		}
 		$(window).on('statechange',function(){
 			State = History.getState();
 			$.get('api.php',State.data,function(d){
 				$('body').html(d);
-				$('#install').click(function(){
+				$('#config').submit(function(){
 					$('#install').attr('disabled','disabled');
 					$.get('api.php?'+$("#config").serialize()+'&dbtemplate=install&type=install&id=run',function(d){
 						if(d != "pass"){
@@ -21,7 +21,8 @@
 							alert('Installation successful!');
 							location = '..';
 						}
-					},'text')
+					},'text');
+					return false;
 				});
 			},'html');
 		}).trigger('statechange');
