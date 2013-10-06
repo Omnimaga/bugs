@@ -11,6 +11,7 @@
 	RewriteRule ^\!([^/]*)$ /index.php?type=issue&id=$1 [QSA,L]
 	RewriteRule ^scrum/([^/]*)$ /index.php?type=scrum&id=$2 [QSA,L]
 	RewriteRule ^admin/([^/]*)$ /index.php?type=admin&id=$2 [QSA,L]
+	RewriteRule ^page/([^/]*)$ /index.php?type=template&id=$2 [QSA,L]
 </IfModule>
 # File security
 <FilesMatch ".(bak|config|sql|fla|psd|ini|log|sh|inc|~|swp)$">
