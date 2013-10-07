@@ -13,7 +13,11 @@
 			switch(State.data.type){
 				case 'template':
 					$.get('api.php',State.data,function(d){
-						$('body').html(Handlebars.compile(d.template)(d.context));
+						$('#content').html(Handlebars.compile(d.template)(d.context)).mCustomScrollbar('destroy');
+						$('#content,.scroll').mCustomScrollbar({
+							theme: 'dark-2',
+							scrollInertia: 0
+						});
 					},'json');
 				break;
 				default:
