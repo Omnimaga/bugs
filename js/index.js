@@ -6,11 +6,19 @@
 			History.pushState({
 				type: 'template',
 				id: 'index'
-			},'Bugs','page/index');
+			},'Bugs','page-index');
 		}
 		$(window).on('statechange',function(){
 			State = History.getState();
-			console.log(State);
+			switch(State.data.type){
+				case 'template':
+					$.get('api.php',State.data,function(d){
+						$('body').html(Handlebars.compile(d.template)(d.context));
+					},'json');
+				break;
+				default:
+					alert("Something went wrong!\nYour current state:\n"+JSON.stringify(State));
+			}
 		}).trigger('statechange');
 	});
 })(jQuery,History);
