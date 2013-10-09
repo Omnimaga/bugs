@@ -1,4 +1,6 @@
 <?php
+	@session_start();
+	require_once('php/include.php');
 	// MYSQL default bugs:bugs
 	function retj($json,$title){
 		$type=$_GET['type'];
@@ -42,6 +44,9 @@
 					$ret['template'] = file_get_contents('data/'.$id.'.template.html');
 					$ret['context'] = json_decode(file_get_contents('data/'.$id.'.context.json'));
 					retj($ret,$id);
+				break;
+				case 'login':
+						// TODO - handle logins
 				break;
 				default:
 					die("invalid type");

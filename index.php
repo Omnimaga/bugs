@@ -1,4 +1,6 @@
 <?php
+	session_start();
+	require_once('php/include.php');
 	if(isset($_GET['get'])){
 		$get = $_GET['get'];
 		unset($_GET['get']);

@@ -1,0 +1,25 @@
+<h1>
+	{{title}}
+</h1>
+<form id="login">
+	<div>
+		Email: <input name="email" type="text"/>
+	</div>
+	<div>
+		Username: <input name="username" type="text"/>
+	</div>
+	<div>
+		Password: <input name="password" type="password"/>
+	</div>
+	<input type="submit" value="register"/>
+	<input type="button" value="cancel" class="cancel"/>
+</form>
+<script>
+	$('#login').submit(function(){
+		// TODO - Handle register
+		return false;
+	}).children('.cancel').click(function(){
+		loadState('page-index');
+		return false;
+	});
+</script>

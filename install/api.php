@@ -1,7 +1,7 @@
 <?php
 	// MYSQL default bugs:bugs
-	ini_set('memory_limit', '5120M');
-	set_time_limit ( 0 );
+	ini_set('memory_limit','5120M');
+	set_time_limit(0);
 	function remove_comments(&$output){
 		$lines = explode("\n",$output);
 		$output = "";
@@ -128,7 +128,7 @@
 							foreach($sql_query as $sql){
 								mysql_query($sql) or die('error in query');
 							}
-							file_put_contents('../config.php',"<?php\n\t\$host='{$dbhost}';\n\t\$user = '{$dbuser}';\n\t\$pass = '{$dbpass}';\n\t\$name = '{$dbname}';\n?>");
+							file_put_contents('../config.json',"{\"host\":\"{$dbhost}\",\"user\":\"{$dbuser}\",\"password\":\"{$dbpass}\",\"database\":\"{$dbname}\"}");
 							echo 'pass';
 						}else{
 							echo "Please don't leave any fields blank";
