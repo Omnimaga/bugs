@@ -1,15 +1,5 @@
 // TODO - Add initial page loading and handlers
 (function($,History){
-	History._replaceState = History.replaceState;
-	History.replaceState = function(){
-		console.log('replaceState'+JSON.stringify(arguments));
-		History._replaceState.apply(this,arguments);
-	};
-	History._pushState = History.pushState;
-	History.pushState = function(){
-		console.log('pushState'+JSON.stringify(arguments));
-		History._pushState.apply(this,arguments);
-	};
 	var State = History.getState(),
 		flag = false,
 		exists = function(v){
