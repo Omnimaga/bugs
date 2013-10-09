@@ -1,6 +1,14 @@
 // TODO - Add initial page loading and handlers
 (function($,History){
-	var State = History.getState();
+	var State = History.getState(),
+		api = function(data,callback){
+			$.get('api.php',data,function(d){
+				if(location.href.substr(location.href.lastInstanceOf('/')) != d.state.url){
+					History.pushState(d.state.data,d.state.title,d.state.url);
+				}
+				callback(d);
+			},'json');
+		};
 	$(document).ready(function(){
 		if($.isEmptyObject(State.data)){
 			History.pushState({
@@ -17,6 +25,11 @@
 						$('#content,.scroll').mCustomScrollbar({
 							theme: 'dark-2',
 							scrollInertia: 0
+						});
+						$('#content').find('a').each(function(){
+							if(this.href[0] == '#'){
+								
+							}
 						});
 					},'json');
 				break;
