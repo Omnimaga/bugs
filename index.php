@@ -1,3 +1,33 @@
+<?php
+	if(isset($_GET['get'])){
+		$get = $_GET['get'];
+		unset($_GET['get']);
+		if(!isset($_GET['type']) || !isset($_GET['id'])){
+			$type = 'template';
+			$id = 'index';
+		}else{
+			$type = $_GET['type'];
+			$id = $_GET['id'];
+		}
+		if($get == 'state'){
+			$json = Array();
+			$json['state'] = Array();
+			$json['state']['data'] = $_GET;
+			switch($type){
+				case 'user':$url='~'.$id;break;
+				case 'group':$url='+'.$id;break;
+				case 'issue':$url='!'.$id;break;
+				case 'template':$url='page-'.$id;break;
+				default:$url=$type.'-'.$id;
+			}
+			$json['state']['url'] = $url;
+			die(json_encode($json));
+			
+		}elseif($get == 'api'){
+			require_once('api.php');
+		}
+	}
+?>
 <!doctype html>
 <html>
 	<head>
@@ -15,6 +45,7 @@
 		<link href="css/style.css" rel="stylesheet" type="text/css"/>
 	</head>
 	<body>
+		<div id="topbar"></div>
 		<div id="content"></div>
 	</body>
 </html>
