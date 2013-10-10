@@ -137,7 +137,7 @@
 						echo file_get_contents('index.template.html');
 					}elseif($id='cleanup'){
 						$files = scandir(realpath(dirname(__FILE__)));
-						foreach($file in $files){
+						foreach($files as $file){
 							unlink($file);
 						}
 					}else{
