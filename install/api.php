@@ -142,7 +142,8 @@
 								@unlink(realpath(dirname(__FILE__)).'/'.$file);
 							}
 						}
-						if(empty(scandir(realpath(dirname(__FILE__))))){
+						$files = scandir(realpath(dirname(__FILE__)));
+						if(empty($files)){
 							@rmdir(realpath(dirname(__FILE__)));
 						}else{
 							echo "Couldn't remove install directory\n";
