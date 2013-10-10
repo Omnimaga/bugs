@@ -138,7 +138,10 @@
 					}elseif($id='cleanup'){
 						$files = scandir(realpath(dirname(__FILE__)));
 						foreach($files as $file){
-							unlink($file);
+							if($file != '.' && $file != '..'){
+								unlink(realpath(dirname(__FILE__)).'/'.$file);
+							}
+							rmdir(realpath(dirname(__FILE__)));
 						}
 					}else{
 						die('Invalid id');
