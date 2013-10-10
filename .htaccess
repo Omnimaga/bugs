@@ -12,6 +12,7 @@
 	RewriteRule ^scrum-([^/]*)$ /index.php?type=scrum&id=$1 [QSA,L]
 	RewriteRule ^admin-([^/]*)$ /index.php?type=admin&id=$1 [QSA,L]
 	RewriteRule ^page-([^/]*)$ /index.php?type=template&id=$1 [QSA,L]
+	ErrorDocument 404 /page-index [L]
 </IfModule>
 # File security
 <FilesMatch ".(bak|config|sql|fla|psd|ini|log|sh|inc|~|swp)$">
