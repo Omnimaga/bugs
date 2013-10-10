@@ -139,15 +139,11 @@
 						$files = scandir(realpath(dirname(__FILE__)));
 						foreach($files as $file){
 							if($file != '.' && $file != '..'){
-								try{
-									unlink(realpath(dirname(__FILE__)).'/'.$file);
-								}catch(Exception $e){
-									echo "Couldn't remove {$file}\n";
-								}
+								@unlink(realpath(dirname(__FILE__)).'/'.$file);
 							}
-							try{
-								rmdir(realpath(dirname(__FILE__)));
-							}catch(Exception $e){
+							if(empty(scandir(realpath(dirname(__FILE__))))){
+								@rmdir(realpath(dirname(__FILE__)));
+							}else{
 								echo "Couldn't remove install directory\n";
 							}
 						}
