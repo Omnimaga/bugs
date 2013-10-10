@@ -2,6 +2,11 @@
 	if(!file_exists('config.json')){
 		header('Location: install');
 		die();
+	}elseif(file_exists('install')){
+		$files = scandir('install');
+		if(empty($files)){
+			@rmdir('install');
+		}
 	}
 	session_start();
 	require_once('php/include.php');

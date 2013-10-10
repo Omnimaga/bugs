@@ -142,12 +142,7 @@
 								@unlink(realpath(dirname(__FILE__)).'/'.$file);
 							}
 						}
-						$files = scandir(realpath(dirname(__FILE__)));
-						if(empty($files)){
-							@rmdir(realpath(dirname(__FILE__)));
-						}else{
-							echo "Couldn't remove install directory\n";
-						}
+						@rmdir(realpath(dirname(__FILE__)));
 					}else{
 						die('Invalid id');
 					}
