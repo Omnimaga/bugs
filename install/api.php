@@ -141,13 +141,13 @@
 							if($file != '.' && $file != '..'){
 								try{
 									unlink(realpath(dirname(__FILE__)).'/'.$file);
-								}catch(e){
+								}catch(Exception $e){
 									echo "Couldn't remove {$file}\n";
 								}
 							}
 							try{
 								rmdir(realpath(dirname(__FILE__)));
-							}catch(e){
+							}catch(Exception $e){
 								echo "Couldn't remove install directory\n";
 							}
 						}
