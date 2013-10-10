@@ -24,6 +24,9 @@
 						}else{
 							if(confirm("Installation successful!\nDo you want to delete the installation files?")){
 								$.get('api.php?&dbtemplate=install&type=install&id=cleanup',function(d){
+									if(d != ''){
+										alert('Error: '+d);
+									}
 									returnToIndex();
 								});
 							}else{
