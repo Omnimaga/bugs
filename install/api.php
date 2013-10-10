@@ -141,11 +141,11 @@
 							if($file != '.' && $file != '..'){
 								@unlink(realpath(dirname(__FILE__)).'/'.$file);
 							}
-							if(empty(scandir(realpath(dirname(__FILE__))))){
-								@rmdir(realpath(dirname(__FILE__)));
-							}else{
-								echo "Couldn't remove install directory\n";
-							}
+						}
+						if(empty(scandir(realpath(dirname(__FILE__))))){
+							@rmdir(realpath(dirname(__FILE__)));
+						}else{
+							echo "Couldn't remove install directory\n";
 						}
 					}else{
 						die('Invalid id');
