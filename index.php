@@ -1,4 +1,8 @@
 <?php
+	if(!file_exists('config.json')){
+		header('Location: install');
+		die();
+	}
 	session_start();
 	require_once('php/include.php');
 	if(isset($_GET['get'])){

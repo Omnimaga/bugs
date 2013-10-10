@@ -1,5 +1,9 @@
 (function($,History){
-	var State = History.getState();
+	var State = History.getState(),
+		returnToIndex = function(){
+			History.replaceState({},'Bugs','..');
+			location = '..';
+		};
 	$(document).ready(function(){
 		if($.isEmptyObject(State.data)){
 			History.replaceState({
@@ -18,8 +22,13 @@
 							alert(d);
 							$('#install').removeAttr('disabled');
 						}else{
-							alert('Installation successful!');
-							location = '..';
+							if(confirm("Installation successful!\nDo you want to delete the installation files?")){
+								$.get('api.php?&dbtemplate=install&type=install&id=cleanup',function(d){
+									returnToIndex();
+								});
+							}else{
+								returnToIndex();
+							}
 						}
 					},'text');
 					return false;
