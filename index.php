@@ -9,6 +9,7 @@
 		}
 	}
 	require_once('php/include.php');
+	$salt = salt();
 	if(isset($_GET['get'])){
 		$get = $_GET['get'];
 		unset($_GET['get']);
