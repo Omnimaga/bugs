@@ -10,7 +10,6 @@
 		return $hash;
 	}
 	function compareSaltedHash($pass,$salt,$hash){
-		die(saltedHash($pass,$salt)."\n".$hash);
 		return $hash == saltedHash($pass,$salt);
 	}
 	function securityKey($username,$salt){

@@ -18,7 +18,8 @@
 				$row = $res->fetch_assoc();
 				if(compareSaltedHash($password,$row['salt'],$row['password'])){
 					return securityKey($username,salt());
-				}			}
+				}			
+			}
 		}
 		return false;
 	}

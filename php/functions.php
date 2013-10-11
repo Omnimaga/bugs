@@ -4,8 +4,21 @@
 	function retj($json,$title){
 		$type=$_GET['type'];
 		$id=$_GET['id'];
-		$json['state'] = Array();
-		$json['state']['data'] = $_GET;
+		if(!isset($json['state'])){
+			$json['state'] = Array();
+		}
+		if(!isset($json['state']['data'])){
+			$json['state']['data'] = $_GET;
+		}else{
+			foreach($_GET as $key => $val){
+				if(!isset($json['state']['data'][$key])){
+					$json['state']['data'][$key] = $val;
+				}
+			}
+		}
+		if(isset($json['key'])){
+			$json['state']['key'] = $json['key'];
+		}
 		$json['state']['title'] = $title;
 		switch($type){
 			case 'user':$url='~'.$id;break;

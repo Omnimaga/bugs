@@ -40,6 +40,7 @@
 								}else{
 									$ret['error'] = "Please provide a valid username and password.";
 								}
+								$ret['state'] = Array('data'=>Array('type'=>'template','id'=>'login'));
 								retj($ret,$id);
 							break;
 							case 'register':
