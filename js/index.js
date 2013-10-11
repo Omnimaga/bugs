@@ -44,7 +44,10 @@
 			},'json');
 		},
 		loadState = window.loadState = function(href,callback){
-			var data = {get:'state',timestamp:+new Date};
+			var data = {
+				get:'state',
+				timestamp:+new Date
+			};
 			if(Key !== null){
 				data.key = Key;
 			}
@@ -57,7 +60,10 @@
 			},'json');
 		},
 		apiState = window.apiState = function(href,callback){
-			var data = {get:'state',timestamp:+new Date};
+			var data = {
+				get:'state',
+				timestamp:+new Date
+			};
 			if(Key !== null){
 				data.key = Key;
 			}
@@ -94,7 +100,7 @@
 					case 'template':
 						api(State.data,function(d){
 							if(Key !== null){
-								d.context.key = Key
+								d.context.key = Key;
 							}
 							$('#content').html(Handlebars.compile(d.template)(d.context)).mCustomScrollbar('destroy');
 							$('#content,.scroll').mCustomScrollbar({
