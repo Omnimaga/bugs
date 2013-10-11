@@ -10,11 +10,15 @@
 			if(key !== null){
 				console.log('Key change to '+key);
 				Key = key;
-				$.cookie('key',key);
+				var d = new Date();
+				d.setTime(d.getTime()+3600);
+				$.cookie('key',key,{
+					expires: d
+				});
 			}else{
 				console.log('Key deleted');
 				Key = null;
-				$.cookie('key',null);
+				$.removeCookie('key');
 			}
 		},
 		getKey = window.getKey = function(){
