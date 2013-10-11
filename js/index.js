@@ -5,19 +5,27 @@
 		exists = function(v){
 			return typeof v != 'undefined';
 		},
-		api = function(data,callback){
+		api = window.apiCall = function(data,callback){
 			data.get = 'api';
+			data.timestamp = +new Date;
+			if(exists(State.data.key)){
+				data.key = State.data.key;
+			}
 			$.get(location.href,data,function(d){
-				if(location.href.substr(location.href.lastIndexOf('/')+1) != d.state.url){
-					History.pushState(d.state.data,d.state.title,d.state.url);
-				}
-				if(exists(callback)){
-					callback(d);
+				if(exists(d['error'])){
+					alert(d.error);
+				}else{
+					if(location.href.substr(location.href.lastIndexOf('/')+1) != d.state.url){
+						History.pushState(d.state.data,d.state.title,d.state.url);
+					}
+					if(exists(callback)){
+						callback(d);
+					}
 				}
 			},'json');
 		},
 		loadState = window.loadState = function(href,callback){
-			$.get(href,{get:'state'},function(d){
+			$.get(href,{get:'state',timestamp:+new Date},function(d){
 				History.pushState(d.state.data,document.title,href);
 				State = History.getState();
 				if(exists(callback)){
@@ -26,7 +34,7 @@
 			},'json');
 		},
 		apiState = window.apiState = function(href,callback){
-			$.get(href,{get:'state'},function(d){
+			$.get(href,{get:'state',timestamp:+new Date},function(d){
 				History.replaceState(d.state.data,document.title,href);
 				State = History.getState();
 				if(exists(callback)){
@@ -85,4 +93,19 @@
 			$(window).trigger('statechange');
 		});
 	});
+	$.fn.serializeObject = function(){
+		var o = {},
+			a = this.serializeArray();
+		$.each(a,function(){
+			if(o[this.name] !== undefined){
+				if(!o[this.name].push){
+					o[this.name] = [o[this.name]];
+				}
+				o[this.name].push(this.value || '');
+			}else{
+				o[this.name] = this.value || '';
+			}
+		});
+		return o;
+	};
 })(jQuery,History);

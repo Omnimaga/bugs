@@ -1,26 +1,20 @@
 <?php
-	@session_start();
-	require_once(PATH_PHP.'database.php');
+	require_once(realpath(dirname(__FILE__)).'/config.php');
 	// TODO - create php functions for the api
-	function addUser($username,$password,$email){
-		$salt = $mysqli->escape_string(salt());
-		$email = $mysqli->escape_string($email);
-		$username = $mysqli->escape_string($username);
-		$hash = $mysqli->escape_string(saltedHash($password,$salt));
-		return $mysqli->query("INSERT INTO `bugs`.`users` (email,name,pass,salt) VALUES '{$email}','{$username}','{$password}','{$salt}'");
-	}
-	function salt(){
-		return uniqid(mt_rand(0,61), true);
-	}
-	function saltedHash($pass,$salt){
-		$hash = $pass.$salt;
-		for($i = 0;$i<50;$i++){
-			$hash = hash('sha512',$pass.$hash.$salt);
+	function retj($json,$title){
+		$type=$_GET['type'];
+		$id=$_GET['id'];
+		$json['state'] = Array();
+		$json['state']['data'] = $_GET;
+		$json['state']['title'] = $title;
+		switch($type){
+			case 'user':$url='~'.$id;break;
+			case 'group':$url='+'.$id;break;
+			case 'issue':$url='!'.$id;break;
+			case 'template':$url='page-'.$id;break;
+			default:$url=$type.'-'.$id;
 		}
-		return $hash;
+		$json['state']['url'] = $url;
+		die(json_encode($json));
 	}
-	function compareSaltedHash($pass,$salt,$hash){
-		return $hash == saltedHash($pass,$salt);
-	}
-	
 ?>

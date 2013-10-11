@@ -1,7 +1,7 @@
 <h1>
 	{{title}}
 </h1>
-<form id="login">
+<form id="register">
 	<div>
 		Email: <input name="email" type="text"/>
 	</div>
@@ -15,8 +15,21 @@
 	<input type="button" value="cancel" class="cancel"/>
 </form>
 <script>
-	$('#login').submit(function(){
-		// TODO - Handle register
+	$('form#register').submit(function(){
+		var data = $(this).serializeObject(),
+			State = History.getState();
+		for(var i in State.data){
+			data[i] = State.data;
+		}
+		data.type = 'action';
+		data.id = 'register';
+		apiCall(data,function(d){
+			if(!d.error){
+				loadState('page-index');
+			}else{
+				loadState('page-register');
+			}
+		});
 		return false;
 	}).children('.cancel').click(function(){
 		loadState('page-index');

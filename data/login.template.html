@@ -12,8 +12,21 @@
 	<input type="button" value="cancel" class="cancel"/>
 </form>
 <script>
-	$('#login').submit(function(){
-		// TODO - Handle login
+	$('form#login').submit(function(){
+		var data = $(this).serializeObject(),
+			State = History.getState();
+		for(var i in State.data){
+			data[i] = State.data;
+		}
+		data.type = 'action';
+		data.id = 'login';
+		apiCall(data,function(d){
+			if(!d.error){
+				loadState('page-index');
+			}else{
+				loadState('page-login');
+			}
+		});
 		return false;
 	}).children('.cancel').click(function(){
 		loadState('page-index');

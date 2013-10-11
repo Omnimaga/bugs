@@ -1,23 +1,5 @@
 <?php
-	@session_start();
 	require_once('php/include.php');
-	// MYSQL default bugs:bugs
-	function retj($json,$title){
-		$type=$_GET['type'];
-		$id=$_GET['id'];
-		$json['state'] = Array();
-		$json['state']['data'] = $_GET;
-		$json['state']['title'] = $title;
-		switch($type){
-			case 'user':$url='~'.$id;break;
-			case 'group':$url='+'.$id;break;
-			case 'issue':$url='!'.$id;break;
-			case 'template':$url='page-'.$id;break;
-			default:$url=$type.'-'.$id;
-		}
-		$json['state']['url'] = $url;
-		die(json_encode($json));
-	}
 	// TODO - Add API handling.
 	$method = $_SERVER['REQUEST_METHOD'];
 	$ret = Array();
@@ -45,8 +27,37 @@
 					$ret['context'] = json_decode(file_get_contents('data/'.$id.'.context.json'));
 					retj($ret,$id);
 				break;
-				case 'login':
-						// TODO - handle logins
+				case 'action':
+						switch($id){
+							case 'login':
+								if(isset($_GET['username'])&&isset($_GET['password'])){
+									$key = login($_GET['username'],$_GET['password']);
+									if($key){
+										$ret['key'] = $key;
+									}else{
+										$ret['error'] = "Login failed. Username or Password didn't match.";
+									}
+								}else{
+									$ret['error'] = "Please provide a valid username and password.";
+								}
+								retj($ret,$id);
+							break;
+							case 'register':
+								if(isset($_GET['username'])&&isset($_GET['password'])&&isset($_GET['email'])){
+									if(addUser($_GET['username'],$_GET['password'],$_GET['email'])){
+										$ret['key'] = securityKey($_GET['username'],salt());
+										setKey($ret['key']);
+									}else{
+										$ret['error'] = "Could not add user. ".$mysqli->error;
+									}
+								}else{
+									$ret['error'] = "That username already exists!";
+								}
+								retj($ret,$id);
+							break;
+							default:
+								die('invalid action');
+						}
 				break;
 				default:
 					die("invalid type");
