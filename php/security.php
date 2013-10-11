@@ -15,4 +15,27 @@
 	function securityKey($username,$salt){
 		return saltedHash($username,$salt);
 	}
+	function authenticate(){
+		global $SESSION;
+		if(isset($_GET['key'])&&isset($SESSION['key'])&&isset($SESSION['username'])&&isUser($SESSION['usernamed'])){
+			if($_GET['key'] != $SESSION['key']){
+				setKey(null);
+				retj(Array('error'=>'Invalid key, you were logged out.'));
+			}
+			setKey($SESSION['key']);
+		}else{
+			setKey(null);
+		}
+	}
+	function setKey($key){
+		global $SESSION;
+		if($key == null){
+			unset($SESSION['key']);
+			unset($SESSION['username']);
+			setcookie('key','',time()-3600);
+		}else{
+			$SESSION['key'] = $key;
+			setcookie('key',$key,time()+3600);
+		}
+	}
 ?>

@@ -8,6 +8,7 @@
 		},
 		setKey = window.setKey = function(key){
 			Key = key;
+			$.cookie('key',key);
 		},
 		getKey = window.getKey = function(){
 			return Key;
@@ -57,6 +58,9 @@
 				}
 			},'json');
 		};
+	if(exists($.cookie('key'))){
+		setKey($.cookie('key'));
+	}
 	$(document).ready(function(){
 		$(window).on('statechange',function(){
 			var Old = State;
@@ -76,6 +80,9 @@
 				switch(State.data.type){
 					case 'template':
 						api(State.data,function(d){
+							if(Key !== null){
+								d.context.key = Key
+							}
 							$('#content').html(Handlebars.compile(d.template)(d.context)).mCustomScrollbar('destroy');
 							$('#content,.scroll').mCustomScrollbar({
 								theme: 'dark-2',

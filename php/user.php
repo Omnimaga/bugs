@@ -23,7 +23,11 @@
 		}
 		return false;
 	}
-	function setKey($key){
-		$SESSION['key'] = $key;
+	function isUser($name){
+		if(query("SELECT id FROM `".get('database')."`.`users` WHERE name='%s'",Array($name))){
+			return true;
+		}else{
+			return false;
+		}
 	}
 ?>

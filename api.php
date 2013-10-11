@@ -24,7 +24,12 @@
 				break;
 				case 'template':
 					$ret['template'] = file_get_contents('data/'.$id.'.template.html');
-					$ret['context'] = json_decode(file_get_contents('data/'.$id.'.context.json'));
+					if(file_exists(PATH_DATA.$id.'.context.json')){
+						$context = json_decode(file_get_contents(PATH_DATA.$id.'.context.json'));
+					}else{
+						$context = Array();
+					}
+					$ret['context'] = $context;
 					retj($ret,$id);
 				break;
 				case 'action':
