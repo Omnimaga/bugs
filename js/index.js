@@ -10,11 +10,11 @@
 			if(key !== null){
 				console.log('Key change to '+key);
 				Key = key;
-				$.cookie('key',key,{expires:7});
+				$.cookie('key',key);
 			}else{
 				console.log('Key deleted');
 				Key = null;
-				$.cookie('key',null,{expires:-7});
+				$.cookie('key',null);
 			}
 		},
 		getKey = window.getKey = function(){
@@ -67,6 +67,8 @@
 		};
 	if(exists($.cookie('key'))){
 		setKey($.cookie('key'));
+	}else{
+		setKey(null);
 	}
 	$(document).ready(function(){
 		$(window).on('statechange',function(){
