@@ -22,8 +22,10 @@
 		data.id = 'login';
 		apiCall(data,function(d){
 			if(!d.error){
+				setKey(d.key);
 				loadState('page-index');
 			}else{
+				setKey(null);
 				loadState('page-login');
 			}
 		});

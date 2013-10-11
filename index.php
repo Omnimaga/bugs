@@ -24,6 +24,10 @@
 			$json = Array();
 			$json['state'] = Array();
 			$json['state']['data'] = $_GET;
+			if(isset($_GET['key'])){
+				$json['key'] = $_GET['key'];
+				$json['state']['data']['key'] = $_GET['key'];
+			}
 			switch($type){
 				case 'user':$url='~'.$id;break;
 				case 'group':$url='+'.$id;break;

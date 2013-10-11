@@ -1,9 +1,16 @@
 // TODO - Add initial page loading and handlers
 (function($,History){
 	var State = History.getState(),
+		Key = null,
 		flag = false,
 		exists = function(v){
 			return typeof v != 'undefined';
+		},
+		setKey = window.setKey = function(key){
+			Key = key;
+		},
+		getKey = window.getKey = function(){
+			return Key;
 		},
 		api = window.apiCall = function(data,callback){
 			data.get = 'api';
@@ -25,7 +32,11 @@
 			},'json');
 		},
 		loadState = window.loadState = function(href,callback){
-			$.get(href,{get:'state',timestamp:+new Date},function(d){
+			var data = {get:'state',timestamp:+new Date};
+			if(Key !== null){
+				data.key = Key;
+			}
+			$.get(href,data,function(d){
 				History.pushState(d.state.data,document.title,href);
 				State = History.getState();
 				if(exists(callback)){
@@ -34,7 +45,11 @@
 			},'json');
 		},
 		apiState = window.apiState = function(href,callback){
-			$.get(href,{get:'state',timestamp:+new Date},function(d){
+			var data = {get:'state',timestamp:+new Date};
+			if(Key !== null){
+				data.key = Key;
+			}
+			$.get(href,data,function(d){
 				History.replaceState(d.state.data,document.title,href);
 				State = History.getState();
 				if(exists(callback)){
@@ -46,6 +61,16 @@
 		$(window).on('statechange',function(){
 			var Old = State;
 			State = History.getState();
+			if(Key !== null){
+				State.key = Key;
+				State.data.key = Key;
+			}else{
+				if(exists(State.data['key'])){
+					Key = State.data.key;
+				}else if(exists(State['key'])){
+					Key = State.key;
+				}
+			}
 			if(State.data.type != Old.data.type || State.data.id != Old.data.id){
 				console.log("State change. "+JSON.stringify(State));
 				switch(State.data.type){
