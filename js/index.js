@@ -7,8 +7,15 @@
 			return typeof v != 'undefined';
 		},
 		setKey = window.setKey = function(key){
-			Key = key;
-			$.cookie('key',key);
+			if(key !== null){
+				console.log('Key change to '+key);
+				Key = key;
+				$.cookie('key',key,{expires:7});
+			}else{
+				console.log('Key deleted');
+				Key = null;
+				$.cookie('key',null,{expires:-7});
+			}
 		},
 		getKey = window.getKey = function(){
 			return Key;
