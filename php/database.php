@@ -10,10 +10,6 @@
 		for ($i=0;$i<count($args);$i++){
 			$args[$i] = $mysqli->real_escape_string($args[$i]);
 		}
-		$result = $mysqli->query(vsprintf($query,$args));
-		if (!$result){
-			die("Query: ".vsprintf($query,$args));
-		}
-		return $result;
+		return $mysqli->query(vsprintf($query,$args));
 	}
 ?>
