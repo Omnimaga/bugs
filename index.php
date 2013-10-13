@@ -1,5 +1,5 @@
 <?php
-	if(!file_exists('config.json')){
+	if(!file_exists('config.default.json')){
 		header('Location: install');
 		die();
 	}elseif(file_exists('install')){
@@ -20,26 +20,36 @@
 			$type = $_GET['type'];
 			$id = $_GET['id'];
 		}
-		if($get == 'state'){
-			$json = Array();
-			$json['state'] = Array();
-			$json['state']['data'] = $_GET;
-			if(isset($_GET['key'])){
-				$json['key'] = $_GET['key'];
-				$json['state']['data']['key'] = $_GET['key'];
-			}
-			switch($type){
-				case 'user':$url='~'.$id;break;
-				case 'group':$url='+'.$id;break;
-				case 'issue':$url='!'.$id;break;
-				case 'template':$url='page-'.$id;break;
-				default:$url=$type.'-'.$id;
-			}
-			$json['state']['url'] = $url;
-			die(json_encode($json));
-			
-		}elseif($get == 'api'){
-			require_once('api.php');
+		switch($get){
+			case 'state':
+				$json = Array();
+				$json['state'] = Array();
+				$json['state']['data'] = $_GET;
+				if(isset($_GET['key'])){
+					$json['key'] = $_GET['key'];
+					$json['state']['data']['key'] = $_GET['key'];
+				}
+				switch($type){
+					case 'user':$url='~'.$id;break;
+					case 'group':$url='+'.$id;break;
+					case 'issue':$url='!'.$id;break;
+					case 'template':$url='page-'.$id;break;
+					default:$url=$type.'-'.$id;
+				}
+				$json['state']['url'] = $url;
+				die(json_encode($json));
+			break;
+			case 'api':
+				require_once('api.php');
+			break;
+			case 'settings':
+				$settings = Array();
+				$keys = Array('timeout');
+				foreach($keys as $key){
+					$settings[$key] = get($key);
+				}
+				die(json_encode($settings));
+			break;
 		}
 	}
 ?>

@@ -3,15 +3,23 @@
 	var State = History.getState(),
 		Key = null,
 		flag = false,
+		settings = {},
 		exists = function(v){
 			return typeof v != 'undefined';
+		},
+		get = window.get = function(s){
+			return settings[s];
+		},
+		set = window.set = function(s,v){
+			settings[s] = v;
+			return v;
 		},
 		setKey = window.setKey = function(key){
 			if(key !== null){
 				console.log('Key change to '+key);
 				Key = key;
 				var d = new Date();
-				d.setTime(d.getTime()+3600);
+				d.setTime(d.getTime()+get('timeout'));
 				$.cookie('key',key,{
 					expires: d
 				});
@@ -134,15 +142,25 @@
 		}else{
 			flag = true;
 		}
-		apiState(location.href,function(){
-			if(flag){
-				State.data = {
-					type: '',
-					data: ''
-				};
-			}
-			$(window).trigger('statechange');
-		});
+		var data = {
+			get:'settings',
+			timestamp:+new Date
+		};
+		if(Key !== null){
+			data.key = Key;
+		}
+		$.get(location.href,data,function(d){
+			settings = d;
+			apiState(location.href,function(){
+				if(flag){
+					State.data = {
+						type: '',
+						data: ''
+					};
+				}
+				$(window).trigger('statechange');
+			});
+		},'json');
 	});
 	$.fn.serializeObject = function(){
 		var o = {},

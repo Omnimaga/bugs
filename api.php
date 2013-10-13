@@ -23,9 +23,9 @@
 					// TODO - handle admin requests
 				break;
 				case 'template':
-					$ret['template'] = file_get_contents('data/'.$id.'.template.html');
-					if(file_exists(PATH_DATA.$id.'.context.json')){
-						$context = json_decode(file_get_contents(PATH_DATA.$id.'.context.json'));
+					$ret['template'] = file_get_contents(PATH_DATA.'pages/'.$id.'.template');
+					if(file_exists(PATH_DATA.'context/'.$id.'.json')){
+						$context = json_decode(file_get_contents(PATH_DATA.'context/'.$id.'.json'));
 					}else{
 						$context = Array();
 					}

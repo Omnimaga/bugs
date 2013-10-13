@@ -34,7 +34,7 @@
 			unset($SESSION['username']);
 		}else{
 			$SESSION['key'] = $key;
-			setcookie('key',$key,time()+3600);
+			setcookie('key',$key,time()+get('timeout'));
 		}
 	}
 ?>

@@ -128,7 +128,7 @@
 							foreach($sql_query as $sql){
 								mysql_query($sql) or die('error in query');
 							}
-							file_put_contents('../config.json',"{\"host\":\"{$dbhost}\",\"user\":\"{$dbuser}\",\"password\":\"{$dbpass}\",\"database\":\"{$dbname}\"}");
+							file_put_contents('../config.default.json',"{\"host\":\"{$dbhost}\",\"user\":\"{$dbuser}\",\"password\":\"{$dbpass}\",\"database\":\"{$dbname}\",\"timeout\":216000}");
 							echo 'pass';
 						}else{
 							echo "Please don't leave any fields blank";
