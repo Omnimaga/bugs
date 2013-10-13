@@ -113,6 +113,7 @@
 			switch($_GET['type']){
 				case 'install':
 					if($id == "run"){
+						$path = realpath(dirname(__FILE__));
 						if(isset($_GET['dbuser'])&&isset($_GET['dbpass'])&&isset($_GET['dbname'])&&isset($_GET['dbhost'])&&isset($_GET['dbtemplate'])){
 							$dbuser = $_GET['dbuser'];
 							$dbpass = $_GET['dbpass'];
@@ -135,13 +136,13 @@
 					}elseif($id=='config'){
 						echo file_get_contents('index.template.html');
 					}elseif($id='cleanup'){
-						$files = scandir(realpath(dirname(__FILE__)));
+						$files = scandir($path);
 						foreach($files as $file){
 							if($file != '.' && $file != '..'){
-								@unlink(realpath(dirname(__FILE__)).'/'.$file);
+								@unlink($path.'/'.$file);
 							}
 						}
-						@rmdir(realpath(dirname(__FILE__)));
+						@rmdir($path);
 					}else{
 						die('Invalid id');
 					}
