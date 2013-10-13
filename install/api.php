@@ -123,12 +123,11 @@
 							$sql_query = remove_comments($sql_query);
 							$sql_query = remove_remarks($sql_query);
 							$sql_query = split_sql_file($sql_query, ';');
-							mysql_connect($dbhost,$dbuser,$dbpass) or die("Can't connect to ".$dbhost);
-							mysql_select_db($dbname) or die('error database selection');
-							foreach($sql_query as $sql){
-								mysql_query($sql) or die('error in query');
-							}
 							file_put_contents('../config.default.json',"{\"host\":\"{$dbhost}\",\"user\":\"{$dbuser}\",\"password\":\"{$dbpass}\",\"database\":\"{$dbname}\",\"timeout\":216000}");
+							require_once('../php/database.php');
+							foreach($sql_query as $sql){
+								query($sql) or die('error in query');
+							}
 							echo 'pass';
 						}else{
 							echo "Please don't leave any fields blank";
