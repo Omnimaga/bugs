@@ -16,29 +16,53 @@
 		return saltedHash($username,$salt);
 	}
 	function authenticate(){
-		global $SESSION;
 		if(loggedIn()){
-			setKey($SESSION['key']);
+			setKey(getKey());
 		}
 	}
+	function login($username,$password){
+		global $LOGGEDIN;
+		if($res = query("SELECT name,password,salt FROM `users` WHERE name = '%s'",Array($username))){
+			if($res->num_rows == 1){
+				$row = $res->fetch_assoc();
+				if(compareSaltedHash($password,$row['salt'],$row['password'])){
+					$_SESSION['username'] = $username;
+					$key = securityKey($username,$_SERVER['REMOTE_ADDR']);
+					setKey($key);
+					$LOGGEDIN = true;
+					return $key;
+				}
+			}
+		}
+		return false;
+	}
 	function loggedIn(){
-		global $SESSION;
-		if(isset($_GET['key'])&&isset($SESSION['key'])&&isset($SESSION['username'])&&isUser($SESSION['username'])){
-			if($_GET['key'] == $SESSION['key']){
+		global $LOGGEDIN;
+		global $_COOKIE;
+		if(isset($_COOKIE['username'])&&isset($_COOKIE['key'])){
+			if(securityKey($_COOKIE['username'],$_SERVER['REMOTE_ADDR'])==$_COOKIE['key']){
+				$_SESSION['username'] = $_COOKIE['username'];
+				setKey($_COOKIE['key']);
+				$LOGGEDIN = true;
 				return true;
 			}
 		}
 		setKey(null);
+		$LOGGEDIN = false;
 		return false;
 	}
 	function setKey($key){
-		global $SESSION;
 		if($key == null){
-			unset($SESSION['key']);
-			unset($SESSION['username']);
+			unset($_SESSION['key']);
+			unset($_SESSION['username']);
 		}else{
-			$SESSION['key'] = $key;
+			$_SESSION['key'] = $key;
+			setcookie('username',$_SESSION['username'],time()+get('timeout'));
 			setcookie('key',$key,time()+get('timeout'));
 		}
+		return $key;
+	}
+	function getKey(){
+		return isset($_SESSION['key'])?$_SESSION['key']:null;
 	}
 ?>

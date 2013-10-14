@@ -8,7 +8,18 @@
 			$id = $_GET['id'];
 			switch($_GET['type']){
 				case 'user':
-					// TODO - handle user requests
+					$ret['template'] = file_get_contents(PATH_DATA.'pages/user.template');
+					$user = userObj($id);
+					$context = Array(
+						'name'=>$user['name'],
+						'email'=>$user['email']
+					);
+					if($LOGGEDIN){
+						$context['key'] = true;
+						$context['user'] = userObj($_SESSION['username']);
+					};
+					$ret['context'] = $context;
+					retj($ret,$id);
 				break;
 				case 'group':
 					// TODO - handle group requests
@@ -25,12 +36,13 @@
 				case 'template':
 					$ret['template'] = file_get_contents(PATH_DATA.'pages/'.$id.'.template');
 					if(file_exists(PATH_DATA.'context/'.$id.'.json')){
-						$context = json_decode(file_get_contents(PATH_DATA.'context/'.$id.'.json'));
+						$context = objectToArray(json_decode(file_get_contents(PATH_DATA.'context/'.$id.'.json')));
 					}else{
 						$context = Array();
 					}
-					if(loggedIn()){
-						$context['key'] = $SESSION['key'];
+					if($LOGGEDIN){
+						$context['key'] = true;
+						$context['user'] = userObj($_SESSION['username']);
 					};
 					$ret['context'] = $context;
 					retj($ret,$id);
@@ -38,31 +50,41 @@
 				case 'action':
 						switch($id){
 							case 'login':
+								$ret['state'] = Array(
+									'data'=>Array(
+										'type'=>'template',
+										'id'=>'login',
+									)
+								);
 								if(isset($_GET['username'])&&isset($_GET['password'])){
 									$key = login($_GET['username'],$_GET['password']);
 									if($key){
-										$ret['key'] = $key;
+										$_SESSION['username'] = $_GET['username'];
 									}else{
 										$ret['error'] = "Login failed. Username or Password didn't match.";
 									}
 								}else{
 									$ret['error'] = "Please provide a valid username and password.";
 								}
-								$ret['state'] = Array('data'=>Array('type'=>'template','id'=>'login'));
 								retj($ret,$id);
 							break;
 							case 'register':
+								$ret['state'] = Array(
+									'data'=>Array(
+										'type'=>'template',
+										'id'=>'register'
+									)
+								);
 								if(isset($_GET['username'])&&isset($_GET['password'])&&isset($_GET['email'])){
 									if(addUser($_GET['username'],$_GET['password'],$_GET['email'])){
-										$ret['key'] = securityKey($_GET['username'],salt());
-										setKey($ret['key']);
+										$key = login($_GET['username'],$_GET['password']);
+										$_SESSION['username'] = $_GET['username'];
 									}else{
 										$ret['error'] = "Could not add user. ".$mysqli->error;
 									}
 								}else{
 									$ret['error'] = "That username already exists!";
 								}
-								$ret['state'] = Array('data'=>Array('type'=>'template','id'=>'register'));
 								retj($ret,$id);
 							break;
 							default:

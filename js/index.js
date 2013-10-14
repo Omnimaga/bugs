@@ -1,6 +1,7 @@
 // TODO - Add initial page loading and handlers
 (function($,History){
 	var State = History.getState(),
+		Old = {},
 		Key = null,
 		flag = false,
 		settings = {},
@@ -33,6 +34,7 @@
 			return Key;
 		},
 		apiCall = window.apiCall = function(data,callback){
+			$('#loading').show();
 			data.get = 'api';
 			data.timestamp = +new Date;
 			if(exists(State.data.key)){
@@ -40,7 +42,7 @@
 			}
 			$.get(location.href,data,function(d){
 				if(exists(d['error'])){
-					alert(d.error);
+					error(d);
 				}else{
 					if(location.href.substr(location.href.lastIndexOf('/')+1) != d.state.url){
 						History.pushState(d.state.data,d.state.title,d.state.url);
@@ -52,36 +54,62 @@
 			},'json');
 		},
 		loadState = window.loadState = function(href,callback){
+			$('#loading').show();
 			var data = {
 				get:'state',
-				timestamp:+new Date
+				timestamp: +new Date
 			};
-			if(Key !== null){
-				data.key = Key;
-			}
 			$.get(href,data,function(d){
-				History.pushState(d.state.data,document.title,href);
-				State = History.getState();
-				if(exists(callback)){
-					callback();
+				if(exists(d['error'])){
+					error(d);
+				}else{
+					History.pushState(d.state.data,document.title,href);
+					getNewState();
+					if(exists(callback)){
+						callback(d);
+					}
+					console.log('loadState');
 				}
 			},'json');
 		},
 		apiState = window.apiState = function(href,callback){
+			$('#loading').show();
 			var data = {
 				get:'state',
-				timestamp:+new Date
+				timestamp: +new Date
 			};
-			if(Key !== null){
-				data.key = Key;
-			}
 			$.get(href,data,function(d){
-				History.replaceState(d.state.data,document.title,href);
-				State = History.getState();
-				if(exists(callback)){
-					callback();
+				if(exists(d['error'])){
+					error(d);
+				}else{
+					History.replaceState(d.state.data,document.title,href);
+					getNewState();
+					if(exists(callback)){
+						callback();
+					}
 				}
 			},'json');
+		},
+		error = function(e){
+			e = '['+State.url+']'+e.error+"\n"+(exists(e.state)?JSON.stringify(e.state):'');
+			console.error(e);
+		},
+		getNewState = function(){
+			State = History.getState();
+			console.log("State change. "+JSON.stringify(State.data));
+		},
+		equal = function(o1,o2){
+			for(var i in o1){
+				if(!exists(o2[i])||o2[i]!=o1[i]){
+					return false;
+				}
+			}
+			for(i in o2){
+				if(!exists(o1[i])||o2[i]!=o1[i]){
+					return false;
+				}
+			}
+			return true;
 		};
 	if(exists($.cookie('key'))){
 		setKey($.cookie('key'));
@@ -90,24 +118,13 @@
 	}
 	$(document).ready(function(){
 		$(window).on('statechange',function(){
-			var Old = State;
-			State = History.getState();
-			if(Key !== null){
-				State.key = Key;
-				State.data.key = Key;
-			}else{
-				if(exists(State.data['key'])){
-					Key = State.data.key;
-				}else if(exists(State['key'])){
-					Key = State.key;
-				}
-			}
-			if(State.data.type != Old.data.type || State.data.id != Old.data.id){
-				console.log("State change. "+JSON.stringify(State));
+			getNewState();
+			if(!equal(State.data,Old)){
 				switch(State.data.type){
-					case 'template':
-						api(State.data,function(d){
-							if(!exists(d.context.key)){
+					case 'template':case 'user':
+						apiCall(State.data,function(d){
+							if(!exists(d.context.key)&&Key!==null){
+								console.log('Context detected logout');
 								setKey(null);
 							}
 							$('#content').html(Handlebars.compile(d.template)(d.context)).mCustomScrollbar('destroy');
@@ -126,12 +143,21 @@
 									});
 								}
 							});
+							$('#loading').hide();
 						});
 					break;
 					case 'action':break;
 					default:
-						alert("Something went wrong!\nYour current state:\n"+JSON.stringify(State));
+						error({
+							url: State.url,
+							error: "Something went wrong!"
+						});
 				}
+				Old = State.data;
+			}else{
+				console.log(State.data,Old);
+				console.warn('Stopped double load of '+Old.type+'-'+Old.id);
+				$('#loading').hide();
 			}
 		});
 		if($.isEmptyObject(State.data)){
@@ -144,12 +170,9 @@
 			flag = true;
 		}
 		var data = {
-			get:'settings',
-			timestamp:+new Date
+			get: 'settings',
+			timestamp: +new Date
 		};
-		if(Key !== null){
-			data.key = Key;
-		}
 		$.get(location.href,data,function(d){
 			settings = d;
 			apiState(location.href,function(){
@@ -178,4 +201,7 @@
 		});
 		return o;
 	};
+	$.ajaxSetup({
+		async: false
+	});
 })(jQuery,History);

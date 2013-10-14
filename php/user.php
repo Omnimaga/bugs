@@ -11,21 +11,27 @@
 		$hash = $mysqli->escape_string(saltedHash($password,$salt));
 		return query("INSERT INTO `users` (email,name,password,salt) VALUES ('%s','%s','%s','%s')",Array($email,$username,$hash,$salt));
 	}
-	function login($username,$password){
-		global $mysqli;
-		if($res = query("SELECT name,password,salt FROM `users` WHERE name = '%s'",Array($username))){
-			if($res->num_rows == 1){
-				$row = $res->fetch_assoc();
-				if(compareSaltedHash($password,$row['salt'],$row['password'])){
-					return securityKey($username,salt());
-				}			
-			}
-		}
-		return false;
-	}
 	function isUser($name){
 		if(query("SELECT id FROM `users` WHERE name='%s'",Array($name))){
 			return true;
+		}else{
+			return false;
+		}
+	}
+	function userId($name){
+		if($user = query("SELECT id FROM `users` WHERE name='%s'",Array($name))){
+			$user = $user->fetch_assoc();
+			return $user['id'];
+		}else{
+			return false;
+		}
+	}
+	function userObj($id){
+		if(is_string($id)){
+			$id = userId($id);
+		}
+		if($result = query("SELECT * FROM `users` WHERE id='%d'",Array($id))){
+			return $result->fetch_assoc();
 		}else{
 			return false;
 		}

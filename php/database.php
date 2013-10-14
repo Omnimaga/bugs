@@ -8,7 +8,11 @@
 	function query($query,$args = Array()){
 		global $mysqli;
 		for ($i=0;$i<count($args);$i++){
-			$args[$i] = $mysqli->real_escape_string($args[$i]);
+			if(is_string($args[$i])){
+				$args[$i] = $mysqli->real_escape_string($args[$i]);
+			}else{
+				return false;
+			}
 		}
 		return $mysqli->query(vsprintf($query,$args));
 	}

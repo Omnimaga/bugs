@@ -150,6 +150,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `email` varchar(254) NOT NULL,
   `password` varchar(128) NOT NULL,
   `salt` varchar(25) NOT NULL,
+  `key` varchar(128) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;

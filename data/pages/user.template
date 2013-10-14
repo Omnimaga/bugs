@@ -1,0 +1,15 @@
+<div>
+	{{name}}
+</div>
+<div>
+	{{email}}
+</div>
+{{#unless key}}
+	<a href="#page-index">Home</a>
+{{else}}
+	<a href="#page-logout">Logout</a>
+	-
+	<a href="#~{{user.name}}">{{user.name}}</a>
+	-
+	<a href="#page-index">Home</a>
+{{/unless}}

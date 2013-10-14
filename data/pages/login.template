@@ -28,6 +28,7 @@
 				setKey(null);
 				loadState('page-login');
 			}
+			return false;
 		});
 		return false;
 	}).children('.cancel').click(function(){
