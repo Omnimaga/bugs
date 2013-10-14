@@ -11,6 +11,7 @@
 			$json['state'] = Array();
 		}
 		unset($_GET['password']);
+		unset($_GET['password1']);
 		if(!isset($json['state']['data'])){
 			$json['state']['data'] = $_GET;
 		}else{

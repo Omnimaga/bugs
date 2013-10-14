@@ -37,9 +37,6 @@
 			$('#loading').show();
 			data.get = 'api';
 			data.timestamp = +new Date;
-			if(exists(State.data.key)){
-				data.key = State.data.key;
-			}
 			$.get(location.href,data,function(d){
 				if(exists(d['error'])){
 					error(d);
@@ -47,9 +44,9 @@
 					if(location.href.substr(location.href.lastIndexOf('/')+1) != d.state.url){
 						History.pushState(d.state.data,d.state.title,d.state.url);
 					}
-					if(exists(callback)){
-						callback(d);
-					}
+				}
+				if(exists(callback)){
+					callback(d);
 				}
 			},'json');
 		},
@@ -65,10 +62,9 @@
 				}else{
 					History.pushState(d.state.data,document.title,href);
 					getNewState();
-					if(exists(callback)){
-						callback(d);
-					}
-					console.log('loadState');
+				}
+				if(exists(callback)){
+					callback(d);
 				}
 			},'json');
 		},
@@ -84,15 +80,16 @@
 				}else{
 					History.replaceState(d.state.data,document.title,href);
 					getNewState();
-					if(exists(callback)){
-						callback();
-					}
+				}
+				if(exists(callback)){
+					callback(d);
 				}
 			},'json');
 		},
 		error = function(e){
-			e = '['+State.url+']'+e.error+"\n"+(exists(e.state)?JSON.stringify(e.state):'');
-			console.error(e);
+			e = '['+State.url+']'+e.error;
+			console.error(e+"\n"+(exists(e.state)?JSON.stringify(e.state):''));
+			alert(e);
 		},
 		getNewState = function(){
 			State = History.getState();
