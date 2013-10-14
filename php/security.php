@@ -17,15 +17,19 @@
 	}
 	function authenticate(){
 		global $SESSION;
-		if(isset($_GET['key'])&&isset($SESSION['key'])&&isset($SESSION['username'])&&isUser($SESSION['username'])){
-			if($_GET['key'] != $SESSION['key']){
-				setKey(null);
-				retj(Array('error'=>'Invalid key, you were logged out.'));
-			}
+		if(loggedIn()){
 			setKey($SESSION['key']);
-		}else{
-			setKey(null);
 		}
+	}
+	function loggedIn(){
+		global $SESSION;
+		if(isset($_GET['key'])&&isset($SESSION['key'])&&isset($SESSION['username'])&&isUser($SESSION['username'])){
+			if($_GET['key'] == $SESSION['key']){
+				return true;
+			}
+		}
+		setKey(null);
+		return false;
 	}
 	function setKey($key){
 		global $SESSION;

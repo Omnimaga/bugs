@@ -29,6 +29,9 @@
 					}else{
 						$context = Array();
 					}
+					if(loggedIn()){
+						$context['key'] = $SESSION['key'];
+					};
 					$ret['context'] = $context;
 					retj($ret,$id);
 				break;
@@ -59,6 +62,7 @@
 								}else{
 									$ret['error'] = "That username already exists!";
 								}
+								$ret['state'] = Array('data'=>Array('type'=>'template','id'=>'register'));
 								retj($ret,$id);
 							break;
 							default:

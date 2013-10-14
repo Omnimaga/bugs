@@ -32,7 +32,7 @@
 		getKey = window.getKey = function(){
 			return Key;
 		},
-		api = window.apiCall = function(data,callback){
+		apiCall = window.apiCall = function(data,callback){
 			data.get = 'api';
 			data.timestamp = +new Date;
 			if(exists(State.data.key)){
@@ -107,8 +107,8 @@
 				switch(State.data.type){
 					case 'template':
 						api(State.data,function(d){
-							if(Key !== null){
-								d.context.key = Key;
+							if(!exists(d.context.key)){
+								setKey(null);
 							}
 							$('#content').html(Handlebars.compile(d.template)(d.context)).mCustomScrollbar('destroy');
 							$('#content,.scroll').mCustomScrollbar({
@@ -128,6 +128,7 @@
 							});
 						});
 					break;
+					case 'action':break;
 					default:
 						alert("Something went wrong!\nYour current state:\n"+JSON.stringify(State));
 				}
