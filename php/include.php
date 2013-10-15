@@ -9,6 +9,7 @@
 	require_once(PATH_PHP.'database.php');
 	require_once(PATH_PHP.'functions.php');
 	require_once(PATH_PHP.'security.php');
+	require_once(PATH_PHP.'captcha.php');
 	require_once(PATH_PHP.'user.php');
 	require_once(PATH_PHP.'emails.php');
 	authenticate();

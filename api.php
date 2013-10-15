@@ -75,16 +75,24 @@
 										'id'=>'register'
 									)
 								);
-								if(isset($_GET['username'])&&isset($_GET['password'])&&isset($_GET['email'])){
-									if(addUser($_GET['username'],$_GET['password'],$_GET['email'])){
-										$key = login($_GET['username'],$_GET['password']);
-										$_SESSION['username'] = $_GET['username'];
-										sendMail('welcome','Welcome!',$_GET['email'],get('email'),Array($_GET['username'],$_GET['password'],get('email')));
+								if(isvalid('username')&&isvalid('password')&&isvalid('password1')&&isvalid('email')&&isvalid('captcha')){
+									if($_GET['password']==$_GET['password1']){
+										if(compare_captcha($_GET['captcha'])){
+											if(addUser($_GET['username'],$_GET['password'],$_GET['email'])){
+												$key = login($_GET['username'],$_GET['password']);
+												$_SESSION['username'] = $_GET['username'];
+												sendMail('welcome','Welcome!',$_GET['email'],get('email'),Array($_GET['username'],$_GET['password'],get('email')));
+											}else{
+												$ret['error'] = "Could not add user. ".$mysqli->error;
+											}
+										}else{
+											$ret['error'] = "Captcha did not match.";
+										}
 									}else{
-										$ret['error'] = "Could not add user. ".$mysqli->error;
+										$ret['error'] = "Passwords didn't match.";
 									}
 								}else{
-									$ret['error'] = "That username already exists!";
+									$ret['error'] = "Please fill in all the fields.";
 								}
 								retj($ret,$id);
 							break;

@@ -47,6 +47,9 @@
 				}
 				die(json_encode($settings));
 			break;
+			case 'captcha':
+				generate_captcha();
+			break;
 		}
 	}
 ?>

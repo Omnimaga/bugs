@@ -51,4 +51,10 @@
 		);
 		die(json_encode($json));
 	}
+	function isvalid($col,$v=null){
+		if($v == null){
+			$v = $_GET;
+		}
+		return isset($v[$col]) && !empty($v[$col]);
+	}
 ?>

@@ -14,15 +14,17 @@
 	<div>
 		Verify Password: <input name="password1" type="password"/>
 	</div>
+	<div>
+		<image id="captcha" src="index.php?get=captcha"/>
+		<br/>
+		Captcha: <input name="captcha" type="text"/>
+	</div>
 	<input type="submit" value="register"/>
 	<input type="button" value="cancel" class="cancel"/>
 </form>
 <script>
 	$('form#register').submit(function(){
-		var p0 = $(this).find('input[name=password]').val(),
-			p1 = $(this).find('input[name=password1]').val();
-		if(p0!=''&&p1!=''&&p0==p1){
-			var data = $(this).serializeObject(),
+		var data = $(this).serializeObject(),
 				State = History.getState();
 			for(var i in State.data){
 				data[i] = State.data;
@@ -35,12 +37,10 @@
 					loadState('page-index');
 				}else{
 					setKey(null);
-					loadState('page-register');
+					$('#captcha').attr('src','index.php?get=captcha&timestamp='+new Date);
+					$('#loading').hide();
 				}
 			});
-		}else{
-			alert('The password must match!');
-		}
 		return false;
 	}).children('.cancel').click(function(){
 		loadState('page-index');

@@ -1,6 +1,6 @@
 <?php
 	function salt(){
-		return uniqid(mt_rand(0,61), true);
+		return uniqid(mt_rand(0,61),true);
 	}
 	function saltedHash($pass,$salt){
 		$hash = $pass.$salt;

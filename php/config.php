@@ -1,4 +1,5 @@
 <?php
+	@session_start();
 	define('PATH_ROOT',realpath(dirname(__FILE__)).'/../');
 	define('PATH_CONFIG',PATH_ROOT.'config.json');
 	define('PATH_DEFAULT_CONFIG',PATH_ROOT.'config.default.json');
