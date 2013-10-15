@@ -40,7 +40,7 @@
 		global $LOGGEDIN;
 		global $_COOKIE;
 		if(isset($_COOKIE['username'])&&isset($_COOKIE['key'])){
-			if(securityKey($_COOKIE['username'],$_SERVER['REMOTE_ADDR'])==$_COOKIE['key']){
+			if(isUser($_COOKIE['username'])&&securityKey($_COOKIE['username'],$_SERVER['REMOTE_ADDR'])==$_COOKIE['key']){
 				$_SESSION['username'] = $_COOKIE['username'];
 				setKey($_COOKIE['key']);
 				$LOGGEDIN = true;
