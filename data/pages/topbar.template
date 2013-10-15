@@ -8,6 +8,9 @@
 </div>
 <div class="topbar-right">
 	{{#unless key}}
+		<a href="#page-register">
+			Register
+		</a>
 		<a href="#page-login">
 			Login
 		</a>
