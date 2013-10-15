@@ -158,7 +158,7 @@
 				});
 			},
 			scroll: function(selector){
-				/*if(!$.support.touch){
+				if(!$.support.touch){
 					$(selector).mCustomScrollbar('destroy');
 					$(selector).mCustomScrollbar({
 						theme: 'dark-2',
@@ -170,10 +170,10 @@
 							autoScrollOnFocus: true
 						}
 					});
-				}else{*/
+				}else{
 					$(selector).mCustomScrollbar('destroy');
 					$(selector).css('overflow','auto');
-				// }
+				}
 			}
 		};
 	if(exists($.cookie('key'))){
