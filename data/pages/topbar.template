@@ -1,12 +1,17 @@
 <div class="topbar-left">
 	<a class="topbar-home" href="#page-index">
-		&#8962;
+		<span>
+			&#8962;
+		</span>
 	</a>
-	<a href="#{{url}}">
+	<a class="topbar-current" href="#{{url}}">
 		{{title}}
 	</a>
 </div>
 <div class="topbar-right">
+	<a class="topbar-back" href="#page-index">
+		&#8689;
+	</a>
 	{{#unless key}}
 		<a href="#page-register">
 			Register

@@ -138,7 +138,11 @@
 					if(href.indexOf(location.origin) != -1 && href.indexOf('#') != -1){
 						href = href.substr(href.indexOf('#')+1);
 						$(this).click(function(){
-							loadState(href);
+							if(($(this).hasClass('topbar-home') || $(this).hasClass('topbar-back'))&&$(window).width()<767){
+								$('#topbar').children('div.topbar-right,div.topbar-left').toggle();
+							}else{
+								loadState(href);
+							}
 							return false;
 						});
 					}
@@ -211,6 +215,13 @@
 				flag('load',false);
 			});
 		},'json');
+	});
+	$(window).resize(function(){
+		if($(window).width()>767){
+			$('#topbar div.topbar-right, #topbar div.topbar-left').css({
+				'display': ''
+			});
+		}
 	});
 	$.fn.serializeObject = function(){
 		var o = {},

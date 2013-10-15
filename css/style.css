@@ -33,8 +33,7 @@ div#topbar a{
 	text-transform: capitalize;
 	text-align: center;
 	vertical-align: middle;
-	height: 100%;
-	display: inline-block;
+	height: 35px;
 	border-color: white;
 	border-style: solid;
 	border-width: 0;
@@ -46,14 +45,14 @@ div#topbar a{
 	line-height: 35px;
 	padding-left: 2px;
 	padding-right: 2px;
+	min-width: 35px;
+	max-width: 70px;
+	overflow: hidden;
 }
 div#topbar a:hover{
 	background-color: white;
 	color: black;
 	border-bottom-color: black;
-}
-div#topbar a:hover + a{
-	border-left-color: black;
 }
 div.topbar-right{
 	float: right;
@@ -84,4 +83,39 @@ div#loading{
 	background-image: url('../img/load.gif');
 	background-repeat: no-repeat;
 	background-position: center;
+}
+@media screen and (max-width: 767px){
+	a.topbar-home span{
+		display: none;
+	}
+	a.topbar-home:after{
+		content: "\2261";
+		/*use \8943 elsewhere for options dropdown*/
+	}
+	div.topbar-right{
+		display: none;
+	}
+	div.topbar-left{
+		width: 100%;
+	}
+	a.topbar-current{
+		float: right !important;
+	}
+	a.topbar-back{
+		width: 35px;
+		background-color: darkred;
+		position: absolute;
+		left: 0;
+	}
+	a.topbar-back:hover{
+		background-color: gray !important;
+	}
+}
+@media screen and (min-width: 768px){
+	div#topbar a:hover + a{
+		border-left-color: black;
+	}
+	a.topbar-back{
+		display: none !important;
+	}
 }
