@@ -43,7 +43,7 @@
 			});
 		return false;
 	}).children('.cancel').click(function(){
-		loadState('page-index');
+		History.back();
 		return false;
 	});
 </script>

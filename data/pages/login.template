@@ -26,13 +26,13 @@
 				History.go(-1);
 			}else{
 				setKey(null);
-				apiState('page-login');
+				$('#loading').hide();
 			}
 			return false;
 		});
 		return false;
 	}).children('.cancel').click(function(){
-		loadState('page-index');
+		History.back();
 		return false;
 	});
 </script>
