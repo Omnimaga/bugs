@@ -40,6 +40,9 @@
 		<a href="#page-scrums">
 			Scrums
 		</a>
+		<a href="#page-users">
+			Users
+		</a>
 		<a href="#~{{user.name}}">
 			{{user.name}}
 		</a>
