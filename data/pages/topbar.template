@@ -1,0 +1,28 @@
+<div class="topbar-left">
+	<a class="topbar-home" href="#page-index">
+		&#8962;
+	</a>
+	<a href="#{{url}}">
+		{{title}}
+	</a>
+</div>
+<div class="topbar-right">
+	{{#unless key}}
+		<a href="#page-login">
+			Login
+		</a>
+	{{else}}
+		<a href="#page-issues">
+			Issues
+		</a>
+		<a href="#page-scrums">
+			Scrums
+		</a>
+		<a href="#~{{user.name}}">
+			{{user.name}}
+		</a>
+		<a href="#page-logout">
+			Logout
+		</a>
+	{{/unless}}
+</div>

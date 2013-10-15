@@ -34,6 +34,7 @@
 			return Key;
 		},
 		apiCall = window.apiCall = function(data,callback){
+			console.log('apiCall('+data.type+'-'+data.id+')');
 			$('#loading').show();
 			data.get = 'api';
 			data.timestamp = +new Date;
@@ -42,6 +43,7 @@
 					error(d);
 				}else{
 					if(location.href.substr(location.href.lastIndexOf('/')+1) != d.state.url){
+						console.log('Forced redirection to '+d.state.url);
 						History.pushState(d.state.data,d.state.title,d.state.url);
 					}
 				}
@@ -51,6 +53,7 @@
 			},'json');
 		},
 		loadState = window.loadState = function(href,callback){
+			console.log('loadState('+href+')');
 			$('#loading').show();
 			var data = {
 				get:'state',
@@ -69,6 +72,7 @@
 			},'json');
 		},
 		apiState = window.apiState = function(href,callback){
+			console.log('apiState('+href+')');
 			$('#loading').show();
 			var data = {
 				get:'state',
@@ -90,6 +94,7 @@
 			e = '['+State.url+']'+e.error;
 			console.error(e+"\n"+(exists(e.state)?JSON.stringify(e.state):''));
 			alert(e);
+			//History.back();
 		},
 		getNewState = function(){
 			State = History.getState();
@@ -107,6 +112,32 @@
 				}
 			}
 			return true;
+		},
+		render = {
+			topbar: function(t,c){
+				$('#topbar').html(Handlebars.compile(t)(c));
+				render.links('#topbar');
+			},
+			content: function(t,c){
+				$('#content').html(Handlebars.compile(t)(c)).mCustomScrollbar('destroy');
+				$('#content,.scroll').mCustomScrollbar({
+					theme: 'dark-2',
+					scrollInertia: 0
+				});
+				render.links('#content');
+			},
+			links: function(selector){
+				$(selector).find('a').each(function(){
+					var href = this.href;
+					if(href.indexOf(location.origin) != -1 && href.indexOf('#') != -1){
+						href = href.substr(href.indexOf('#')+1);
+						$(this).click(function(){
+							loadState(href);
+							return false;
+						});
+					}
+				})
+			}
 		};
 	if(exists($.cookie('key'))){
 		setKey($.cookie('key'));
@@ -120,27 +151,18 @@
 				switch(State.data.type){
 					case 'template':case 'user':
 						apiCall(State.data,function(d){
-							if(!exists(d.context.key)&&Key!==null){
-								console.log('Context detected logout');
-								setKey(null);
-							}
-							$('#content').html(Handlebars.compile(d.template)(d.context)).mCustomScrollbar('destroy');
-							$('#content,.scroll').mCustomScrollbar({
-								theme: 'dark-2',
-								scrollInertia: 0
-							});
-							$('#content').find('a').each(function(){
-								var href = this.href;
-								if(href.indexOf(location.origin) != -1 && href.indexOf('#') != -1){
-									href = href.substr(href.indexOf('#')+1);
-									console.log('Setting up link to '+href);
-									$(this).click(function(){
-										loadState(href);
-										return false;
-									});
+							if(exists(d.context)){
+								if(!exists(d.context.key)&&Key!==null){
+									console.log('Context detected logout');
+									setKey(null);
 								}
-							});
-							$('#loading').hide();
+								render.topbar(d.topbar.template,d.topbar.context);
+								render.content(d.template,d.context);
+								$('#loading').hide();
+							}else{
+								console.error('No context given');
+								History.back();
+							}
 						});
 					break;
 					case 'action':break;
@@ -179,7 +201,6 @@
 						data: ''
 					};
 				}
-				$(window).trigger('statechange');
 			});
 		},'json');
 	});

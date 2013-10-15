@@ -34,17 +34,21 @@
 					// TODO - handle admin requests
 				break;
 				case 'template':
-					$ret['template'] = file_get_contents(PATH_DATA.'pages/'.$id.'.template');
-					if(file_exists(PATH_DATA.'context/'.$id.'.json')){
-						$context = objectToArray(json_decode(file_get_contents(PATH_DATA.'context/'.$id.'.json')));
+					if(file_exists(PATH_DATA.'pages/'.$id.'.template')){
+						$ret['template'] = file_get_contents(PATH_DATA.'pages/'.$id.'.template');
+						if(file_exists(PATH_DATA.'context/'.$id.'.json')){
+							$context = objectToArray(json_decode(file_get_contents(PATH_DATA.'context/'.$id.'.json')));
+						}else{
+							$context = Array();
+						}
+						if($LOGGEDIN){
+							$context['key'] = true;
+							$context['user'] = userObj($_SESSION['username']);
+						};
+						$ret['context'] = $context;
 					}else{
-						$context = Array();
+						$ret['error'] = 'That page does not exist';
 					}
-					if($LOGGEDIN){
-						$context['key'] = true;
-						$context['user'] = userObj($_SESSION['username']);
-					};
-					$ret['context'] = $context;
 					retj($ret,$id);
 				break;
 				case 'action':

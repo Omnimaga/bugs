@@ -1,17 +1,1 @@
-<h1>
-	{{title}}
-</h1>
-<p>
-	Welcome to bugs!
-</p>
-<p>
-	{{#unless key}}
-		<a href="#page-login">Login</a>
-		-
-		<a href="#page-register">Register</a>
-	{{else}}
-		<a href="#page-logout">Logout</a>
-		-
-		<a href="#~{{user.name}}">{{user.name}}</a>
-	{{/unless}}
-</p>
+Welcome to bugs!
