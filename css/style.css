@@ -16,7 +16,6 @@ p{
 }
 div#topbar{
 	width: 100%;
-	height: 35px;
 	border-color: black;
 	border-style: solid;
 	border-width: 1px;
@@ -24,7 +23,7 @@ div#topbar{
 	color: white;
 	overflow: hidden;
 }
-div#topbar div{
+div.topbar-left{
 	height: 100%;
 }
 div#topbar a{
@@ -46,7 +45,6 @@ div#topbar a{
 	padding-left: 2px;
 	padding-right: 2px;
 	min-width: 35px;
-	max-width: 70px;
 	overflow: hidden;
 }
 div#topbar a:hover{
@@ -98,11 +96,17 @@ div#loading{
 	div.topbar-left{
 		width: 100%;
 	}
+	div.topbar-right a{
+		clear: both;
+		float: right !important;
+		width: 100%;
+		border-left-style: none !important;
+	}
 	a.topbar-current{
 		float: right !important;
 	}
 	a.topbar-back{
-		width: 35px;
+		width: 35px !important;
 		background-color: darkred;
 		position: absolute;
 		left: 0;
@@ -110,12 +114,31 @@ div#loading{
 	a.topbar-back:hover{
 		background-color: gray !important;
 	}
+	div#topbar{
+		min-height: 35px;
+	}
+	div.topbar-right{
+		min-height: 35px;
+		width: 100%;
+	}
 }
 @media screen and (min-width: 768px){
+	div#topbar{
+		height: 35px;
+	}
+	div.topbar-right a{
+		max-width: 70px;
+	}
 	div#topbar a:hover + a{
 		border-left-color: black;
 	}
 	a.topbar-back{
 		display: none !important;
+	}
+	div.topbar-right{
+		height: 100%;
+	}
+	a.topbar-index{
+		display: none;
 	}
 }

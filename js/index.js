@@ -140,6 +140,8 @@
 						$(this).click(function(){
 							if(($(this).hasClass('topbar-home') || $(this).hasClass('topbar-back'))&&$(window).width()<767){
 								$('#topbar').children('div.topbar-right,div.topbar-left').toggle();
+							}else if($(this).hasClass('topbar-history')){
+								History.back()
 							}else{
 								loadState(href);
 							}
