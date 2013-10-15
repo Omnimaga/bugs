@@ -105,6 +105,9 @@
 		getNewState = function(){
 			State = History.getState();
 			console.log("State change. "+JSON.stringify(State.data));
+			if (!window.location.origin) {
+				window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
+			}
 		},
 		equal = function(o1,o2){
 			for(var i in o1){
@@ -119,7 +122,7 @@
 			}
 			return true;
 		},
-		render = {
+		render = window.render = {
 			topbar: function(t,c){
 				$('#topbar').html(Handlebars.compile(t)(c));
 				render.links('#topbar');
@@ -134,16 +137,21 @@
 			links: function(selector){
 				$(selector).find('a').each(function(){
 					var href = this.href;
-					if(href.indexOf(location.origin) != -1 && href.indexOf('#') != -1){
+					if(href.indexOf('#')!=-1&&(href.indexOf(location.origin)!=-1||href.indexOf('#')==0)){
 						href = href.substr(href.indexOf('#')+1);
-						$(this).click(function(){
-							if(($(this).hasClass('topbar-home') || $(this).hasClass('topbar-back'))&&$(window).width()<767){
-								$('#topbar').children('div.topbar-right,div.topbar-left').toggle();
-							}else if($(this).hasClass('topbar-history')){
-								History.back()
-							}else{
-								loadState(href);
+						$(this).click(function(e){
+							try{
+								if(($(this).hasClass('topbar-home') || $(this).hasClass('topbar-back'))&&$(window).width()<767){
+									$('#topbar').children('div.topbar-right,div.topbar-left').toggle();
+								}else if($(this).hasClass('topbar-history')){
+									History.back();
+								}else{
+									loadState(href);
+								}
+							}catch(error){
+								console.error(error);
 							}
+							e.preventDefault();
 							return false;
 						});
 					}
@@ -241,6 +249,23 @@
 				'display': ''
 			});
 			render.scroll('#content');
+		}
+	});
+	shortcut.add('f12',function(){
+		if(!flag('firebug-lite')){
+			(function(F,i,r,e,b,u,g,L,I,T,E){
+				if(F.getElementById(b))
+					return;
+				E=F[i+'NS']&&F.documentElement.namespaceURI;
+				E=E?F[i+'NS'](E,'script'):F[i]('script');
+				E[r]('id',b);
+				E[r]('src',I+g+T);
+				E[r](b,u);
+				(F[e]('head')[0]||F[e]('body')[0]).appendChild(E);
+				E=new Image;
+				E[r]('src',I+L);
+			})(document,'createElement','setAttribute','getElementsByTagName','FirebugLite','4','firebug-lite.js','releases/lite/latest/skin/xp/sprite.png','https://getfirebug.com/','#startOpened');
+			flag('firebug-lite',true);
 		}
 	});
 	$.fn.serializeObject = function(){

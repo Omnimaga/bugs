@@ -46,6 +46,7 @@ div#topbar a{
 	padding-right: 2px;
 	min-width: 35px;
 	overflow: hidden;
+	cursor: pointer;
 }
 div#topbar a:hover{
 	background-color: white;
