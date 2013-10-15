@@ -114,17 +114,18 @@
 				case 'install':
 					if($id == "run"){
 						$path = realpath(dirname(__FILE__));
-						if(isset($_GET['dbuser'])&&isset($_GET['dbpass'])&&isset($_GET['dbname'])&&isset($_GET['dbhost'])&&isset($_GET['dbtemplate'])){
+						if(isset($_GET['dbuser'])&&isset($_GET['dbpass'])&&isset($_GET['dbname'])&&isset($_GET['dbhost'])&&isset($_GET['dbtemplate'])&&isset($_GET['email'])){
 							$dbuser = $_GET['dbuser'];
 							$dbpass = $_GET['dbpass'];
 							$dbname = $_GET['dbname'];
 							$dbhost = $_GET['dbhost'];
+							$email = $_GET['email'];
 							$dbms_schema = $_GET['dbtemplate'].'.sql';
 							$sql_query = @fread(@fopen($dbms_schema, 'r'), @filesize($dbms_schema)) or die("Can't access template: ".$_GET['dbtemplate'].".sql");
 							$sql_query = remove_comments($sql_query);
 							$sql_query = remove_remarks($sql_query);
 							$sql_query = split_sql_file($sql_query, ';');
-							file_put_contents('../config.default.json',"{\"host\":\"{$dbhost}\",\"user\":\"{$dbuser}\",\"password\":\"{$dbpass}\",\"database\":\"{$dbname}\",\"timeout\":216000}");
+							file_put_contents('../config.default.json',"{\"host\":\"{$dbhost}\",\"user\":\"{$dbuser}\",\"password\":\"{$dbpass}\",\"database\":\"{$dbname}\",\"timeout\":216000,\"email\":\"{$email}\""}");
 							require_once('../php/database.php');
 							foreach($sql_query as $sql){
 								query($sql) or die('error in query');

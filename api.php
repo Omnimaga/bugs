@@ -36,11 +36,7 @@
 				case 'page':
 					if(file_exists(PATH_DATA.'pages/'.$id.'.template')){
 						$ret['template'] = file_get_contents(PATH_DATA.'pages/'.$id.'.template');
-						if(file_exists(PATH_DATA.'context/'.$id.'.json')){
-							$context = objectToArray(json_decode(file_get_contents(PATH_DATA.'context/'.$id.'.json')));
-						}else{
-							$context = Array();
-						}
+						$context = Array();
 						if($LOGGEDIN){
 							$context['key'] = true;
 							$context['user'] = userObj($_SESSION['username']);
@@ -83,6 +79,7 @@
 									if(addUser($_GET['username'],$_GET['password'],$_GET['email'])){
 										$key = login($_GET['username'],$_GET['password']);
 										$_SESSION['username'] = $_GET['username'];
+										sendMail('welcome',$_GET['email'],get('email'),Array($_GET['username'],$_GET['password'],get('email')));
 									}else{
 										$ret['error'] = "Could not add user. ".$mysqli->error;
 									}

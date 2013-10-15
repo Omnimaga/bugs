@@ -5,7 +5,7 @@
 		echo "Failed to connect to MySQL: ".$mysqli->connect_error;
 	}
 	$mysqli->autocommit(true);
-	function query($query,$args = Array()){
+	function query($query,$args=Array()){
 		global $mysqli;
 		for ($i=0;$i<count($args);$i++){
 			if(is_string($args[$i])){
