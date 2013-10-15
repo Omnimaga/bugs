@@ -12,27 +12,31 @@
 	<input type="button" value="cancel" class="cancel"/>
 </form>
 <script>
-	$('form#login').submit(function(){
-		var data = $(this).serializeObject(),
-			State = History.getState();
-		for(var i in State.data){
-			data[i] = State.data;
-		}
-		data.type = 'action';
-		data.id = 'login';
-		apiCall(data,function(d){
-			if(!d.error){
-				setKey(d.key);
-				History.go(-1);
-			}else{
-				setKey(null);
-				$('#loading').hide();
+	{{#if key}}
+		History.back();
+	{{else}}
+		$('form#login').submit(function(){
+			var data = $(this).serializeObject(),
+				State = History.getState();
+			for(var i in State.data){
+				data[i] = State.data;
 			}
+			data.type = 'action';
+			data.id = 'login';
+			apiCall(data,function(d){
+				if(!d.error){
+					setKey(d.key);
+					History.go(-1);
+				}else{
+					setKey(null);
+					$('#loading').hide();
+				}
+				return false;
+			});
+			return false;
+		}).children('.cancel').click(function(){
+			History.back();
 			return false;
 		});
-		return false;
-	}).children('.cancel').click(function(){
-		History.back();
-		return false;
-	});
+	{{/if}}
 </script>

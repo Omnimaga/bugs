@@ -23,27 +23,31 @@
 	<input type="button" value="cancel" class="cancel"/>
 </form>
 <script>
-	$('form#register').submit(function(){
-		var data = $(this).serializeObject(),
-				State = History.getState();
-			for(var i in State.data){
-				data[i] = State.data;
-			}
-			data.type = 'action';
-			data.id = 'register';
-			apiCall(data,function(d){
-				if(!d.error){
-					setKey(d.key);
-					loadState('page-index');
-				}else{
-					setKey(null);
-					$('#captcha').attr('src','index.php?get=captcha&timestamp='+new Date);
-					$('#loading').hide();
-				}
-			});
-		return false;
-	}).children('.cancel').click(function(){
+	{{#if key}}
 		History.back();
-		return false;
-	});
+	{{else}}
+		$('form#register').submit(function(){
+			var data = $(this).serializeObject(),
+					State = History.getState();
+				for(var i in State.data){
+					data[i] = State.data;
+				}
+				data.type = 'action';
+				data.id = 'register';
+				apiCall(data,function(d){
+					if(!d.error){
+						setKey(d.key);
+						loadState('page-index');
+					}else{
+						setKey(null);
+						$('#captcha').attr('src','index.php?get=captcha&timestamp='+new Date);
+						$('#loading').hide();
+					}
+				});
+			return false;
+		}).children('.cancel').click(function(){
+			History.back();
+			return false;
+		});
+	{{/if}}
 </script>
