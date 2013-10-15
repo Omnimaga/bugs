@@ -130,9 +130,6 @@ div#loading{
 	div#topbar{
 		height: 35px;
 	}
-	div.topbar-right a{
-		max-width: 70px;
-	}
 	div#topbar a:hover + a{
 		border-left-color: black;
 	}
