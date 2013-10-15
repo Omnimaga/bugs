@@ -56,11 +56,13 @@
 <!doctype html>
 <html>
 	<head>
-		<meta charset=utf-8> 
+		<meta charset=utf-8>
+		<meta name="viewport" content="width=device-width, user-scalable=false;">
 		<title>Bugs</title>
 		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 		<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
 		<script src="js/handlebars.js"></script>
+		<script src="js/jquery.ui.touch-punch.min.js"></script>
 		<script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
 		<script src="js/jquery.history.js"></script>
 		<script src="js/jquery.cookie.js"></script>

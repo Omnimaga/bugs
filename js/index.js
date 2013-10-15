@@ -125,11 +125,10 @@
 				render.links('#topbar');
 			},
 			content: function(t,c){
-				$('#content').html(Handlebars.compile(t)(c)).mCustomScrollbar('destroy');
-				$('#content,.scroll').mCustomScrollbar({
-					theme: 'dark-2',
-					scrollInertia: 0
-				});
+				$('#content').html(
+					Handlebars.compile(t)(c)
+				);
+				render.scroll('#content');
 				render.links('#content');
 			},
 			links: function(selector){
@@ -149,6 +148,24 @@
 						});
 					}
 				});
+			},
+			scroll: function(selector){
+				/*if(!$.support.touch){
+					$(selector).mCustomScrollbar('destroy');
+					$(selector).mCustomScrollbar({
+						theme: 'dark-2',
+						scrollInertia: 0,
+						contentTouchScroll: true,
+						mouseWheel: true,
+						advanced: {
+							updateOnContentResize: true,
+							autoScrollOnFocus: true
+						}
+					});
+				}else{*/
+					$(selector).mCustomScrollbar('destroy');
+					$(selector).css('overflow','auto');
+				// }
 			}
 		};
 	if(exists($.cookie('key'))){
@@ -223,6 +240,7 @@
 			$('#topbar div.topbar-right, #topbar div.topbar-left').css({
 				'display': ''
 			});
+			render.scroll('#content');
 		}
 	});
 	$.fn.serializeObject = function(){
