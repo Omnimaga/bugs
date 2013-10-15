@@ -23,10 +23,10 @@
 		apiCall(data,function(d){
 			if(!d.error){
 				setKey(d.key);
-				loadState('page-index');
+				History.go(-1);
 			}else{
 				setKey(null);
-				loadState('page-login');
+				apiState('page-login');
 			}
 			return false;
 		});

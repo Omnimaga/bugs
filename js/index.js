@@ -3,7 +3,14 @@
 	var State = History.getState(),
 		Old = {},
 		Key = null,
-		flag = false,
+		flags = [],
+		flag = window.flag = function(name,value){
+			if(exists(value)){
+				flags[name] = value;
+			}else{
+				return exists(flags[name])?flags[name]:false;
+			}
+		},
 		settings = {},
 		exists = function(v){
 			return typeof v != 'undefined';
@@ -44,7 +51,7 @@
 				}else{
 					if(location.href.substr(location.href.lastIndexOf('/')+1) != d.state.url){
 						console.log('Forced redirection to '+d.state.url);
-						History.pushState(d.state.data,d.state.title,d.state.url);
+						History.replaceState(d.state.data,d.state.title,d.state.url);
 					}
 				}
 				if(exists(callback)){
@@ -63,7 +70,7 @@
 				if(exists(d['error'])){
 					error(d);
 				}else{
-					History.pushState(d.state.data,document.title,href);
+					History.pushState(d.state.data,d.state.title,href);
 					getNewState();
 				}
 				if(exists(callback)){
@@ -82,7 +89,7 @@
 				if(exists(d['error'])){
 					error(d);
 				}else{
-					History.replaceState(d.state.data,document.title,href);
+					History.replaceState(d.state.data,d.state.title,href);
 					getNewState();
 				}
 				if(exists(callback)){
@@ -94,7 +101,6 @@
 			e = '['+State.url+']'+e.error;
 			console.error(e+"\n"+(exists(e.state)?JSON.stringify(e.state):''));
 			alert(e);
-			//History.back();
 		},
 		getNewState = function(){
 			State = History.getState();
@@ -136,7 +142,7 @@
 							return false;
 						});
 					}
-				})
+				});
 			}
 		};
 	if(exists($.cookie('key'))){
@@ -148,8 +154,9 @@
 		$(window).on('statechange',function(){
 			getNewState();
 			if(!equal(State.data,Old)){
+				document.title = State.title;
 				switch(State.data.type){
-					case 'template':case 'user':
+					case 'page':case 'user':
 						apiCall(State.data,function(d){
 							if(exists(d.context)){
 								if(!exists(d.context.key)&&Key!==null){
@@ -181,12 +188,12 @@
 		});
 		if($.isEmptyObject(State.data)){
 			History.replaceState({
-				type: 'template',
+				type: 'page',
 				id: 'index'
 			},'Bugs','page-index');
 			console.log('Forcing default state.');
 		}else{
-			flag = true;
+			flag('load',true);
 		}
 		var data = {
 			get: 'settings',
@@ -195,12 +202,13 @@
 		$.get(location.href,data,function(d){
 			settings = d;
 			apiState(location.href,function(){
-				if(flag){
+				if(flag('load')){
 					State.data = {
 						type: '',
 						data: ''
 					};
 				}
+				flag('load',false);
 			});
 		},'json');
 	});

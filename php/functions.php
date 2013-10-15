@@ -30,7 +30,6 @@
 			case 'user':$url='~'.$id;break;
 			case 'group':$url='+'.$id;break;
 			case 'issue':$url='!'.$id;break;
-			case 'template':$url='page-'.$id;break;
 			case 'action':$url='';break;
 			default:$url=$type.'-'.$id;
 		}

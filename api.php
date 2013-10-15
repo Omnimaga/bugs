@@ -33,7 +33,7 @@
 				case 'admin':
 					// TODO - handle admin requests
 				break;
-				case 'template':
+				case 'page':
 					if(file_exists(PATH_DATA.'pages/'.$id.'.template')){
 						$ret['template'] = file_get_contents(PATH_DATA.'pages/'.$id.'.template');
 						if(file_exists(PATH_DATA.'context/'.$id.'.json')){
@@ -56,7 +56,7 @@
 							case 'login':
 								$ret['state'] = Array(
 									'data'=>Array(
-										'type'=>'template',
+										'type'=>'page',
 										'id'=>'login',
 									)
 								);
@@ -75,7 +75,7 @@
 							case 'register':
 								$ret['state'] = Array(
 									'data'=>Array(
-										'type'=>'template',
+										'type'=>'page',
 										'id'=>'register'
 									)
 								);

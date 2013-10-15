@@ -14,7 +14,7 @@
 		$get = $_GET['get'];
 		unset($_GET['get']);
 		if(!isset($_GET['type']) || !isset($_GET['id'])){
-			$type = 'template';
+			$type = 'page';
 			$id = 'index';
 		}else{
 			$type = $_GET['type'];
@@ -29,10 +29,11 @@
 					case 'user':$url='~'.$id;break;
 					case 'group':$url='+'.$id;break;
 					case 'issue':$url='!'.$id;break;
-					case 'template':$url='page-'.$id;break;
+					case 'page':$url='page-'.$id;break;
 					default:$url=$type.'-'.$id;
 				}
 				$json['state']['url'] = $url;
+				$json['state']['title'] = ucwords($type.' - '.$id);
 				die(json_encode($json));
 			break;
 			case 'api':
