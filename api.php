@@ -79,7 +79,7 @@
 									if(addUser($_GET['username'],$_GET['password'],$_GET['email'])){
 										$key = login($_GET['username'],$_GET['password']);
 										$_SESSION['username'] = $_GET['username'];
-										sendMail('welcome',$_GET['email'],get('email'),Array($_GET['username'],$_GET['password'],get('email')));
+										sendMail('welcome','Welcome!',$_GET['email'],get('email'),Array($_GET['username'],$_GET['password'],get('email')));
 									}else{
 										$ret['error'] = "Could not add user. ".$mysqli->error;
 									}

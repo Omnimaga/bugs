@@ -3,7 +3,7 @@
 	require_once(PATH_PHP.'database.php');
 	require_once(PATH_PHP.'security.php');
 	require_once(PATH_PHP.'user.php');
-	function sendMail($template,$to=null,$from=null,$context=Array()){
+	function sendMail($template,$subject,$to=null,$from=null,$context=Array()){
 		if(is_null($to)){
 			$to = get('email');
 		}

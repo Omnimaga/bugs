@@ -1,3 +1,15 @@
-Welcome to bugs! Information for your account is as follows:
-Username: %s
-Password: %s
+<html>
+	<head>
+		<title>
+			Welcome!
+		</title>
+	</head>
+	<body>
+		<p>
+			Welcome to bugs! Information for your account is as follows:<br/>
+			Username: %s<br/>
+			Password: %s<br/>
+			If this is not your information please let the webmaster know at: %s
+		</p>
+	</body>
+</html>
