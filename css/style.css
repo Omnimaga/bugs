@@ -105,14 +105,23 @@ div#loading{
 	a.topbar-current{
 		float: right !important;
 	}
-	a.topbar-back{
+	a.topbar-back,a.topbar-history,a.topbar-index{
 		width: 35px !important;
-		background-color: darkred;
 		position: absolute;
+		top: 0;
+	}
+	a.topbar-back{
+		background-color: darkred;
 		left: 0;
 	}
 	a.topbar-back:hover{
 		background-color: gray !important;
+	}
+	a.topbar-history{
+		left: 37px;
+	}
+	a.topbar-index{
+		left: 74px;
 	}
 	div#topbar{
 		min-height: 35px;
@@ -120,6 +129,7 @@ div#loading{
 	div.topbar-right{
 		min-height: 35px;
 		width: 100%;
+		padding-top: 35px;
 	}
 }
 @media screen and (min-width: 768px){
