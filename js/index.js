@@ -242,10 +242,9 @@
 			$('#topbar div.topbar-right, #topbar div.topbar-left').css({
 				'display': ''
 			});
-		}else{
-			$('#content').height($('body').height()-$('#topbar').height());
-			$('#content').getNiceScroll().resize();
 		}
+		$('#content').height($('body').height()-$('#topbar').height());
+		$('#content').getNiceScroll().resize();
 	}).resize();
 	$('#topbar').resize(function(){
 		$(window).resize();
