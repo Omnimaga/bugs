@@ -46,7 +46,7 @@ div#topbar a{
 	padding-right: 2px;
 	overflow: hidden;
 	cursor: pointer;
-	min-width: 20px;
+	min-width: 35px;
 }
 div#topbar a:hover{
 	background-color: white;
@@ -84,7 +84,8 @@ div#loading{
 }
 @media screen and (max-width: 767px){
 	div#topbar a{
-		min-width: 35px;
+		padding-left: 5px;
+		padding-right: 5px;
 	}
 	a.tabbar-home{
 		width: 35px;
@@ -111,10 +112,17 @@ div#loading{
 	a.topbar-current{
 		float: right !important;
 	}
+	a.topbar-home{
+		padding-left: 2px !important;
+		padding-right: 2px !important;
+	}
 	a.topbar-back,a.topbar-history,a.topbar-index{
 		width: 35px !important;
 		position: absolute;
 		top: 0;
+		padding-left: 2px !important;
+		padding-right: 2px !important;
+		border-bottom: 1px solid white !important;
 	}
 	a.topbar-back{
 		background-color: darkred;
@@ -139,19 +147,11 @@ div#loading{
 	}
 }
 @media screen and (min-width: 768px){
-	div#topbar{
-		height: 20px;
-	}
 	div#topbar a{
-		height: 20px;
 		font-size: 15px;
-		line-height: 20px;
 	}
 	div#topbar a:hover + a{
 		border-left-color: black;
-	}
-	a.topbar-home{
-		width: 20px;
 	}
 	a.topbar-back{
 		display: none !important;
