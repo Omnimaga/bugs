@@ -41,6 +41,21 @@
 							$context['key'] = true;
 							$context['user'] = userObj($_SESSION['username']);
 						};
+						if(file_exists(PATH_DATA.'pages/'.$id.'.options')){
+							$options = objectToArray(json_decode(file_get_contents(PATH_DATA.'pages/'.$id.'.options'),true));
+							foreach($options as $key){
+								switch($key){
+									case 'users':
+										$res = query("SELECT name FROM `users`;",Array());
+										$users = Array();
+										while($user = $res->fetch_array()){
+											array_push($users,$user);
+										}
+										$context['users'] = $users;
+									break;
+								}
+							}
+						}
 						$ret['context'] = $context;
 					}else{
 						$ret['error'] = 'That page does not exist';

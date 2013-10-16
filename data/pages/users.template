@@ -1,0 +1,6 @@
+{{#each users}}
+	<a href="~{{name}}">
+		{{name}}
+	</a>
+	<br/>
+{{/each}}
