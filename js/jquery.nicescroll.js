@@ -128,7 +128,7 @@
 		d.ischrome22 = (d.ischrome&&d.haspointerlock);
     d.ischrome26 = (d.ischrome&&("transition" in domtest.style));  // issue with transform detection (maintain prefix)
     
-    d.cantouch = ("ontouchstart" in document.documentElement)||("ontouchstart" in window);  // detection for Chrome Touch Emulation
+    d.cantouch = ('ontouchstart' in window || 'onmsgesturechange' in window);  // detection for Chrome Touch Emulation
     d.hasmstouch = (window.navigator.msPointerEnabled||false);  // IE10+ pointer events
 		
     d.ismac = /^mac$/i.test(navigator.platform);

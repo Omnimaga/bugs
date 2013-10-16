@@ -143,6 +143,7 @@
 							try{
 								if(($(this).hasClass('topbar-home') || $(this).hasClass('topbar-back'))&&$(window).width()<767){
 									$('#topbar').children('div.topbar-right,div.topbar-left').toggle();
+									$('#topbar').resize();
 								}else if($(this).hasClass('topbar-history')){
 									History.back();
 								}else{
@@ -164,6 +165,9 @@
 		setKey(null);
 	}
 	$(document).ready(function(){
+		if(!exists($.support.touch)){
+			$.support.touch = 'ontouchstart' in window || 'onmsgesturechange' in window;
+		}
 		$(window).on('statechange',function(){
 			getNewState();
 			if(!equal(State.data,Old)){
@@ -224,24 +228,27 @@
 				flag('load',false);
 			});
 		},'json');
-		if(!$.support.touch){
-			$('#content').niceScroll({
-				cursorwidth: 10,
-				nativeparentscrolling: false,
-				preservenativescrolling: false
-			});
-			document.addEventListener('touchmove',function(e){
-				e.preventDefault();
-			});
-		}
+		$('#content').niceScroll({
+			cursorwidth: 10,
+			nativeparentscrolling: false,
+			preservenativescrolling: false
+		});
+		document.addEventListener('touchmove',function(e){
+			e.preventDefault();
+		});
 	});
 	$(window).resize(function(){
 		if($(window).width()>767){
 			$('#topbar div.topbar-right, #topbar div.topbar-left').css({
 				'display': ''
 			});
+		}else{
+			$('#content').height($('body').height()-$('#topbar').height());
 			$('#content').getNiceScroll().resize();
 		}
+	}).resize();
+	$('#topbar').resize(function(){
+		$(window).resize();
 	});
 	shortcut.add('f12',function(){
 		if(!flag('firebug-lite')){
