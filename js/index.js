@@ -131,7 +131,6 @@
 				$('#content').html(
 					Handlebars.compile(t)(c)
 				);
-				render.scroll('#content');
 				render.links('#content');
 			},
 			links: function(selector){
@@ -156,24 +155,6 @@
 						});
 					}
 				});
-			},
-			scroll: function(selector){
-				if(!$.support.touch){
-					$(selector).mCustomScrollbar('destroy');
-					$(selector).mCustomScrollbar({
-						theme: 'dark-2',
-						scrollInertia: 0,
-						contentTouchScroll: true,
-						mouseWheel: true,
-						advanced: {
-							updateOnContentResize: true,
-							autoScrollOnFocus: true
-						}
-					});
-				}else{
-					$(selector).mCustomScrollbar('destroy');
-					$(selector).css('overflow','auto');
-				}
 			}
 		};
 	if(exists($.cookie('key'))){
@@ -242,13 +223,18 @@
 				flag('load',false);
 			});
 		},'json');
+		$('#content').niceScroll({
+			cursorwidth: 10
+		});
+		document.body.addEventListener('touchstart',function(e){
+			e.preventDefault();
+		});
 	});
 	$(window).resize(function(){
 		if($(window).width()>767){
 			$('#topbar div.topbar-right, #topbar div.topbar-left').css({
 				'display': ''
 			});
-			render.scroll('#content');
 		}
 	});
 	shortcut.add('f12',function(){

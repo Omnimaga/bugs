@@ -122,9 +122,6 @@ div#loading{
 		min-height: 35px;
 		width: 100%;
 	}
-	.mCSB_container{
-		overflow: auto !important;
-	}
 }
 @media screen and (min-width: 768px){
 	div#topbar{
@@ -142,4 +139,16 @@ div#loading{
 	a.topbar-index{
 		display: none;
 	}
+}
+@viewport{
+    zoom: 1.0;
+    width: device-width;
+}
+@viewport{
+    zoom: 1.0;
+    width: extend-to-zoom;
+}
+@-ms-viewport{
+    width: extend-to-zoom;
+    zoom: 1.0;
 }

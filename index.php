@@ -57,24 +57,23 @@
 <html>
 	<head>
 		<meta charset=utf-8>
-		<meta name="viewport" content="width=device-width, user-scalable=false;">
+		<meta name="viewport" content="width=device-width, user-scalable=false, initial-scale=1, maximum-scale=1.0, user-scalable=0">
+		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<title>Bugs</title>
 		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 		<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
 		<script src="js/handlebars.js"></script>
-		<script src="js/jquery.ui.touch-punch.min.js"></script>
-		<script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
 		<script src="js/jquery.history.js"></script>
 		<script src="js/jquery.cookie.js"></script>
+		<script src="js/jquery.nicescroll.js"></script>
 		<script src="js/shortcut.js"></script>
 		<script src="js/index.js"></script>
 		<link href="http://code.jquery.com/ui/1.10.3/themes/black-tie/jquery-ui.css" rel="stylesheet" type="text/css"/>
-		<link href="css/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css"/>
 		<link href="css/style.css" rel="stylesheet" type="text/css"/>
 	</head>
 	<body>
 		<div id="topbar"></div>
-		<div id="content"></div>
+		<div id="content" class="container"></div>
 		<div id="loading"></div>
 	</body>
 </html>
