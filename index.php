@@ -63,13 +63,16 @@
 		<script src="js/modernizr.js"></script>
 		<script>
 			(function(window,Modernizr){
+				Modernizr.mediaquery = Modernizr.mq('only all');
 				var checks = [
 						'csscalc',
 						'cookies',
 						'localstorage',
 						'history',
 						'rgba',
-						'applicationcache'
+						'applicationcache',
+						'mediaquery',
+						'fontface'
 					],i,
 					msg = '';
 				for(i in checks){
