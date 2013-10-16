@@ -46,11 +46,8 @@
 							foreach($options as $key){
 								switch($key){
 									case 'users':
-										$res = query("SELECT name FROM `users`;",Array());
-										$users = Array();
-										while($user = $res->fetch_array()){
-											array_push($users,$user);
-										}
+										$res = query("SELECT name FROM `users`;");
+										$users = $res->fetch_all(MYSQLI_ASSOC);
 										$context['users'] = $users;
 									break;
 								}
