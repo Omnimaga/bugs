@@ -60,6 +60,29 @@
 		<meta name="viewport" content="width=device-width, user-scalable=false, initial-scale=1, maximum-scale=1.0, user-scalable=0, user-scalable=no">
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<title>Bugs</title>
+		<script src="js/modernizr.js"></script>
+		<script>
+			(function(window,Modernizr){
+				var checks = [
+						'csscalc',
+						'cookies',
+						'localstorage',
+						'history',
+						'rgba',
+						'applicationcache'
+					],i,
+					msg = '';
+				for(i in checks){
+					if(!Modernizr[checks[i]]){
+						msg += (', ')+checks[i];
+					}
+
+				}
+				if(msg != ''){
+					alert("Your browser is unable to support all the features this site needs.\nChecks failed: "+msg);
+				}
+			})(window,Modernizr);
+		</script>
 		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 		<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
 		<script src="js/handlebars.js"></script>
