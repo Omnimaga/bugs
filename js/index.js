@@ -224,14 +224,16 @@
 				flag('load',false);
 			});
 		},'json');
-		$('#content').niceScroll({
-			cursorwidth: 10,
-			nativeparentscrolling: false,
-			preservenativescrolling: false
-		});
-		document.addEventListener('touchmove',function(e){
-			e.preventDefault();
-		});
+		if(!$.support.touch){
+			$('#content').niceScroll({
+				cursorwidth: 10,
+				nativeparentscrolling: false,
+				preservenativescrolling: false
+			});
+			document.addEventListener('touchmove',function(e){
+				e.preventDefault();
+			});
+		}
 	});
 	$(window).resize(function(){
 		if($(window).width()>767){

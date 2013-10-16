@@ -70,6 +70,7 @@ div#content{
 	width: 100%;
 	height: calc(100% - 35px);
 	-webkit-overflow-scrolling: touch;
+	overflow: auto;
 }
 div#loading{
 	width: 100%;
