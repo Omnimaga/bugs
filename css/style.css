@@ -69,7 +69,6 @@ a.topbar-home:hover{
 div#content{
 	width: 100%;
 	height: calc(100% - 35px);
-	overflow: auto;
 }
 div#loading{
 	width: 100%;

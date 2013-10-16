@@ -57,7 +57,7 @@
 <html>
 	<head>
 		<meta charset=utf-8>
-		<meta name="viewport" content="width=device-width, user-scalable=false, initial-scale=1, maximum-scale=1.0, user-scalable=0">
+		<meta name="viewport" content="width=device-width, user-scalable=false, initial-scale=1, maximum-scale=1.0, user-scalable=0, user-scalable=no">
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<title>Bugs</title>
 		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>

@@ -132,6 +132,7 @@
 					Handlebars.compile(t)(c)
 				);
 				render.links('#content');
+				$(window).resize();
 			},
 			links: function(selector){
 				$(selector).find('a').each(function(){
@@ -224,9 +225,11 @@
 			});
 		},'json');
 		$('#content').niceScroll({
-			cursorwidth: 10
+			cursorwidth: 10,
+			nativeparentscrolling: false,
+			preservenativescrolling: false
 		});
-		document.body.addEventListener('touchstart',function(e){
+		document.addEventListener('touchmove',function(e){
 			e.preventDefault();
 		});
 	});
@@ -235,6 +238,7 @@
 			$('#topbar div.topbar-right, #topbar div.topbar-left').css({
 				'display': ''
 			});
+			$('#content').getNiceScroll().resize();
 		}
 	});
 	shortcut.add('f12',function(){
