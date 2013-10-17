@@ -41,7 +41,7 @@
 			break;
 			case 'settings':
 				$settings = Array();
-				$keys = Array('timeout');
+				$keys = Array('expire');
 				foreach($keys as $key){
 					$settings[$key] = get($key);
 				}
