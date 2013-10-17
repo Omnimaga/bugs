@@ -28,7 +28,7 @@
 				console.log('Key change to '+key);
 				Key = key;
 				var d = new Date();
-				d.setTime(d.getTime()+get('timeout'));
+				d.setTime(d.getTime()+get('expire'));
 				$.cookie('key',key,{
 					expires: d
 				});
@@ -43,13 +43,21 @@
 		},
 		template = window.template = function(name,template){
 			if(exists(template)){
-				templates[name] = template;
+				templates[name] = {
+						template: template,
+						date: get('expire')+new Date
+					};
 				$.localStorage('templates',templates);
 			}else if(exists(templates[name])){
-				console.log('Getting template for: '+name);
-				return templates[name];
+				console.log('Using cached template for: '+name);
+				var template = templates[name].template;
+				if(templates[name].date < +new Date){
+					delete templates[name];
+					$.localStorage('templates',templates);
+				}
+				return template;
 			}else{
-				console.log('No template stored for: '+name);
+				console.log('No cached template stored for: '+name);
 				return '';
 			}
 		},

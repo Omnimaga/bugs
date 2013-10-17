@@ -57,8 +57,8 @@
 			unset($_SESSION['username']);
 		}else{
 			$_SESSION['key'] = $key;
-			setcookie('username',$_SESSION['username'],time()+get('timeout'));
-			setcookie('key',$key,time()+get('timeout'));
+			setcookie('username',$_SESSION['username'],time()+get('expire'));
+			setcookie('key',$key,time()+get('expire'));
 		}
 		return $key;
 	}
