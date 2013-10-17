@@ -79,7 +79,7 @@
 					msg = '';
 				for(i in checks){
 					if(!Modernizr[checks[i]]){
-						msg += (', ')+checks[i];
+						msg += (msg==''?'':', ')+checks[i];
 					}
 
 				}
