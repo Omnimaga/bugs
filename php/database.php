@@ -16,4 +16,14 @@
 		}
 		return $mysqli->query(vsprintf($query,$args));
 	}
+	function fetch_all($result,$type=MYSQLI_NUM){
+		if(method_exists('mysqli_result', 'fetch_all')){
+			$res = $result->fetch_all($resulttype);
+		}else{
+			for($res = array(); $tmp = $result->fetch_array($resulttype);){
+				$res[] = $tmp;
+			}
+		}
+		return $res;
+	}
 ?>

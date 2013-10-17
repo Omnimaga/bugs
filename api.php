@@ -51,7 +51,7 @@
 								switch($key){
 									case 'users':
 										$res = query("SELECT name FROM `users`;");
-										$users = $res->fetch_all(MYSQLI_ASSOC);
+										$users = fetch_all($res,MYSQLI_ASSOC);
 										$context['users'] = $users;
 									break;
 								}
