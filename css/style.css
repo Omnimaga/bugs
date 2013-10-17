@@ -108,6 +108,8 @@ span.icon-bugs-invert{
 	}
 	a.topbar-home span{
 		display: none;
+	}
+	a.topbar-home{
 		padding-left: 2px !important;
 		padding-right: 2px !important;
 	}
