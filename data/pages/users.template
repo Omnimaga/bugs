@@ -1,5 +1,5 @@
 {{#each users}}
-	<a href="~{{name}}">
+	<a href="#~{{name}}">
 		{{name}}
 	</a>
 	<br/>

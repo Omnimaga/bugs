@@ -1,10 +1,30 @@
-* {
+*{
 	font-family: 'FiraSans';
+	word-wrap: break-word;
+}
+body{
+	font-size: 130%;
+	line-height: 1.6875;
+}
+@media only screen and (min-width: 400px){
+	body{
+		font-size: 120%;
+	}
+}
+@media only screen and (min-width: 800px){
+	body{
+		font-size: 100%;
+	}
+}
+@media only screen and (min-width: 1100px){
+	body{
+		font-size: 90%;
+	}
 }
 pre {
 	font-family: 'FiraMono';
+	white-space: pre-wrap;
 }
-
 @font-face {
 	font-family: 'FiraSans';
 	src: url('fonts/FiraSans/FiraSans/FiraSans-Regular.eot');
