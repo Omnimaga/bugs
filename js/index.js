@@ -4,6 +4,7 @@
 		Old = {},
 		Key = null,
 		flags = [],
+		templates = [],
 		flag = window.flag = function(name,value){
 			if(exists(value)){
 				flags[name] = value;
@@ -40,11 +41,26 @@
 		getKey = window.getKey = function(){
 			return Key;
 		},
+		template = window.template = function(name,template){
+			if(exists(template)){
+				templates[name] = template;
+				$.localStorage('templates',templates);
+			}else if(exists(templates[name])){
+				console.log('Getting template for: '+name);
+				return templates[name];
+			}else{
+				console.log('No template stored for: '+name);
+				return '';
+			}
+		},
 		apiCall = window.apiCall = function(data,callback){
 			console.log('apiCall('+data.type+'-'+data.id+')');
 			$('#loading').show();
 			data.get = 'api';
 			data.timestamp = +new Date;
+			if(exists(templates[data.type+'-'+data.id])){
+				data.template = false;
+			}
 			$.get(location.href,data,function(d){
 				if(exists(d['error'])){
 					error(d);
@@ -165,6 +181,10 @@
 		setKey(null);
 	}
 	$(document).ready(function(){
+		templates = $.localStorage('templates');
+		if(templates === null){
+			templates = [];
+		}
 		if(!exists($.support.touch)){
 			$.support.touch = 'ontouchstart' in window || 'onmsgesturechange' in window;
 		}
@@ -179,6 +199,11 @@
 								if(!exists(d.context.key)&&Key!==null){
 									console.log('Context detected logout');
 									setKey(null);
+								}
+								if(exists(d.template)){
+									template(State.data.type+'-'+State.data.id,d.template);
+								}else{
+									d.template = template(State.data.type+'-'+State.data.id);
 								}
 								render.topbar(d.topbar.template,d.topbar.context);
 								render.content(d.template,d.context);

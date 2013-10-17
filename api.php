@@ -8,7 +8,9 @@
 			$id = $_GET['id'];
 			switch($_GET['type']){
 				case 'user':
-					$ret['template'] = file_get_contents(PATH_DATA.'pages/user.template');
+					if(!isset($_GET['template'])){
+						$ret['template'] = file_get_contents(PATH_DATA.'pages/user.template');
+					}
 					$user = userObj($id);
 					$context = Array(
 						'name'=>$user['name'],
@@ -35,7 +37,9 @@
 				break;
 				case 'page':
 					if(file_exists(PATH_DATA.'pages/'.$id.'.template')){
-						$ret['template'] = file_get_contents(PATH_DATA.'pages/'.$id.'.template');
+						if(!isset($_GET['template'])){
+							$ret['template'] = file_get_contents(PATH_DATA.'pages/'.$id.'.template');
+						}
 						$context = Array();
 						if($LOGGEDIN){
 							$context['key'] = true;

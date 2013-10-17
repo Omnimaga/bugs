@@ -71,7 +71,7 @@
 						'history',
 						'rgba',
 						'applicationcache',
-						'mediaquery',
+						//'mediaquery',
 						'fontface'
 					],i,
 					msg = '';
@@ -90,6 +90,7 @@
 		<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
 		<script src="js/handlebars.js"></script>
 		<script src="js/jquery.history.js"></script>
+		<script src="js/jquery.storage.js"></script>
 		<script src="js/jquery.cookie.js"></script>
 		<script src="js/jquery.nicescroll.js"></script>
 		<script src="js/shortcut.js"></script>
