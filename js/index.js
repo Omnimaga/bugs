@@ -42,16 +42,42 @@
 			return Key;
 		},
 		template = window.template = function(name,template){
+			var d = +new Date,
+				id = (function(name){
+					for(var i in templates){
+						if(templates[i].name == name){
+							return i;
+						}
+					}
+					return false;
+				})(name);
 			if(exists(template)){
-				templates[name] = {
+				if(template === null){
+					if(id!==false){
+						templates.splice(id,1);
+					}
+					$.localStorage('templates',templates);
+					console.log('Dropping template for: '+name);
+					return '';
+				}else{
+					var o = {
+						name: name,
 						template: template,
-						date: get('expire')+new Date
-					};
-				$.localStorage('templates',templates);
-			}else if(exists(templates[name])){
+						date: get('expire')+d
+					}
+					if(id===false){
+						console.log('Storing new template for: '+name);
+						templates.push(o);
+					}else{
+						console.log('Replacing old template for: '+name);
+						templates[id] = o;
+					}
+					$.localStorage('templates',templates);
+				}
+			}else if(id!==false){
 				console.log('Using cached template for: '+name);
-				var template = templates[name].template;
-				if(templates[name].date < +new Date){
+				var template = templates[id].template;
+				if(templates[id].date < d){
 					delete templates[name];
 					$.localStorage('templates',templates);
 				}
