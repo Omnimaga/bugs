@@ -55,6 +55,18 @@
 		if($v == null){
 			$v = $_GET;
 		}
-		return isset($v[$col]) && !empty($v[$col]);
+		if(isset($v[$col]) && !empty($v[$col])){
+			$v = $v[$col];
+			switch($col){
+				case 'email':
+					return filter_var($v,FILTER_VALIDATE_EMAIL) != false;
+				case 'username':
+					return strip_tags($v) == $v;
+				default:
+					return true;
+			}
+		}else{
+			return false;
+		}
 	}
 ?>

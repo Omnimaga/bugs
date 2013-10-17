@@ -27,6 +27,9 @@
 		&#8962;
 	</a>
 	{{#unless key}}
+		<a href="#page-users">
+			Users
+		</a>
 		<a href="#page-register">
 			Register
 		</a>
