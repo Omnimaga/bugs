@@ -18,9 +18,9 @@
 	}
 	function fetch_all($result,$type=MYSQLI_NUM){
 		if(method_exists('mysqli_result', 'fetch_all')){
-			$res = $result->fetch_all($resulttype);
+			$res = $result->fetch_all($type);
 		}else{
-			for($res = array(); $tmp = $result->fetch_array($resulttype);){
+			for($res = array(); $tmp = $result->fetch_array($type);){
 				$res[] = $tmp;
 			}
 		}
