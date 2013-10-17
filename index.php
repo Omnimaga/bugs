@@ -59,6 +59,8 @@
 		<meta charset=utf-8>
 		<meta name="viewport" content="width=device-width, user-scalable=false, initial-scale=1, maximum-scale=1.0, user-scalable=0, user-scalable=no">
 		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<link rel="shortcut icon" href="img/favicon.ico" />
+		<link rel="icon" type="image/png" href="img/bug.png" />
 		<title>Bugs</title>
 		<script src="js/modernizr.js"></script>
 		<script>
