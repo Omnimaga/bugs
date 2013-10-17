@@ -71,7 +71,7 @@
 						'history',
 						'rgba',
 						'applicationcache',
-						//'mediaquery',
+						'mediaquery',
 						'fontface'
 					],i,
 					msg = '';
@@ -98,7 +98,7 @@
 		<link href="http://code.jquery.com/ui/1.10.3/themes/black-tie/jquery-ui.css" rel="stylesheet" type="text/css"/>
 		<link href="css/style.css" rel="stylesheet" type="text/css"/>
 	</head>
-	<body>
+	<body lang="en">
 		<div id="topbar"></div>
 		<div id="content" class="container"></div>
 		<div id="loading"></div>
