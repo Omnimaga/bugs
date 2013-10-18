@@ -64,7 +64,7 @@
 		<meta name="viewport" content="width=device-width, user-scalable=false, initial-scale=1, maximum-scale=1.0, user-scalable=0, user-scalable=no">
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<link rel="shortcut icon" href="img/favicon.ico" />
-		<link rel="icon" type="image/png" href="img/bug.png" />
+		<link rel="icon" type="image/png" href="img/favicon.png" />
 		<link href="http://code.jquery.com/ui/1.10.3/themes/black-tie/jquery-ui.css" rel="stylesheet" type="text/css"/>
 		<link href="css/style.css" rel="stylesheet" type="text/css"/>
 		<title>Bugs</title>
