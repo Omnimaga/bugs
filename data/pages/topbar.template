@@ -8,7 +8,9 @@
 -->
 <div class="topbar-left">
 	<a class="topbar-home" href="#page-index">
-		<span class="icon-bugs"></span>
+		<span class="icon-bugs">
+			Home
+		</span>
 	</a>
 	<a class="topbar-current" href="#{{url}}">
 		{{title}}
@@ -22,7 +24,7 @@
 		&larr;
 	</a>
 	<a class="topbar-index" href="#page-index">
-		<span class="icon-bugs-invert"></span>
+		<span class="icon-bugs-invert"></span>Home
 	</a>
 	{{#unless key}}
 		<a href="#page-users">

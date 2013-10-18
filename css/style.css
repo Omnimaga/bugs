@@ -93,12 +93,14 @@ span.icon-bugs{
 	display: block;
 	width: 35px;
 	height: 35px;
+	font-size: 13px;
 }
 span.icon-bugs-invert{
 	background-image: url('../img/bug-invert.png');
 	background-size: 100%;
 	background-repeat: no-repeat;
 	display: block;
+	float: left;
 	width: 35px;
 	height: 35px;
 }
@@ -155,6 +157,8 @@ span.icon-bugs-invert{
 	}
 	a.topbar-index{
 		left: 72px;
+		width: auto !important;
+		padding-right: 5px !important;
 	}
 	div#topbar{
 		min-height: 35px;
