@@ -1,4 +1,6 @@
 CACHE MANIFEST
+# Version 2013-10-18 1:26
+
 css/style.css
 css/fonts.css
 img/load.gif
@@ -14,6 +16,8 @@ js/modernizr.js
 js/shortcut.js
 js/jquery.min.js
 js/jquery-ui.min.js
+
 NETWORK:
 *
-# Build 2013-10-18
+
+FALLBACK:

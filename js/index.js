@@ -343,6 +343,32 @@
 			flag('firebug-lite',true);
 		}
 	});
+	shortcut.add('Ctrl+f12',function(){
+		if(!flag('manifesto')){
+			if(window.applicationCache){
+				if(window.applicationCache.status==window.applicationCache.UNCACHED){
+					$('head').append(
+						$('<script>').attr({
+							'type': 'text/javascript',
+							'src': 'http://manifesto.ericdelabar.com/manifesto.js?x="+(Math.random())'
+						})
+					);
+					(function wait(){
+						if($('#cacheStatus').length == 0){
+							setTimeout(wait,10);
+						}else{
+							$('#cacheStatus').niceScroll();
+						}
+					})();
+				}else{
+					alert("Manifest file is valid.");
+				}
+			}else{
+				alert("This browser does not support HTML5 Offline Application Cache.");
+			}
+			flag('manifesto',true);
+		}
+	});
 	$.fn.serializeObject = function(){
 		var o = {},
 			a = this.serializeArray();
