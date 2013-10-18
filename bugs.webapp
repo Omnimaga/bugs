@@ -1,0 +1,17 @@
+{
+	"name": "Bugs",
+	"description": "Issue tracker and project managment",
+	"launch_path": "/",
+	"icons": {
+		"64": "/img/bug.png"
+	},
+	"developer": {
+		"name": "Nathaniel 'Eeeems' van Diepen",
+		"url": "http://eeems.ca"
+	},
+	"default_locale": "en",
+	"chrome": {
+		"navigation": "false"
+	},
+	"fullscreen": "true"
+}
