@@ -3,7 +3,10 @@
 	"description": "Issue tracker and project managment",
 	"launch_path": "/",
 	"icons": {
-		"128": "/img/favicon.png"
+		"128": "/img/favicon-128.png",
+		"120": "/img/favicon-120.png",
+		"90": "/img/favicon-90.png",
+		"60": "/img/favicon-60.png"
 	},
 	"developer": {
 		"name": "Nathaniel 'Eeeems' van Diepen",
@@ -11,7 +14,7 @@
 	},
 	"default_locale": "en",
 	"chrome": {
-		"navigation": "false"
+		"navigation": false
 	},
 	"fullscreen": "true"
 }
