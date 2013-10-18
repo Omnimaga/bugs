@@ -176,6 +176,7 @@
 			topbar: function(t,c){
 				$('#topbar').html(Handlebars.compile(t)(c));
 				render.links('#topbar');
+				$(window).resize();
 			},
 			content: function(t,c){
 				$('#content').html(
@@ -241,6 +242,7 @@
 								}
 								render.topbar(d.topbar.template,d.topbar.context);
 								render.content(d.template,d.context);
+								$(window).resize();
 								$('#loading').hide();
 							}else{
 								console.error('No context given');
@@ -262,6 +264,26 @@
 				$('#loading').hide();
 			}
 		});
+		$('#content').niceScroll({
+			cursorwidth: 10,
+			nativeparentscrolling: false,
+			preservenativescrolling: false
+		});
+		document.addEventListener('touchmove',function(e){
+			e.preventDefault();
+		});
+		$(window).resize(function(){
+			if($(window).width()>767){
+				$('#topbar div.topbar-right, #topbar div.topbar-left').css({
+					'display': ''
+				});
+			}
+			$('#content').height($('body').height()-$('#topbar').height());
+			$('#content').getNiceScroll().resize();
+		});
+		$('#topbar,#content').resize(function(){
+			$(window).resize();
+		}).resize();
 		if($.isEmptyObject(State.data)){
 			History.replaceState({
 				type: 'page',
@@ -287,26 +309,6 @@
 				flag('load',false);
 			});
 		},'json');
-		$('#content').niceScroll({
-			cursorwidth: 10,
-			nativeparentscrolling: false,
-			preservenativescrolling: false
-		});
-		document.addEventListener('touchmove',function(e){
-			e.preventDefault();
-		});
-	});
-	$(window).resize(function(){
-		if($(window).width()>767){
-			$('#topbar div.topbar-right, #topbar div.topbar-left').css({
-				'display': ''
-			});
-		}
-		$('#content').height($('body').height()-$('#topbar').height());
-		$('#content').getNiceScroll().resize();
-	}).resize();
-	$('#topbar').resize(function(){
-		$(window).resize();
 	});
 	shortcut.add('f12',function(){
 		if(!flag('firebug-lite')){

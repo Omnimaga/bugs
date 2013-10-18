@@ -61,6 +61,8 @@
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<link rel="shortcut icon" href="img/favicon.ico" />
 		<link rel="icon" type="image/png" href="img/bug.png" />
+		<link href="http://code.jquery.com/ui/1.10.3/themes/black-tie/jquery-ui.css" rel="stylesheet" type="text/css"/>
+		<link href="css/style.css" rel="stylesheet" type="text/css"/>
 		<title>Bugs</title>
 		<script src="js/modernizr.js"></script>
 		<script>
@@ -97,8 +99,6 @@
 		<script src="js/jquery.nicescroll.js"></script>
 		<script src="js/shortcut.js"></script>
 		<script src="js/index.js"></script>
-		<link href="http://code.jquery.com/ui/1.10.3/themes/black-tie/jquery-ui.css" rel="stylesheet" type="text/css"/>
-		<link href="css/style.css" rel="stylesheet" type="text/css"/>
 	</head>
 	<body lang="en">
 		<div id="topbar"></div>
