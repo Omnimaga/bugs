@@ -8,6 +8,10 @@
 			@rmdir('install');
 		}
 	}
+	if(!isset($_GET['type'])||!isset($_GET['id'])){
+		header('Location: page-index');
+		die();
+	}
 	require_once('php/include.php');
 	$salt = salt();
 	if(isset($_GET['get'])){

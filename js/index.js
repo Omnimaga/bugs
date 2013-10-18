@@ -281,30 +281,13 @@
 			$('#content').height($('body').height()-$('#topbar').height());
 			$('#content').getNiceScroll().resize();
 		});
-		if($.isEmptyObject(State.data)){
-			History.replaceState({
-				type: 'page',
-				id: 'index'
-			},'Bugs','page-index');
-			console.log('Forcing default state.');
-		}else{
-			flag('load',true);
-		}
 		var data = {
 			get: 'settings',
 			timestamp: +new Date
 		};
 		$.get(location.href,data,function(d){
 			settings = d;
-			apiState(location.href,function(){
-				if(flag('load')){
-					State.data = {
-						type: '',
-						data: ''
-					};
-				}
-				flag('load',false);
-			});
+			apiState(location.href);
 		},'json');
 	});
 	shortcut.add('f12',function(){
