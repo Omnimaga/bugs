@@ -63,6 +63,12 @@
 		<meta charset=utf-8>
 		<meta name="viewport" content="width=device-width, user-scalable=false, initial-scale=1, maximum-scale=1.0, user-scalable=0, user-scalable=no">
 		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+		<link rel="apple-touch-icon" sizes="128-128" href="img/favicon-128.png" />
+		<link rel="apple-touch-icon" sizes="120x120" href="img/favicon-120.png" />
+		<link rel="apple-touch-icon" sizes="90x90" href="img/favicon-90.png" />
+		<link rel="apple-touch-icon" sizes="60x60" href="img/favicon-60.png" />
+		<link rel="apple-touch-startup-image" href="img/startup.png">
 		<link rel="shortcut icon" href="img/favicon.ico" />
 		<link rel="icon" type="image/png" href="img/favicon-60.png" />
 		<link href="http://code.jquery.com/ui/1.10.3/themes/black-tie/jquery-ui.css" rel="stylesheet" type="text/css"/>
