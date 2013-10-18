@@ -116,17 +116,35 @@
 				get:'state',
 				timestamp: +new Date
 			};
-			$.get(href,data,function(d){
-				if(exists(d['error'])){
-					error(d);
-				}else{
-					History.pushState(d.state.data,d.state.title,href);
-					getNewState();
-				}
-				if(exists(callback)){
-					callback(d);
-				}
-			},'json');
+			console.log(data,href);
+			ajax = $.ajax(href,{
+					data: data,
+					async: true,
+					type: 'GET',
+					success: function(d){
+						if(exists(d['error'])){
+							error(d);
+						}else{
+							console.log('pushState: '+d.state.title+'['+href+']');
+							History.pushState(d.state.data,d.state.title,href);
+							getNewState();
+						}
+						if(exists(callback)){
+							callback(d);
+						}
+					},
+					error: function(x,t,e){
+						error({
+							error: '['+t+'] '+e
+						});
+						if(exists(callback)){
+							callback({
+								error: '['+t+'] '+e
+							});
+						}
+					},
+					dataType: 'json'
+			});
 		},
 		apiState = window.apiState = function(href,callback){
 			console.log('apiState('+href+')');
@@ -135,22 +153,40 @@
 				get:'state',
 				timestamp: +new Date
 			};
-			$.get(href,data,function(d){
-				if(exists(d['error'])){
-					error(d);
-				}else{
-					History.replaceState(d.state.data,d.state.title,href);
-					getNewState();
-				}
-				if(exists(callback)){
-					callback(d);
-				}
-			},'json');
+			$.ajax(href,{
+					data: data,
+					async: true,
+					type: 'GET',
+					success: function(d){
+						if(exists(d['error'])){
+							error(d);
+						}else{
+							console.log('pushState: '+d.state.title+'['+href+']');
+							History.replaceState(d.state.data,d.state.title,href);
+							getNewState();
+						}
+						if(exists(callback)){
+							callback(d);
+						}
+					},
+					error: function(x,t,e){
+						error({
+							error: '['+t+'] '+e
+						});
+						if(exists(callback)){
+							callback({
+								error: '['+t+'] '+e
+							});
+						}
+					},
+					dataType: 'json'
+			});
 		},
 		error = function(e){
-			e = '['+State.url+']'+e.error;
-			console.error(e+"\n"+(exists(e.state)?JSON.stringify(e.state):''));
-			alert(e);
+			var msg = '['+State.url+']'+e.error;
+			console.error(msg.trim()+"\n"+(exists(e.state)?JSON.stringify(e.state):''));
+			alert(msg.trim());
+			$('#loading').hide();
 		},
 		getNewState = function(){
 			State = History.getState();
@@ -323,6 +359,7 @@
 		return o;
 	};
 	$.ajaxSetup({
-		async: false
+		async: false,
+		cache: false
 	});
 })(jQuery,History);

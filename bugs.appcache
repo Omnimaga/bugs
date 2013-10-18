@@ -14,3 +14,5 @@ js/modernizr.js
 js/shortcut.js
 js/jquery.min.js
 js/jquery-ui.min.js
+NETWORK:
+	*
