@@ -21,3 +21,5 @@
     Satisfy All
 </FilesMatch>
 AddType application/x-web-app-manifest+json .webapp
+AddType text/cache-manifest .manifest
+AddType text/cache-manifest .appcache

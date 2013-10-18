@@ -58,7 +58,7 @@
 	}
 ?>
 <!doctype html>
-<html>
+<html manifest="bugs.appcache">
 	<head>
 		<meta charset=utf-8>
 		<meta name="viewport" content="width=device-width, user-scalable=false, initial-scale=1, maximum-scale=1.0, user-scalable=0, user-scalable=no">
@@ -92,10 +92,13 @@
 				if(msg != ''){
 					alert("Your browser is unable to support all the features this site needs.\nChecks failed: "+msg);
 				}
+				window.applicationCache.addEventListener('updateready',function(){
+					location.reload();
+				});
 			})(window,Modernizr);
 		</script>
-		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-		<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
+		<script src="js/jquery.min.js"></script>
+		<script src="js/jquery-ui.min.js"></script>
 		<script src="js/handlebars.js"></script>
 		<script src="js/jquery.history.js"></script>
 		<script src="js/jquery.storage.js"></script>
