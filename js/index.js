@@ -194,7 +194,7 @@
 							try{
 								if(($(this).hasClass('topbar-home') || $(this).hasClass('topbar-back'))&&$(window).width()<767){
 									$('#topbar').children('div.topbar-right,div.topbar-left').toggle();
-									$('#topbar').resize();
+									$(window).resize();
 								}else if($(this).hasClass('topbar-history')){
 									History.back();
 								}else{
@@ -281,9 +281,6 @@
 			$('#content').height($('body').height()-$('#topbar').height());
 			$('#content').getNiceScroll().resize();
 		});
-		$('#topbar,#content').resize(function(){
-			$(window).resize();
-		}).resize();
 		if($.isEmptyObject(State.data)){
 			History.replaceState({
 				type: 'page',
