@@ -8,8 +8,12 @@
 -->
 <div class="topbar-left">
 	<a class="topbar-home" href="#page-index">
-		<span class="icon-bugs">
+		<span class="screen-large">
+			<span class="icon-bugs"></span>
 			Home
+		</span>
+		<span class="screen-small">
+			&#8801;
 		</span>
 	</a>
 	<a class="topbar-current" href="#{{url}}">
@@ -40,8 +44,8 @@
 		<a href="#page-issues">
 			Issues
 		</a>
-		<a href="#page-scrums">
-			Scrums
+		<a href="#page-projects">
+			Projects
 		</a>
 		<a href="#page-users">
 			Users

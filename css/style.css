@@ -46,8 +46,6 @@ div#topbar a{
 	float: left;
 	font-size: 20px;
 	line-height: 35px;
-	padding-left: 2px;
-	padding-right: 2px;
 	overflow: hidden;
 	cursor: pointer;
 	min-width: 35px;
@@ -94,6 +92,7 @@ span.icon-bugs{
 	width: 35px;
 	height: 35px;
 	font-size: 13px;
+	float: left;
 }
 span.icon-bugs-invert{
 	background-image: url('../img/bug-invert.png');
@@ -104,24 +103,16 @@ span.icon-bugs-invert{
 	width: 35px;
 	height: 35px;
 }
+.screen-small, .screen-large{
+	display: none;
+}
 @media screen and (max-width: 767px){
-	div#topbar a{
+	div#topbar a, !a.topbar-home{
 		padding-left: 5px;
 		padding-right: 5px;
 	}
-	a.tabbar-home{
-		width: 35px;
-	}
-	a.topbar-home span{
-		display: none;
-	}
 	a.topbar-home{
-		padding-left: 2px !important;
-		padding-right: 2px !important;
-	}
-	a.topbar-home:after{
-		content: "\2261";
-		/*use \8943 elsewhere for options dropdown*/
+		padding: 0;
 	}
 	div.topbar-right{
 		display: none;
@@ -168,10 +159,15 @@ span.icon-bugs-invert{
 		width: 100%;
 		padding-top: 35px;
 	}
+	.screen-small{
+		display: inline-block;
+	}
 }
 @media screen and (min-width: 768px){
 	div#topbar a{
 		font-size: 15px;
+		padding-left: 5px;
+		padding-right: 5px;
 	}
 	div#topbar a:hover + a{
 		border-left-color: black;
@@ -184,6 +180,9 @@ span.icon-bugs-invert{
 	}
 	a.topbar-index{
 		display: none;
+	}
+	.screen-large{
+		display: inline-block;
 	}
 }
 @viewport{

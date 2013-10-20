@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 06, 2013 at 10:22 PM
+-- Generation Time: Oct 21, 2013 at 01:08 AM
 -- Server version: 5.6.11
 -- PHP Version: 5.5.3
 
@@ -40,10 +40,10 @@ CREATE TABLE IF NOT EXISTS `issues` (
 
 --
 -- RELATIONS FOR TABLE `issues`:
---   `s_id`
---       `scrums` -> `id`
 --   `u_id`
 --       `users` -> `id`
+--   `s_id`
+--       `scrums` -> `id`
 --
 
 -- --------------------------------------------------------
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS `issues` (
 --
 -- Table structure for table `messages`
 --
--- Creation: Oct 06, 2013 at 08:21 PM
+-- Creation: Oct 20, 2013 at 11:07 PM
 --
 
 DROP TABLE IF EXISTS `messages`;
@@ -59,6 +59,7 @@ CREATE TABLE IF NOT EXISTS `messages` (
   `id` int(100) NOT NULL AUTO_INCREMENT,
   `from_id` int(100) NOT NULL,
   `to_id` int(100) DEFAULT NULL,
+  `p_id` int(11) DEFAULT NULL,
   `s_id` int(100) DEFAULT NULL,
   `i_id` int(100) DEFAULT NULL,
   `message` text NOT NULL,
@@ -66,19 +67,46 @@ CREATE TABLE IF NOT EXISTS `messages` (
   KEY `from_id` (`from_id`,`to_id`,`s_id`,`i_id`),
   KEY `to_id` (`to_id`),
   KEY `s_id` (`s_id`),
-  KEY `i_id` (`i_id`)
+  KEY `i_id` (`i_id`),
+  KEY `p_id` (`p_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
 --
 -- RELATIONS FOR TABLE `messages`:
---   `i_id`
---       `issues` -> `id`
+--   `p_id`
+--       `projects` -> `id`
 --   `from_id`
 --       `users` -> `id`
 --   `to_id`
 --       `users` -> `id`
 --   `s_id`
 --       `scrums` -> `id`
+--   `i_id`
+--       `issues` -> `id`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `projects`
+--
+-- Creation: Oct 20, 2013 at 11:04 PM
+--
+
+DROP TABLE IF EXISTS `projects`;
+CREATE TABLE IF NOT EXISTS `projects` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `u_id` int(100) NOT NULL,
+  `title` varchar(100) NOT NULL,
+  `description` text NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `u_id` (`u_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- RELATIONS FOR TABLE `projects`:
+--   `u_id`
+--       `users` -> `id`
 --
 
 -- --------------------------------------------------------
@@ -103,12 +131,12 @@ CREATE TABLE IF NOT EXISTS `rels` (
 
 --
 -- RELATIONS FOR TABLE `rels`:
---   `s_id`
---       `scrums` -> `id`
 --   `u_id`
 --       `users` -> `id`
 --   `i_id`
 --       `issues` -> `id`
+--   `s_id`
+--       `scrums` -> `id`
 --
 
 -- --------------------------------------------------------
@@ -116,21 +144,25 @@ CREATE TABLE IF NOT EXISTS `rels` (
 --
 -- Table structure for table `scrums`
 --
--- Creation: Oct 06, 2013 at 08:17 PM
+-- Creation: Oct 20, 2013 at 11:05 PM
 --
 
 DROP TABLE IF EXISTS `scrums`;
 CREATE TABLE IF NOT EXISTS `scrums` (
   `id` int(100) NOT NULL AUTO_INCREMENT,
+  `p_id` int(100) NOT NULL,
   `u_id` int(100) NOT NULL,
   `title` varchar(100) NOT NULL,
   `description` text NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `u_id` (`u_id`)
+  KEY `u_id` (`u_id`),
+  KEY `p_id` (`p_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- RELATIONS FOR TABLE `scrums`:
+--   `p_id`
+--       `projects` -> `id`
 --   `u_id`
 --       `users` -> `id`
 --
@@ -153,7 +185,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `key` varchar(128) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
 
 --
 -- Constraints for dumped tables
@@ -163,30 +195,38 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Constraints for table `issues`
 --
 ALTER TABLE `issues`
-  ADD CONSTRAINT `issues_ibfk_2` FOREIGN KEY (`s_id`) REFERENCES `scrums` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `issues_ibfk_1` FOREIGN KEY (`u_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `issues_ibfk_1` FOREIGN KEY (`u_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `issues_ibfk_2` FOREIGN KEY (`s_id`) REFERENCES `scrums` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `messages`
 --
 ALTER TABLE `messages`
-  ADD CONSTRAINT `messages_ibfk_4` FOREIGN KEY (`i_id`) REFERENCES `issues` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `messages_ibfk_5` FOREIGN KEY (`p_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`from_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `messages_ibfk_2` FOREIGN KEY (`to_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
-  ADD CONSTRAINT `messages_ibfk_3` FOREIGN KEY (`s_id`) REFERENCES `scrums` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `messages_ibfk_3` FOREIGN KEY (`s_id`) REFERENCES `scrums` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `messages_ibfk_4` FOREIGN KEY (`i_id`) REFERENCES `issues` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `projects`
+--
+ALTER TABLE `projects`
+  ADD CONSTRAINT `projects_ibfk_1` FOREIGN KEY (`u_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `rels`
 --
 ALTER TABLE `rels`
-  ADD CONSTRAINT `rels_ibfk_3` FOREIGN KEY (`s_id`) REFERENCES `scrums` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `rels_ibfk_1` FOREIGN KEY (`u_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `rels_ibfk_2` FOREIGN KEY (`i_id`) REFERENCES `issues` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `rels_ibfk_2` FOREIGN KEY (`i_id`) REFERENCES `issues` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `rels_ibfk_3` FOREIGN KEY (`s_id`) REFERENCES `scrums` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `scrums`
 --
 ALTER TABLE `scrums`
+  ADD CONSTRAINT `scrums_ibfk_2` FOREIGN KEY (`p_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `scrums_ibfk_1` FOREIGN KEY (`u_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 SET FOREIGN_KEY_CHECKS=1;
 
