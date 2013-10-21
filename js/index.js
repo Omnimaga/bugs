@@ -1,5 +1,5 @@
 // TODO - Add initial page loading and handlers
-(function($,History){
+(function($,History,log,console){
 	var State = History.getState(),
 		Old = {},
 		Key = null,
@@ -25,7 +25,7 @@
 		},
 		setKey = window.setKey = function(key){
 			if(key !== null){
-				console.log('Key change to '+key);
+				log('Key change to '+key);
 				Key = key;
 				var d = new Date();
 				d.setTime(d.getTime()+get('expire'));
@@ -33,7 +33,7 @@
 					expires: d
 				});
 			}else{
-				console.log('Key deleted');
+				log('Key deleted');
 				Key = null;
 				$.removeCookie('key');
 			}
@@ -57,7 +57,7 @@
 						templates.splice(id,1);
 					}
 					$.localStorage('templates',templates);
-					console.log('Dropping template for: '+name);
+					log('Dropping template for: '+name);
 					return '';
 				}else{
 					var o = {
@@ -66,16 +66,16 @@
 						date: get('expire')+d
 					}
 					if(id===false){
-						console.log('Storing new template for: '+name);
+						log('Storing new template for: '+name);
 						templates.push(o);
 					}else{
-						console.log('Replacing old template for: '+name);
+						log('Replacing old template for: '+name);
 						templates[id] = o;
 					}
 					$.localStorage('templates',templates);
 				}
 			}else if(id!==false){
-				console.log('Using cached template for: '+name);
+				log('Using cached template for: '+name);
 				var template = templates[id].template;
 				if(templates[id].date < d){
 					delete templates[name];
@@ -83,12 +83,12 @@
 				}
 				return template;
 			}else{
-				console.log('No cached template stored for: '+name);
+				log('No cached template stored for: '+name);
 				return '';
 			}
 		},
 		apiCall = window.apiCall = function(data,callback){
-			console.log('apiCall('+data.type+'-'+data.id+')');
+			log('apiCall('+data.type+'-'+data.id+')');
 			$('#loading').show();
 			data.get = 'api';
 			data.timestamp = +new Date;
@@ -100,17 +100,18 @@
 					error(d);
 				}else{
 					if(location.href.substr(location.href.lastIndexOf('/')+1) != d.state.url){
-						console.log('Forced redirection to '+d.state.url);
+						log('Forced redirection to '+d.state.url);
 						History.replaceState(d.state.data,d.state.title,d.state.url);
 					}
 				}
 				if(exists(callback)){
+					log('Running apiCall callback');
 					callback(d);
 				}
 			},'json');
 		},
 		loadState = window.loadState = function(href,callback){
-			console.log('loadState('+href+')');
+			log('loadState('+href+')');
 			$('#loading').show();
 			var data = {
 				get:'state',
@@ -124,7 +125,7 @@
 						if(exists(d['error'])){
 							error(d);
 						}else{
-							console.log('pushState: '+d.state.title+'['+href+']');
+							log('pushState: '+d.state.title+'['+href+']');
 							History.pushState(d.state.data,d.state.title,href);
 							getNewState();
 						}
@@ -146,7 +147,7 @@
 			});
 		},
 		apiState = window.apiState = function(href,callback){
-			console.log('apiState('+href+')');
+			log('apiState('+href+')');
 			$('#loading').show();
 			var data = {
 				get:'state',
@@ -160,7 +161,7 @@
 						if(exists(d['error'])){
 							error(d);
 						}else{
-							console.log('pushState: '+d.state.title+'['+href+']');
+							log('pushState: '+d.state.title+'['+href+']');
 							History.replaceState(d.state.data,d.state.title,href);
 							getNewState();
 						}
@@ -189,7 +190,7 @@
 		},
 		getNewState = function(){
 			State = History.getState();
-			console.log("State change. "+JSON.stringify(State.data));
+			log("State change. "+JSON.stringify(State.data));
 			if (!window.location.origin) {
 				window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
 			}
@@ -216,7 +217,7 @@
 				$(window).resize();
 			},
 			content: function(t,c){
-				console.log(c);
+				log(c);
 				$('#content').html(
 					Handlebars.compile(t)(c)
 				);
@@ -272,7 +273,12 @@
 									$('#topbar').children('div.topbar-right,div.topbar-left').toggle();
 									$(window).resize();
 								}else if($(this).hasClass('topbar-history')){
-									History.back();
+									if(!History.back()){
+										log('Reloading on failed back');
+										location.reload();
+									}else{
+										log('Going back');
+									}
 								}else{
 									loadState(href);
 								}
@@ -309,7 +315,11 @@
 		};
 		$.ajaxSetup({
 			async: false,
-			cache: false
+			cache: false,
+			timeout: 2000
+		});
+		 $(document).ajaxError(function(event, request, settings) {
+			error({error:'Request timed out'});
 		});
 		templates = $.localStorage('templates');
 		if(templates === null){
@@ -327,7 +337,7 @@
 						apiCall(State.data,function(d){
 							if(exists(d.context)){
 								if(!exists(d.context.key)&&Key!==null){
-									console.log('Context detected logout');
+									log('Context detected logout');
 									setKey(null);
 								}
 								if(exists(d.template)){
@@ -341,7 +351,9 @@
 								$('#loading').hide();
 							}else{
 								console.error('No context given');
-								History.back();
+								if(!History.back()){
+									location.reload();
+								}
 							}
 						});
 					break;
@@ -354,7 +366,7 @@
 				}
 				Old = State.data;
 			}else{
-				console.log(State.data,Old);
+				log(State.data,Old);
 				console.warn('Stopped double load of '+Old.type+'-'+Old.id);
 				$('#loading').hide();
 			}
@@ -431,6 +443,6 @@
 	shortcut.add('Shift+f12',function(){
 		templates = [];
 		$.localStorage('templates',null);
-		console.log('Templates cleared.');
+		log('Templates cleared.');
 	});
-})(jQuery,History);
+})(jQuery,History,console.log,console);

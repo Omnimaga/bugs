@@ -1,8 +1,8 @@
-<button id="install">
-  Install on FirefoxOS
+<button id="install" class="recommend">
+  Install this App
 </button>
 <script>
-	if(typeof navigator.mozApps != 'undefined'){
+	if('mozApps' in  navigator){
 		(function(ic){
 			ic.onsuccess = function(){
 				if(ic.result){
