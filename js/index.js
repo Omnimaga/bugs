@@ -228,7 +228,18 @@
 				$(window).resize();
 			},
 			accordions: function(selector){
-				$(selector).find('.accordion').accordion();
+				$(selector).find('.accordion').each(function(){
+					var icons = {};
+					if($(this).children('.icons').length == 1){
+						icons = JSON.parse($(this).children('.icons').text());
+						$(this).children('.icons').remove();
+					}
+					$(this).accordion({
+						collapsible: true,
+						icons: icons,
+						active: false
+					});
+				});
 			},
 			buttons: function(selector){
 				$(selector).find('.button').button();

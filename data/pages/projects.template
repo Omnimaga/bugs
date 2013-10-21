@@ -4,6 +4,12 @@
 	</a>
 {{/if}}
 <div class="accordion">
+	<span class="icons">
+		{
+			"header": "ui-icon-wrench",
+			"activeHeader": "ui-icon-wrench"
+		}
+	</span>
 	{{#each projects}}
 		<h3>
 			{{title}}
