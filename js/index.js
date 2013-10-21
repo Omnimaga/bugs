@@ -232,8 +232,8 @@
 					var icons = {};
 					if($(this).children('.icons').length == 1){
 						icons = JSON.parse($(this).children('.icons').text());
-						$(this).children('.icons').remove();
 					}
+					$(this).children('.icons').remove();
 					$(this).accordion({
 						collapsible: true,
 						icons: icons,
