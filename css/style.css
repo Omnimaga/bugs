@@ -15,34 +15,49 @@ p{
 	padding-left: 5px;
 	padding-right: 5px;
 }
+input[type=submit]{
+	background-image: url(../img/buttons/ui/recommend.png);
+	background-color: #00caf2;
+	border-color: #00acce;
+}
+input[type=submit]:active{
+	border-color: #008aaa;
+	background: #008aaa;
+	color: #333;
+}
+.cancel{
+	background-image: url(../images/buttons/ui/danger.png);
+	background-color: #b70404;
+	color: #fff;
+	text-shadow: -0.1rem -0.1rem 0 #830b0b;
+	border: none;
+}
+.cancel:active{
+	background-image: url(../images/buttons/ui/danger-press.png);
+	background-color: #890707;
+}
 #cacheStatus{
 	height: 100% !important;
 	top: 0 !important;
 }
 div#topbar{
-	width: calc(100% - 2px);
-	border-color: black;
-	border-style: solid;
-	border-width: 1px;
-	background-color: lightgray;
+	width: calc(100% + 1px);
+	background-color: #CD6723;
+	background: url(../img/headers/ui/header.png) repeat-x 0 0;
+  	background-size: auto 100%;
 	color: black;
 	overflow: hidden;
+	box-shadow: 0 1px 3px 1px rgba(0,0,0,0.3);
 }
 div.topbar-left{
 	height: 100%;
 }
 div#topbar .menuitem{
-	color: black;
-	background-color: white;
+	color: white;
 	text-decoration: none;
 	text-transform: capitalize;
 	text-align: center;
 	vertical-align: middle;
-	/*border-color: black;
-	border-style: solid;
-	border-width: 0;
-	border-right-width: 1px;
-	border-left-width: 1px;*/
 	margin-left: -1px;
 	float: left;
 	font-size: 20px;
@@ -50,9 +65,18 @@ div#topbar .menuitem{
 	overflow: hidden;
 	cursor: pointer;
 	min-width: 35px;
+	height: 35px;
+}
+div#topbar .menuitem:not(.topbar-home):not(.topbar-back):not(.topbar-history){
+	background: url(../img/headers/ui/separator.png) no-repeat scroll left center transparent;
 }
 div#topbar .menuitem:hover{
-	background-color: lightgray;
+	background-image: url(../img/headers/ui/negative.png);
+}
+div#topbar .menuitem:active{
+	border-color: #008aaa;
+	background: #008aaa;
+	color: #333;
 }
 div#topbar .menu{
 	color: black;
@@ -63,13 +87,11 @@ div.topbar-right{
 div.topbar-left{
 	float: left;
 }
-a.topbar-home:hover{
-	background-color: gray !important;
-}
 div#content{
 	width: 100%;
 	-webkit-overflow-scrolling: touch;
 	overflow: auto;
+	padding-top: 5px;
 }
 div#loading{
 	width: 100%;
@@ -148,17 +170,7 @@ span.icon-bugs-invert{
 		padding-left: 5px;
 		padding-right: 5px;
 	}
-	div.topbar-left .menuitem{
-		border-style: solid;
-		border-color: black;
-		border-width: 0;
-		border-right-width: 1px;
-		border-left-width: 1px;
-	}
 	div.topbar-right .menuitem{
-		border-style: solid;
-		border-color: black;
-		border-width: 1px;
 		margin-bottom: -1px;
 	}
 	a.topbar-home{
@@ -184,22 +196,16 @@ span.icon-bugs-invert{
 		float: right !important;
 		width: 100%;
 	}
-	a.topbar-back,a.topbar-history,a.topbar-index{
+	a.topbar-back,a.topbar-history{
 		width: 35px !important;
 		position: absolute;
 		top: 0;
 		padding: 0 !important;
 	}
-	a.topbar-back:hover{
-		background-color: gray !important;
+	a.topbar-back{
 	}
 	a.topbar-history{
 		left: 37px;
-	}
-	a.topbar-index{
-		left: 73px;
-		width: auto !important;
-		padding-right: 5px !important;
 	}
 	div#topbar{
 		min-height: 35px;
@@ -208,6 +214,9 @@ span.icon-bugs-invert{
 		min-height: 35px;
 		width: 100%;
 		padding-top: 35px;
+	}
+	.topbar-home,.topbar-back,.topbar-history{
+		background: url(../img/headers/ui/separator.png) no-repeat scroll right center transparent;
 	}
 	.screen-small{
 		display: block;
@@ -218,11 +227,6 @@ span.icon-bugs-invert{
 		font-size: 15px;
 		padding-left: 5px;
 		padding-right: 5px;
-		border-style: solid;
-		border-color: black;
-		border-width: 0;
-		border-right-width: 1px;
-		border-left-width: 1px;
 	}
 	div#topbar .menuitem:hover + a{
 		border-left-color: black;
@@ -236,7 +240,7 @@ span.icon-bugs-invert{
 	div.topbar-right a.topbar-current{
 		display: none;
 	}
-	a.topbar-index{
+	a.topbar-home{
 		display: none;
 	}
 	.screen-large{

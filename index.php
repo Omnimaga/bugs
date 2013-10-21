@@ -71,7 +71,7 @@
 		<link rel="apple-touch-startup-image" href="img/startup.png">
 		<link rel="shortcut icon" href="img/favicon.ico" />
 		<link rel="icon" type="image/png" href="img/favicon-60.png" />
-		<link href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css"/>
+		<link href="css/jquery-ui.css" rel="stylesheet" type="text/css"/>
 		<link href="css/style.css" rel="stylesheet" type="text/css"/>
 		<title>Bugs</title>
 		<script src="js/modernizr.js"></script>

@@ -1,6 +1,6 @@
 {{#each users}}
 	<a class="button align-left" style="" href="#~{{name}}">
-		<span class="ui-icon ui-icon-person" style="float: left;"></span>
+		<div style="float: left;background-image:url(img/headers/icons/user.png);width:20px;height:20px;background-size:20px;"></div>
 		{{name}}
 	</a>
 {{/each}}

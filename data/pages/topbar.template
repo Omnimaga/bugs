@@ -8,45 +8,17 @@
 -->
 <div class="topbar-left">
 	<a class="topbar-home menuitem" href="#page-index">
-		<span class="screen-large">
-			<span class="icon-bugs"></span>
-			Home
-		</span>
-		<span class="screen-small">
-			&#8801;
-		</span>
+		<span class="screen-small" style="background-image:url(img/headers/icons/menu.png);height:35px;background-position:center;"></span>
 	</a>
-	<a class="topbar-current menuitem" href="#{{url}}">
-		{{title}}
-	</a>
-</div>
-<div class="topbar-right">
-	<a class="topbar-back menuitem" href="#{{url}}">
-		&#8801;
-	</a>
-	<a class="topbar-history menuitem" href="#page-index">
-		&larr;
-	</a>
-	<a class="topbar-index menuitem" href="#page-index">
-		<span class="icon-bugs"></span>Home
-	</a>
-	<a class="topbar-current menuitem" href="#{{url}}">
-		{{title}}
-	</a>
-	{{#unless key}}
-		<a class="menuitem" href="#page-register">
-			Register
-		</a>
-		<a class="menuitem" href="#page-login">
-			Login
-		</a>
-	{{else}}
-		<span class="menuitem screen-large" onclick="$(this).children('.menu').css({'left':$(this).position().left}).toggle();">
-			<span style="float:left">
-				Menu
-			</span>
-			<span class="ui-icon ui-icon-circle-triangle-s" style="float:right;margin-top:9px;"></span>
-			<ul class="menu top" style="display:none;margin-top:35px;position:absolute;right:0;">
+	{{#if key}}
+		<span class="menuitem screen-large" onclick="$(this).children('.menu').toggle();">
+			<span  style="background-image:url(img/headers/icons/menu.png);height:35px;width:35px;background-position:center;float:left;"></span>			
+			<ul class="menu top" style="display:none;margin-top:35px;position:absolute;left:0;">
+				<li>
+					<a href="#page-index">
+						Home
+					</a>
+				</li>
 				<li>
 					<a href="#page-projects">
 						Projects
@@ -64,11 +36,34 @@
 				</li>
 			</ul>
 		</span>
+	{{/if}}
+	<a class="topbar-current menuitem" href="#{{url}}">
+		{{title}}
+	</a>
+</div>
+<div class="topbar-right">
+	<a class="topbar-back menuitem" href="#{{url}}">
+		<div style="background-image:url(img/headers/icons/menu.png);height:35px;background-position:center;"></div>
+	</a>
+	<a class="topbar-history menuitem" href="#page-index" >
+		<div style="background-image:url(img/headers/icons/back.png);background-repeat:no-repeat;background-position:center;width:35px;height:35px;"></div>
+	</a>
+	<a class="topbar-current menuitem" href="#{{url}}">
+		{{title}}
+	</a>
+	{{#unless key}}
+		<a class="menuitem" href="#page-register">
+			Register
+		</a>
+		<a class="menuitem" href="#page-login">
+			Login
+		</a>
+	{{else}}
 		<span class="menuitem screen-large" onclick="$(this).children('.menu').toggle();">
+			<span style="background-image:url(img/headers/icons/user.png);height:20px;width:20px;background-position:center;float:left;margin-top:5px;"></span>
 			<span style="float:left">
 				{{user.name}}
 			</span>
-			<span class="ui-icon ui-icon-circle-triangle-s" style="float:right;margin-top:9px;"></span>
 			<ul class="menu top" style="display:none;margin-top:35px;position:absolute;right:0;">
 				<li>
 					<a href="#~{{user.name}}">
@@ -83,6 +78,9 @@
 			</ul>
 		</span>
 		<span class="screen-small">
+			<a class="menuitem" href="#page-index">
+				Home
+			</a>
 			<a class="menuitem" href="#~{{user.name}}">
 				Profile
 			</a>
@@ -93,8 +91,8 @@
 				Issues
 			</a>
 			<a class="menuitem" href="#page-users">
-					Users
-				</a>
+				Users
+			</a>
 			<a class="menuitem" href="#page-logout">
 				Logout
 			</a>
