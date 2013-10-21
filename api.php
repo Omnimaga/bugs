@@ -37,6 +37,7 @@
 						$ret['template'] = file_get_contents(PATH_DATA.'pages/project.template');
 					}
 					$context = projectObj($id);
+					$context['user'] = userObj($context['user']);
 					if($LOGGEDIN){
 						$context['key'] = true;
 						$context['user'] = userObj($_SESSION['username']);
@@ -67,8 +68,11 @@
 										}
 									break;
 									case 'projects':
-										if($res = query("SELECT title,description,id FROM `projects`;")){
+										if($res = query("SELECT p.title,p.id,p.description,u.name as user FROM `projects` p JOIN `users` u ON u.id = p.u_id")){
 											$context['projects'] = fetch_all($res,MYSQLI_ASSOC);
+											foreach($context['projects'] as $key => $project){
+												$context['projects'][$key]['user'] = userObj($project['user']);
+											}
 										}
 									break;
 								}

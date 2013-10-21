@@ -37,6 +37,9 @@
 			</ul>
 		</span>
 	{{/if}}
+	<a class="topbar-history menuitem" href="#page-index" >
+		<div style="background-image:url(img/headers/icons/back.png);background-repeat:no-repeat;background-position:center;width:35px;height:35px;"></div>
+	</a>
 	<a class="topbar-current menuitem" href="#{{url}}">
 		{{title}}
 	</a>
@@ -44,9 +47,6 @@
 <div class="topbar-right">
 	<a class="topbar-back menuitem" href="#{{url}}">
 		<div style="background-image:url(img/headers/icons/menu.png);height:35px;background-position:center;"></div>
-	</a>
-	<a class="topbar-history menuitem" href="#page-index" >
-		<div style="background-image:url(img/headers/icons/back.png);background-repeat:no-repeat;background-position:center;width:35px;height:35px;"></div>
 	</a>
 	<a class="topbar-current menuitem" href="#{{url}}">
 		{{title}}

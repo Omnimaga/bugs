@@ -1,5 +1,5 @@
 <h3>
-	{{title}}
+	{{title}} - <a style="font-size:small;color:gray;text-decoration:none;" href="#~{{user.name}}">{{user.name}}</a>
 </h3>
 <div>
 	{{description}}

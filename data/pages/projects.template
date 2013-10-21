@@ -12,7 +12,7 @@
 	</span>
 	{{#each projects}}
 		<h3>
-			{{title}}
+			{{title}} - <small>{{user.name}}</small>
 			<a href="#project-{{id}}" class="button">
 				Open
 			</a>

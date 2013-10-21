@@ -34,7 +34,12 @@
 		}
 		if($res = query("SELECT * FROM `users` WHERE id='%d'",Array($id))){
 			if($res->num_rows == 1){
-				return $res->fetch_assoc();
+				if($user = $res->fetch_assoc()){
+					unset($user['password']);
+					unset($user['salt']);
+					unset($user['key']);
+					return $user;
+				}
 			}
 		}
 		return false;

@@ -67,7 +67,7 @@ div#topbar .menuitem{
 	min-width: 35px;
 	height: 35px;
 }
-div#topbar .menuitem:not(.topbar-home):not(.topbar-back):not(.topbar-history){
+div#topbar .menuitem:not(.topbar-home):not(.topbar-back){
 	background: url(../img/headers/ui/separator.png) no-repeat scroll left center transparent;
 }
 div#topbar .menuitem:hover{
@@ -204,9 +204,6 @@ span.icon-bugs-invert{
 	}
 	a.topbar-back{
 	}
-	a.topbar-history{
-		left: 37px;
-	}
 	div#topbar{
 		min-height: 35px;
 	}
@@ -215,7 +212,7 @@ span.icon-bugs-invert{
 		width: 100%;
 		padding-top: 35px;
 	}
-	.topbar-home,.topbar-back,.topbar-history{
+	.topbar-back,.topbar-history{
 		background: url(../img/headers/ui/separator.png) no-repeat scroll right center transparent;
 	}
 	.screen-small{

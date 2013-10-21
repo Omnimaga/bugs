@@ -217,6 +217,7 @@
 				$(window).resize();
 			},
 			content: function(t,c){
+				console.log(c);
 				$('#content').html(
 					Handlebars.compile(t)(c)
 				);
