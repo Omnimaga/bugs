@@ -11,6 +11,7 @@
 	require_once(PATH_PHP.'security.php');
 	require_once(PATH_PHP.'captcha.php');
 	require_once(PATH_PHP.'user.php');
+	require_once(PATH_PHP.'project.php');
 	require_once(PATH_PHP.'emails.php');
 	authenticate();
 ?>

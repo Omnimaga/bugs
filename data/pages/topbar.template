@@ -28,7 +28,10 @@
 		&larr;
 	</a>
 	<a class="topbar-index menuitem" href="#page-index">
-		<span class="icon-bugs-invert"></span>Home
+		<span class="icon-bugs"></span>Home
+	</a>
+	<a class="topbar-current menuitem" href="#{{url}}">
+		{{title}}
 	</a>
 	{{#unless key}}
 		<a class="menuitem" href="#page-register">
@@ -38,36 +41,47 @@
 			Login
 		</a>
 	{{else}}
-		<span class="menuitem screen-large" onclick="$(this).next().toggle();">
-			{{user.name}}
+		<span class="menuitem screen-large" onclick="$(this).children('.menu').css({'left':$(this).position().left}).toggle();">
+			<span style="float:left">
+				Menu
+			</span>
+			<span class="ui-icon ui-icon-circle-triangle-s" style="float:right;margin-top:9px;"></span>
+			<ul class="menu top" style="display:none;margin-top:35px;position:absolute;right:0;">
+				<li>
+					<a href="#page-projects">
+						Projects
+					</a>
+				</li>
+				<li>
+					<a href="#page-issues">
+						Issues
+					</a>
+				</li>
+				<li>
+					<a href="#page-users">
+						Users
+					</a>
+				</li>
+			</ul>
 		</span>
-		<ul class="menu" style="display: none;margin-top:35px;position:absolute;right:0;">
-			<li>
-				<a href="#page-projects">
-					Projects
-				</a>
-			</li>
-			<li>
-				<a href="#page-issues">
-					Issues
-				</a>
-			</li>
-			<li>
-				<a href="#page-users">
-					Users
-				</a>
-			</li>
-			<li>
-				<a href="#~{{user.name}}">
-					Profile
-				</a>
-			</li>
-			<li>
-				<a href="#page-logout">
-					Logout
-				</a>
-			</li>
-		</ul>
+		<span class="menuitem screen-large" onclick="$(this).children('.menu').toggle();">
+			<span style="float:left">
+				{{user.name}}
+			</span>
+			<span class="ui-icon ui-icon-circle-triangle-s" style="float:right;margin-top:9px;"></span>
+			<ul class="menu top" style="display:none;margin-top:35px;position:absolute;right:0;">
+				<li>
+					<a href="#~{{user.name}}">
+						Profile
+					</a>
+				</li>
+				<li>
+					<a href="#page-logout">
+						Logout
+					</a>
+				</li>
+			</ul>
+		</span>
 		<span class="screen-small">
 			<a class="menuitem" href="#~{{user.name}}">
 				Profile

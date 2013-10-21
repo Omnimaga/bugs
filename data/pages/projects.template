@@ -3,15 +3,15 @@
 		New
 	</a>
 {{/if}}
-<div id="accordion">
+<div class="accordion">
 	{{#each projects}}
 		<h3>
-			{{name}}
-		</h3>
-		<div>
+			{{title}}
 			<a href="#project-{{id}}" class="button">
 				Open
 			</a>
+		</h3>
+		<div>
 			{{description}}
 		</div>
 	{{/each}}

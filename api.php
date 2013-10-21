@@ -21,7 +21,7 @@
 						$context['user'] = userObj($_SESSION['username']);
 					};
 					$ret['context'] = $context;
-					retj($ret,$id);
+					retj($ret,'User - '.$context['name']);
 				break;
 				case 'group':
 					// TODO - handle group requests
@@ -31,6 +31,18 @@
 				break;
 				case 'scrum':
 					// TODO - handle scrum requests
+				break;
+				case 'project':
+					if(!isset($_GET['template'])){
+						$ret['template'] = file_get_contents(PATH_DATA.'pages/project.template');
+					}
+					$context = projectObj($id);
+					if($LOGGEDIN){
+						$context['key'] = true;
+						$context['user'] = userObj($_SESSION['username']);
+					};
+					$ret['context'] = $context;
+					retj($ret,'Project - '.$context['title']);
 				break;
 				case 'admin':
 					// TODO - handle admin requests
@@ -50,9 +62,14 @@
 							foreach($options as $key){
 								switch($key){
 									case 'users':
-										$res = query("SELECT name FROM `users`;");
-										$users = fetch_all($res,MYSQLI_ASSOC);
-										$context['users'] = $users;
+										if($res = query("SELECT name FROM `users`;")){
+											$context['users'] = fetch_all($res,MYSQLI_ASSOC);
+										}
+									break;
+									case 'projects':
+										if($res = query("SELECT title,description,id FROM `projects`;")){
+											$context['projects'] = fetch_all($res,MYSQLI_ASSOC);
+										}
 									break;
 								}
 							}

@@ -2,7 +2,7 @@
 	require_once(realpath(dirname(__FILE__)).'/config.php');
 	require_once(PATH_PHP.'database.php');
 	require_once(PATH_PHP.'security.php');
-	$mysqli = $GLOBALS['mysqli'];
+	global $mysqli;
 	function addUser($username,$password,$email){
 		global $mysqli;
 		$salt = $mysqli->escape_string(salt());

@@ -291,7 +291,7 @@
 			if(!equal(State.data,Old)){
 				document.title = State.title;
 				switch(State.data.type){
-					case 'page':case 'user':
+					case 'page':case 'user':case 'project':
 						apiCall(State.data,function(d){
 							if(exists(d.context)){
 								if(!exists(d.context.key)&&Key!==null){
