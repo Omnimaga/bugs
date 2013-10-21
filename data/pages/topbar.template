@@ -86,7 +86,7 @@
 			<a class="menuitem" href="#~{{user.name}}">
 				Profile
 			</a>
-			<a class="menuitem" href="#page-Projects">
+			<a class="menuitem" href="#page-projects">
 				Projects
 			</a>
 			<a class="menuitem" href="#page-issues">
