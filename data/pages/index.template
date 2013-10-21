@@ -1,30 +1,51 @@
+<button id="install">
+  Install on FirefoxOS
+</button>
+<script>
+	(function(ic){
+		ic.onsuccess = function(){
+			if(ic.result){
+				$('button#install').hide();
+			}else{
+				$('button#install').click(function(e){
+					e.preventDefault();
+					// install the app
+					var installLocFind = navigator.mozApps.install(location.origin+'/bugs.webapp');
+					installLocFind.onsuccess = function(data){
+						apiState('page-index');
+					};
+					installLocFind.onerror = function(){
+						// App wasn't installed, info is in
+						// installapp.error.name
+						error(installapp.error.name);
+					};
+					return false;
+				});
+			};
+		};
+	})(navigator.mozApps.checkInstalled(location.origin+"/bugs.webapp"));
+</script>
+<h3>
+	Welcome to Bugs
+</h3>
 <p>
-	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam venenatis luctus lectus eget malesuada. Phasellus nibh metus, vulputate nec diam eget, molestie facilisis purus. Ut libero tellus, lacinia in libero vel, ultricies ultrices quam. Etiam sodales ipsum a odio varius iaculis. Fusce fringilla lorem sit amet lobortis posuere. Donec ut dapibus nibh, vel tempor sapien. Sed volutpat eros quis nibh vehicula, sit amet egestas enim scelerisque. Integer et nulla consectetur, commodo est vel, viverra nunc. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam erat volutpat. Sed fermentum justo ut erat volutpat interdum. Proin cursus et metus non volutpat. Vestibulum rutrum eu nulla et accumsan. In venenatis felis eleifend, porta metus et, egestas augue. Donec ultricies iaculis ornare. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
+	Bugs is a project issue tracker.
 </p>
-<p>
-	Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum in laoreet tortor, eget mollis dolor. Vivamus sagittis augue enim, eu tempor nunc ornare vitae. Vivamus enim magna, tincidunt accumsan odio id, congue euismod justo. Phasellus non adipiscing odio, vel hendrerit orci. Sed tellus turpis, cursus eu purus vel, mollis volutpat sapien. Maecenas sed dui a tortor tincidunt consectetur. Duis urna metus, iaculis eget hendrerit vel, consectetur non felis. Maecenas metus nisl, porttitor vitae accumsan vel, egestas et lorem. Ut vel mi vel nibh consequat mattis. Cras quis neque erat.
-</p>
-<p>
-	Donec id enim a mauris gravida bibendum ut eget tellus. Sed mollis dapibus dictum. Suspendisse potenti. Nullam et orci dui. Donec quis sollicitudin diam. Duis ac hendrerit eros. Nunc scelerisque mollis nisi sit amet auctor. Nulla pretium, tellus eget pulvinar commodo, nisl sem sodales enim, ac congue ligula velit ac nibh.
-</p>
-<p>
-	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean feugiat dolor ac nunc pharetra pharetra. Aliquam egestas orci risus, quis sagittis mauris varius sit amet. Fusce blandit metus at nibh elementum, a cursus arcu sagittis. Nulla non mi non ipsum mollis rutrum. Sed bibendum nibh at turpis viverra lobortis. Pellentesque hendrerit adipiscing dui sed gravida. In vulputate ligula sit amet diam mattis fringilla. Sed accumsan, felis vel iaculis elementum, elit velit semper leo, non elementum arcu orci nec metus.
-</p>
-<p>
-	Nullam faucibus, purus eget dapibus luctus, leo justo cursus tellus, vel tempor libero felis a orci. In pellentesque tincidunt velit quis molestie. Mauris mollis mi leo, vitae euismod libero malesuada ut. Maecenas eu mauris id mi consequat placerat. In hac habitasse platea dictumst. Nunc iaculis feugiat tellus. Cras vitae elementum mauris, vitae hendrerit nibh. Curabitur tempor velit diam, eget suscipit tellus laoreet ut. Aenean eu sem interdum, tempus ante non, vestibulum risus. Cras placerat risus sed hendrerit consequat. Interdum et malesuada fames ac ante ipsum primis in faucibus. Fusce fermentum vehicula elit et sodales. Nulla convallis vehicula ornare. Donec porta nec turpis eu tempor.
-</p>
-<p>
-	Donec elementum ut turpis vitae feugiat. Morbi pretium nisl id turpis tincidunt, et lacinia tellus accumsan. Vestibulum nec purus luctus, venenatis enim eu, porttitor tellus. Aliquam tincidunt nunc ac lectus commodo feugiat. Nullam massa eros, cursus eu arcu in, pharetra auctor nunc. In id nisl sit amet velit dapibus scelerisque et sed dui. Donec mattis ultrices sem non molestie. Cras tortor arcu, fermentum vitae faucibus vel, placerat non ante. Vivamus ut imperdiet neque.
-</p>
-<p>
-	Quisque luctus leo vel leo pretium ullamcorper. Cras est eros, pellentesque vitae mi sit amet, dictum placerat orci. Nullam nec lorem eu tortor luctus elementum. Donec quis adipiscing tellus. Nunc tincidunt at eros nec mollis. Curabitur hendrerit condimentum elit aliquet semper. Duis nec euismod orci.
-</p>
-<p>
-	Curabitur varius sodales ante quis ultrices. Phasellus varius consectetur vehicula. Ut mattis, diam eu auctor interdum, neque magna blandit odio, vitae scelerisque est nunc a magna. Cras nec purus orci. Praesent eleifend diam sem, eget ullamcorper arcu lobortis in. Mauris ut dignissim justo. Nullam id blandit sem, ac convallis sapien. Pellentesque quis congue risus, a pharetra quam. Etiam tincidunt pulvinar imperdiet. Nulla condimentum ultricies nulla quis accumsan. Nullam sit amet dui sed orci dignissim vestibulum sit amet vel nisl. Quisque faucibus, sapien vitae dignissim consectetur, nulla libero ullamcorper ligula, vel volutpat lorem lacus semper massa. Maecenas vitae erat sed lectus euismod egestas. Vestibulum libero turpis, molestie id nibh id, malesuada fermentum nulla. Sed tincidunt purus sodales ultrices fringilla.
-</p>
-<p>
-	Proin porttitor odio tincidunt condimentum tristique. Sed neque justo, dignissim at ligula eget, dictum euismod eros. Aliquam ultrices aliquam risus vel dapibus. Curabitur pulvinar, justo vitae mollis accumsan, ligula sapien cursus purus, nec blandit augue erat vel neque. Suspendisse suscipit tellus ut mi vehicula vestibulum. Donec tristique, elit at elementum iaculis, elit est convallis elit, ut convallis lorem magna a magna. Nulla viverra mi vel eros ullamcorper egestas. Mauris fringilla, nunc sed pharetra suscipit, leo est lacinia nisi, id vehicula lectus elit viverra massa. Duis vulputate tempus nunc eu posuere. Nam varius, arcu eu dignissim elementum, dui mi bibendum nisi, sed ultricies mauris sem a lacus.
-</p>
-<p>
-	Phasellus ante magna, sagittis id risus sit amet, tristique tempor mauris. Vestibulum non vehicula nisl. Curabitur quis justo placerat, adipiscing mi sit amet, consequat felis. Quisque luctus neque neque, vitae blandit mi consectetur ac. Etiam vel tellus nec ante dignissim ultrices. Donec molestie leo vitae faucibus blandit. Praesent nisi augue, varius ut arcu id, ultricies imperdiet mauris. Mauris ultrices condimentum dolor a ultricies. Duis cursus urna in tellus bibendum, in rutrum sem pharetra. Maecenas at ullamcorper orci. Nam posuere risus vitae sapien elementum blandit. Praesent et eros aliquet, viverra sem convallis, interdum nulla. Quisque sed porta lacus, eu consequat sem. Aenean eget eleifend odio. 
-</p>
+{{#if key}}
+	<a class="button" href="#page-projects">
+		Projects
+	</a>
+	<a class="button" href="#page-issues">
+		Issues
+	</a>
+	<a class="button" href="#page-users">
+		Users
+	</a>
+{{else}}
+	<a class="button" href="#page-register">
+		Register
+	</a>
+	<a class="button" href="#page-login">
+		Login
+	</a>
+{{/if}}
