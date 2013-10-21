@@ -1,32 +1,61 @@
-<h1>
-	{{title}}
-</h1>
-<form id="register">
-	<div>
-		Email: <input name="email" type="text"/>
+<form id="form" class="table outline ui-corner-all">
+	<div class="row">
+		<span class="cell align-right">
+			Email:
+		</span>
+		<span class="cell">
+			<input name="email" type="text"/>
+		</span>
 	</div>
-	<div>
-		Username: <input name="username" type="text"/>
+	<div class="row">
+		<span class="cell align-right">
+			Username:
+		</span>
+		<span id="cell">
+			<input name="username" type="text"/>
+		</span>
 	</div>
-	<div>
-		Password: <input name="password" type="password"/>
+	<div class="row">
+		<span class="cell align-right">
+			Password:
+		</span>
+		<span class="cell">
+			<input name="password" type="password"/>
+		</span>
 	</div>
-	<div>
-		Verify Password: <input name="password1" type="password"/>
+	<div class="row">
+		<span class="cell align-right">
+			Verify Password:
+		</span>
+		<span class="cell">
+			<input name="password1" type="password"/>
+		</span>
 	</div>
-	<div>
+	<div class="align-right">
 		<image id="captcha" src="index.php?get=captcha"/>
-		<br/>
-		Captcha: <input name="captcha" type="text"/>
 	</div>
-	<input type="submit" value="register"/>
-	<input type="button" value="cancel" class="cancel"/>
+	<div class="row">
+		<span class="cell align-right">
+			Captcha:
+		</span>
+		<span class="cell">
+			<input name="captcha" type="text"/>
+		</span>
+	</div>
+	<div class="row">
+		<div class="cell align-right">
+			<input type="submit" value="register"/>
+		</div>
+		<div class="cell">
+			<input type="button" value="cancel" class="cancel"/>
+		</div>
+	</div>
 </form>
 <script>
 	{{#if key}}
 		History.back();
 	{{else}}
-		$('form#register').submit(function(){
+		$('form#form').submit(function(){
 			var data = $(this).serializeObject(),
 					State = History.getState();
 				for(var i in State.data){

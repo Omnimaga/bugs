@@ -1,0 +1,18 @@
+{{#if key}}
+	<a class="button" href="#page-newproject">
+		New
+	</a>
+{{/if}}
+<div id="accordion">
+	{{#each projects}}
+		<h3>
+			{{name}}
+		</h3>
+		<div>
+			<a href="#project-{{id}}" class="button">
+				Open
+			</a>
+			{{description}}
+		</div>
+	{{/each}}
+</div>

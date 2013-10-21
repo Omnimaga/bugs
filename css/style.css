@@ -20,7 +20,7 @@ p{
 	top: 0 !important;
 }
 div#topbar{
-	width: 100%;
+	width: calc(100% - 2px);
 	border-color: black;
 	border-style: solid;
 	border-width: 1px;
@@ -31,7 +31,7 @@ div#topbar{
 div.topbar-left{
 	height: 100%;
 }
-div#topbar a{
+div#topbar .menuitem{
 	color: white;
 	text-decoration: none;
 	text-transform: capitalize;
@@ -50,7 +50,10 @@ div#topbar a{
 	cursor: pointer;
 	min-width: 35px;
 }
-div#topbar a:hover{
+div#topbar .menu{
+	color: black;
+}
+div#topbar .menuitem:hover{
 	background-color: white;
 	color: black;
 	border-bottom-color: black;
@@ -106,8 +109,43 @@ span.icon-bugs-invert{
 .screen-small, .screen-large{
 	display: none;
 }
+.table{
+	display: table;
+}
+.row{
+	display: table-row;
+}
+.cell{
+	display: table-cell;
+}
+.column{
+	display: table-column;
+}
+.fill,.fill-width{
+	width: 100%;
+}
+.fill,.fill-height{
+	height: 100%;
+}
+.align-right{
+	text-align: right;
+}
+.align-left{
+	text-align: left;
+}
+.align-center{
+	text-align: center;
+}
+.block{
+	display: block;
+}
+.outline{
+	border-color: black;
+	border-style: solid;
+	border-width: 1px;
+}
 @media screen and (max-width: 767px){
-	div#topbar a, !a.topbar-home{
+	div#topbar .menuitem, !a.topbar-home{
 		padding-left: 5px;
 		padding-right: 5px;
 	}
@@ -160,16 +198,16 @@ span.icon-bugs-invert{
 		padding-top: 35px;
 	}
 	.screen-small{
-		display: inline-block;
+		display: block;
 	}
 }
 @media screen and (min-width: 768px){
-	div#topbar a{
+	div#topbar .menuitem{
 		font-size: 15px;
 		padding-left: 5px;
 		padding-right: 5px;
 	}
-	div#topbar a:hover + a{
+	div#topbar .menuitem:hover + a{
 		border-left-color: black;
 	}
 	a.topbar-back{
@@ -182,7 +220,7 @@ span.icon-bugs-invert{
 		display: none;
 	}
 	.screen-large{
-		display: inline-block;
+		display: block;
 	}
 }
 @viewport{

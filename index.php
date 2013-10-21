@@ -8,10 +8,6 @@
 			@rmdir('install');
 		}
 	}
-	if(!isset($_GET['type'])||!isset($_GET['id'])){
-		header('Location: page-index');
-		die();
-	}
 	require_once('php/include.php');
 	$salt = salt();
 	if(isset($_GET['get'])){
@@ -56,6 +52,10 @@
 			break;
 		}
 	}
+	if(!isset($_GET['type'])||!isset($_GET['id'])){
+		header('Location: page-index');
+		die();
+	}
 ?>
 <!doctype html>
 <html manifest="bugs.appcache">
@@ -71,7 +71,7 @@
 		<link rel="apple-touch-startup-image" href="img/startup.png">
 		<link rel="shortcut icon" href="img/favicon.ico" />
 		<link rel="icon" type="image/png" href="img/favicon-60.png" />
-		<link href="http://code.jquery.com/ui/1.10.3/themes/black-tie/jquery-ui.css" rel="stylesheet" type="text/css"/>
+		<link href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css"/>
 		<link href="css/style.css" rel="stylesheet" type="text/css"/>
 		<title>Bugs</title>
 		<script src="js/modernizr.js"></script>
@@ -114,7 +114,7 @@
 		<script src="js/index.js"></script>
 	</head>
 	<body lang="en">
-		<div id="topbar"></div>
+		<div id="topbar" class="ui-corner-bottom"></div>
 		<div id="content" class="container"></div>
 		<div id="loading"></div>
 	</body>

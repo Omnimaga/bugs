@@ -212,6 +212,8 @@
 			topbar: function(t,c){
 				$('#topbar').html(Handlebars.compile(t)(c));
 				render.links('#topbar');
+				render.buttons('#topbar');
+				render.menus('#topbar');
 				$(window).resize();
 			},
 			content: function(t,c){
@@ -219,7 +221,32 @@
 					Handlebars.compile(t)(c)
 				);
 				render.links('#content');
+				render.buttons('#content');
+				render.accordions('#content');
+				render.menus('#content');
+				render.form('#content');
 				$(window).resize();
+			},
+			accordions: function(selector){
+				$(selector).find('.accordion').accordion();
+			},
+			buttons: function(selector){
+				$(selector).find('.button').button();
+				$(selector).find('input[type=submit]').button();
+				$(selector).find('input[type=button]').button();
+				$(selector).find('button').button();
+			},
+			menus: function(selector){
+				$(selector).find('.menu').css({
+					'list-style':'none'
+				}).menu({
+					icons:{
+						submenu: "ui-icon-circle-triangle-e"
+					}
+				}).removeClass('ui-corner-all').addClass('ui-corner-bottom');
+			},
+			form: function(selector){
+				$(selector).find('#form').position({of:selector,my:'center',at:'center'});
 			},
 			links: function(selector){
 				$(selector).find('a').each(function(){
@@ -316,6 +343,7 @@
 			}
 			$('#content').height($('body').height()-$('#topbar').height());
 			$('#content').getNiceScroll().resize();
+			render.form('#content');
 		});
 		var data = {
 			get: 'settings',

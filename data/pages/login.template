@@ -1,21 +1,38 @@
-<h1>
-	{{title}}
-</h1>
-<form id="login">
-	<div>
-		Username: <input name="username" type="text"/>
+<form id="form" class="table outline ui-corner-all">
+	<div class="row">
+		<span class="cell align-right">
+			<label from="login" for="login-username">
+				Username:
+			</label>
+		</span>
+		<span class="cell">
+			<input name="username" id="login-username" type="text"/>
+		</span>
 	</div>
-	<div>
-		Password: <input name="password" type="password"/>
+	<div class="row">
+		<span class="cell align-right">
+			<label from="login" for="login-password">
+				Password:
+			</label>
+		</span>
+		<span class="cell">
+			<input id="login-password" name="password" type="password"/>
+		</span>
 	</div>
-	<input type="submit" value="login"/>
-	<input type="button" value="cancel" class="cancel"/>
+	<div class="row">
+		<div class="cell align-right">
+			<input type="submit" value="login"/>
+		</div>
+		<div class="cell">
+			<input type="button" value="cancel" class="cancel"/>
+		</div>
+	</div>
 </form>
 <script>
 	{{#if key}}
 		History.back();
 	{{else}}
-		$('form#login').submit(function(){
+		$('form#form').submit(function(){
 			var data = $(this).serializeObject(),
 				State = History.getState();
 			for(var i in State.data){

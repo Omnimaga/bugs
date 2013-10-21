@@ -7,7 +7,7 @@
 		&#128281;	Arrow with back under
 -->
 <div class="topbar-left">
-	<a class="topbar-home" href="#page-index">
+	<a class="topbar-home menuitem" href="#page-index">
 		<span class="screen-large">
 			<span class="icon-bugs"></span>
 			Home
@@ -16,45 +16,74 @@
 			&#8801;
 		</span>
 	</a>
-	<a class="topbar-current" href="#{{url}}">
+	<a class="topbar-current menuitem" href="#{{url}}">
 		{{title}}
 	</a>
 </div>
 <div class="topbar-right">
-	<a class="topbar-back" href="#{{url}}">
+	<a class="topbar-back menuitem" href="#{{url}}">
 		&#8801;
 	</a>
-	<a class="topbar-history" href="#page-index">
+	<a class="topbar-history menuitem" href="#page-index">
 		&larr;
 	</a>
-	<a class="topbar-index" href="#page-index">
+	<a class="topbar-index menuitem" href="#page-index">
 		<span class="icon-bugs-invert"></span>Home
 	</a>
 	{{#unless key}}
-		<a href="#page-users">
-			Users
-		</a>
-		<a href="#page-register">
+		<a class="menuitem" href="#page-register">
 			Register
 		</a>
-		<a href="#page-login">
+		<a class="menuitem" href="#page-login">
 			Login
 		</a>
 	{{else}}
-		<a href="#page-issues">
-			Issues
-		</a>
-		<a href="#page-projects">
-			Projects
-		</a>
-		<a href="#page-users">
-			Users
-		</a>
-		<a href="#~{{user.name}}">
+		<span class="menuitem screen-large" onclick="$(this).next().toggle();">
 			{{user.name}}
-		</a>
-		<a href="#page-logout">
-			Logout
-		</a>
+		</span>
+		<ul class="menu" style="display: none;margin-top:35px;position:absolute;right:0;">
+			<li>
+				<a href="#page-projects">
+					Projects
+				</a>
+			</li>
+			<li>
+				<a href="#page-issues">
+					Issues
+				</a>
+			</li>
+			<li>
+				<a href="#page-users">
+					Users
+				</a>
+			</li>
+			<li>
+				<a href="#~{{user.name}}">
+					Profile
+				</a>
+			</li>
+			<li>
+				<a href="#page-logout">
+					Logout
+				</a>
+			</li>
+		</ul>
+		<span class="screen-small">
+			<a class="menuitem" href="#~{{user.name}}">
+				Profile
+			</a>
+			<a class="menuitem" href="#page-Projects">
+				Projects
+			</a>
+			<a class="menuitem" href="#page-issues">
+				Issues
+			</a>
+			<a class="menuitem" href="#page-users">
+					Users
+				</a>
+			<a class="menuitem" href="#page-logout">
+				Logout
+			</a>
+		</span>
 	{{/unless}}
 </div>

@@ -10,6 +10,7 @@
 	RewriteRule ^\+([^/]*)$ /index.php?type=group&id=$1 [QSA,L]
 	RewriteRule ^\!([^/]*)$ /index.php?type=issue&id=$1 [QSA,L]
 	RewriteRule ^scrum-([^/]*)$ /index.php?type=scrum&id=$1 [QSA,L]
+	RewriteRule ^project-([^/]*)$ /index.php?type=project&id=$1 [QSA,L]
 	RewriteRule ^admin-([^/]*)$ /index.php?type=admin&id=$1 [QSA,L]
 	RewriteRule ^page-([^/]*)$ /index.php?type=page&id=$1 [QSA,L]
 	ErrorDocument 404 /
