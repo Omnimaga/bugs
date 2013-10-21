@@ -2,28 +2,32 @@
   Install on FirefoxOS
 </button>
 <script>
-	(function(ic){
-		ic.onsuccess = function(){
-			if(ic.result){
-				$('button#install').hide();
-			}else{
-				$('button#install').click(function(e){
-					e.preventDefault();
-					// install the app
-					var installLocFind = navigator.mozApps.install(location.origin+'/bugs.webapp');
-					installLocFind.onsuccess = function(data){
-						apiState('page-index');
-					};
-					installLocFind.onerror = function(){
-						// App wasn't installed, info is in
-						// installapp.error.name
-						error(installapp.error.name);
-					};
-					return false;
-				});
+	if(typeof navigator.mozApps != 'undefined'){
+		(function(ic){
+			ic.onsuccess = function(){
+				if(ic.result){
+					$('button#install').hide();
+				}else{
+					$('button#install').click(function(e){
+						e.preventDefault();
+						// install the app
+						var installLocFind = navigator.mozApps.install(location.origin+'/bugs.webapp');
+						installLocFind.onsuccess = function(data){
+							apiState('page-index');
+						};
+						installLocFind.onerror = function(){
+							// App wasn't installed, info is in
+							// installapp.error.name
+							error(installapp.error.name);
+						};
+						return false;
+					});
+				};
 			};
-		};
-	})(navigator.mozApps.checkInstalled(location.origin+"/bugs.webapp"));
+		})(navigator.mozApps.checkInstalled(location.origin+"/bugs.webapp"));
+	}else{
+		$('button#install').hide();
+	}
 </script>
 <h3>
 	Welcome to Bugs
