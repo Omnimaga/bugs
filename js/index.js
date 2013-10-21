@@ -92,7 +92,7 @@
 			$('#loading').show();
 			data.get = 'api';
 			data.timestamp = +new Date;
-			if(exists(templates[data.type+'-'+data.id])){
+			if(''!=template(data.type+'-'+data.id)){
 				data.template = false;
 			}
 			$.get(location.href,data,function(d){
@@ -116,7 +116,6 @@
 				get:'state',
 				timestamp: +new Date
 			};
-			console.log(data,href);
 			ajax = $.ajax(href,{
 					data: data,
 					async: true,
