@@ -47,6 +47,7 @@ div#topbar{
   	background-size: auto 100%;
 	color: black;
 	overflow: hidden;
+	min-height: 50px;
 	box-shadow: 0 1px 3px 1px rgba(0,0,0,0.3);
 }
 div.topbar-left{
@@ -60,22 +61,22 @@ div#topbar .menuitem{
 	vertical-align: middle;
 	margin-left: -1px;
 	float: left;
-	font-size: 20px;
-	line-height: 35px;
+	font-size: 25px;
+	line-height: 50px;
 	overflow: hidden;
 	cursor: pointer;
 	min-width: 35px;
-	height: 35px;
+	height: 50px;
 }
 div#topbar .menuitem:not(.topbar-home):not(.topbar-back){
 	background: url(../img/headers/ui/separator.png) no-repeat scroll left center transparent;
 }
-div#topbar .menuitem:hover{
+div#topbar .menuitem:hover,div#topbar .menuitem:not(.topbar-home):not(.topbar-back):hover{
 	background-image: url(../img/headers/ui/negative.png);
+	background-repeat: repeat-x;
 }
 div#topbar .menuitem:active{
-	border-color: #008aaa;
-	background: #008aaa;
+	background: #008aaa !important;
 	color: #333;
 }
 div#topbar .menu{
@@ -104,25 +105,6 @@ div#loading{
 	background-image: url('../img/load.gif');
 	background-repeat: no-repeat;
 	background-position: center;
-}
-span.icon-bugs{
-	background-image: url('../img/bug.png');
-	background-size: 100%;
-	background-repeat: no-repeat;
-	display: block;
-	width: 35px;
-	height: 35px;
-	font-size: 13px;
-	float: left;
-}
-span.icon-bugs-invert{
-	background-image: url('../img/bug-invert.png');
-	background-size: 100%;
-	background-repeat: no-repeat;
-	display: block;
-	float: left;
-	width: 35px;
-	height: 35px;
 }
 .screen-small, .screen-large{
 	display: none;
@@ -202,15 +184,13 @@ span.icon-bugs-invert{
 		top: 0;
 		padding: 0 !important;
 	}
-	a.topbar-back{
-	}
 	div#topbar{
 		min-height: 35px;
 	}
 	div.topbar-right{
 		min-height: 35px;
 		width: 100%;
-		padding-top: 35px;
+		padding-top: 50px;
 	}
 	.topbar-back,.topbar-history{
 		background: url(../img/headers/ui/separator.png) no-repeat scroll right center transparent;
@@ -221,12 +201,9 @@ span.icon-bugs-invert{
 }
 @media screen and (min-width: 768px){
 	div#topbar .menuitem{
-		font-size: 15px;
+		/*font-size: 15px;*/
 		padding-left: 5px;
 		padding-right: 5px;
-	}
-	div#topbar .menuitem:hover + a{
-		border-left-color: black;
 	}
 	a.topbar-back{
 		display: none !important;

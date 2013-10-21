@@ -254,7 +254,9 @@
 					icons:{
 						submenu: "ui-icon-circle-triangle-e"
 					}
-				}).removeClass('ui-corner-all').addClass('ui-corner-bottom');
+				}).removeClass('ui-corner-all').addClass('ui-corner-bottom').parent().click(function(e){
+					e.stopPropagation();
+				});
 			},
 			form: function(selector){
 				$(selector).find('#form').position({of:selector,my:'center',at:'center'});
@@ -290,6 +292,25 @@
 		setKey(null);
 	}
 	$(document).ready(function(){
+		$.fn.serializeObject = function(){
+			var o = {},
+				a = this.serializeArray();
+			$.each(a,function(){
+				if(o[this.name] !== undefined){
+					if(!o[this.name].push){
+						o[this.name] = [o[this.name]];
+					}
+					o[this.name].push(this.value || '');
+				}else{
+					o[this.name] = this.value || '';
+				}
+			});
+			return o;
+		};
+		$.ajaxSetup({
+			async: false,
+			cache: false
+		});
 		templates = $.localStorage('templates');
 		if(templates === null){
 			templates = [];
@@ -342,6 +363,9 @@
 			cursorwidth: 10,
 			nativeparentscrolling: false,
 			preservenativescrolling: false
+		});
+		$('#content,#topbar').click(function(){
+			$('.menu').hide();
 		});
 		document.addEventListener('touchmove',function(e){
 			e.preventDefault();
@@ -404,23 +428,9 @@
 			flag('manifesto',true);
 		}
 	});
-	$.fn.serializeObject = function(){
-		var o = {},
-			a = this.serializeArray();
-		$.each(a,function(){
-			if(o[this.name] !== undefined){
-				if(!o[this.name].push){
-					o[this.name] = [o[this.name]];
-				}
-				o[this.name].push(this.value || '');
-			}else{
-				o[this.name] = this.value || '';
-			}
-		});
-		return o;
-	};
-	$.ajaxSetup({
-		async: false,
-		cache: false
+	shortcut.add('Shift+f12',function(){
+		templates = [];
+		$.localStorage('templates',null);
+		console.log('Templates cleared.');
 	});
 })(jQuery,History);
