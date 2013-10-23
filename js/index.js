@@ -1,5 +1,5 @@
 // TODO - Add initial page loading and handlers
-(function($,History,log,console){
+(function($,History,console){
 	var State = History.getState(),
 		Old = {},
 		Key = null,
@@ -25,7 +25,7 @@
 		},
 		setKey = window.setKey = function(key){
 			if(key !== null){
-				log('Key change to '+key);
+				console.log('Key change to '+key);
 				Key = key;
 				var d = new Date();
 				d.setTime(d.getTime()+get('expire'));
@@ -33,7 +33,7 @@
 					expires: d
 				});
 			}else{
-				log('Key deleted');
+				console.log('Key deleted');
 				Key = null;
 				$.removeCookie('key');
 			}
@@ -57,7 +57,7 @@
 						templates.splice(id,1);
 					}
 					$.localStorage('templates',templates);
-					log('Dropping template for: '+name);
+					console.log('Dropping template for: '+name);
 					return '';
 				}else{
 					var o = {
@@ -66,16 +66,16 @@
 						date: get('expire')+d
 					}
 					if(id===false){
-						log('Storing new template for: '+name);
+						console.log('Storing new template for: '+name);
 						templates.push(o);
 					}else{
-						log('Replacing old template for: '+name);
+						console.log('Replacing old template for: '+name);
 						templates[id] = o;
 					}
 					$.localStorage('templates',templates);
 				}
 			}else if(id!==false){
-				log('Using cached template for: '+name);
+				console.log('Using cached template for: '+name);
 				var template = templates[id].template;
 				if(templates[id].date < d){
 					delete templates[name];
@@ -83,12 +83,12 @@
 				}
 				return template;
 			}else{
-				log('No cached template stored for: '+name);
+				console.log('No cached template stored for: '+name);
 				return '';
 			}
 		},
 		apiCall = window.apiCall = function(data,callback){
-			log('apiCall('+data.type+'-'+data.id+')');
+			console.log('apiCall('+data.type+'-'+data.id+')');
 			$('#loading').show();
 			data.get = 'api';
 			data.timestamp = +new Date;
@@ -100,18 +100,18 @@
 					error(d);
 				}else{
 					if(location.href.substr(location.href.lastIndexOf('/')+1) != d.state.url){
-						log('Forced redirection to '+d.state.url);
+						console.log('Forced redirection to '+d.state.url);
 						History.replaceState(d.state.data,d.state.title,d.state.url);
 					}
 				}
 				if(exists(callback)){
-					log('Running apiCall callback');
+					console.log('Running apiCall callback');
 					callback(d);
 				}
 			},'json');
 		},
 		loadState = window.loadState = function(href,callback){
-			log('loadState('+href+')');
+			console.log('loadState('+href+')');
 			$('#loading').show();
 			var data = {
 				get:'state',
@@ -125,7 +125,7 @@
 						if(exists(d['error'])){
 							error(d);
 						}else{
-							log('pushState: '+d.state.title+'['+href+']');
+							console.log('pushState: '+d.state.title+'['+href+']');
 							History.pushState(d.state.data,d.state.title,href);
 							getNewState();
 						}
@@ -147,7 +147,7 @@
 			});
 		},
 		apiState = window.apiState = function(href,callback){
-			log('apiState('+href+')');
+			console.log('apiState('+href+')');
 			$('#loading').show();
 			var data = {
 				get:'state',
@@ -161,7 +161,7 @@
 						if(exists(d['error'])){
 							error(d);
 						}else{
-							log('pushState: '+d.state.title+'['+href+']');
+							console.log('pushState: '+d.state.title+'['+href+']');
 							History.replaceState(d.state.data,d.state.title,href);
 							getNewState();
 						}
@@ -190,7 +190,7 @@
 		},
 		getNewState = function(){
 			State = History.getState();
-			log("State change. "+JSON.stringify(State.data));
+			console.log("State change. "+JSON.stringify(State.data));
 			if (!window.location.origin) {
 				window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
 			}
@@ -217,7 +217,7 @@
 				$(window).resize();
 			},
 			content: function(t,c){
-				log(c);
+				console.log(c);
 				$('#content').html(
 					Handlebars.compile(t)(c)
 				);
@@ -274,10 +274,10 @@
 									$(window).resize();
 								}else if($(this).hasClass('topbar-history')){
 									if(!History.back()){
-										log('Reloading on failed back');
+										console.log('Reloading on failed back');
 										location.reload();
 									}else{
-										log('Going back');
+										console.log('Going back');
 									}
 								}else{
 									loadState(href);
@@ -337,7 +337,7 @@
 						apiCall(State.data,function(d){
 							if(exists(d.context)){
 								if(!exists(d.context.key)&&Key!==null){
-									log('Context detected logout');
+									console.log('Context detected console.logout');
 									setKey(null);
 								}
 								if(exists(d.template)){
@@ -366,7 +366,7 @@
 				}
 				Old = State.data;
 			}else{
-				log(State.data,Old);
+				console.log(State.data,Old);
 				console.warn('Stopped double load of '+Old.type+'-'+Old.id);
 				$('#loading').hide();
 			}
@@ -443,6 +443,6 @@
 	shortcut.add('Shift+f12',function(){
 		templates = [];
 		$.localStorage('templates',null);
-		log('Templates cleared.');
+		console.log('Templates cleared.');
 	});
-})(jQuery,History,console.log,console);
+})(jQuery,History,console);

@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# Version 2013-10-21 1:010am
+# Version 2013-10-21 11:49am
 
 js/handlebars.js
 js/index.js
@@ -106,10 +106,7 @@ img/headers/ui/shadow.png
 img/headers/ui/subheader.png
 img/load.gif
 img/startup.png
-img/toolbars
-img/toolbars/icons
 img/toolbars/icons/update.png
-img/toolbars/ui
 img/toolbars/ui/background.png
 
 NETWORK:
