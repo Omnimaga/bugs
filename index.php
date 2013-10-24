@@ -114,7 +114,7 @@
 		<script src="js/index.js"></script>
 	</head>
 	<body lang="en">
-		<div id="topbar"></div>
+		<div id="topbar" class="overflow-hide"></div>
 		<div id="content" class="container"></div>
 		<div id="loading"></div>
 	</body>

@@ -41,15 +41,15 @@
 		<div style="background-image:url(img/headers/icons/back.png);background-repeat:no-repeat;background-position:center;width:35px;height:50px;"></div>
 	</a>
 	<a class="topbar-current menuitem" href="#{{url}}">
+		<div style="background-image:url(img/headers/icons/update.png);background-repeat:no-repeat;height:50px;background-position:center;width:35px;float:left;"></div>
+	</a>
+	<a class="topbar-current menuitem">
 		{{title}}
 	</a>
 </div>
 <div class="topbar-right">
 	<a class="topbar-back menuitem" href="#{{url}}">
 		<div style="background-image:url(img/headers/icons/menu.png);background-repeat:no-repeat;height:50px;background-position:center;"></div>
-	</a>
-	<a class="topbar-current menuitem" href="#{{url}}">
-		{{title}}
 	</a>
 	{{#unless key}}
 		<a class="menuitem" href="#page-register">

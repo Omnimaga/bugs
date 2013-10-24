@@ -91,6 +91,7 @@
 			console.log('apiCall('+data.type+'-'+data.id+')');
 			$('#loading').show();
 			data.get = 'api';
+			data.back = State.data.back;
 			data.timestamp = +new Date;
 			if(''!=template(data.type+'-'+data.id)){
 				data.template = false;
@@ -116,7 +117,8 @@
 			$('#loading').show();
 			var data = {
 				get:'state',
-				timestamp: +new Date
+				timestamp: +new Date,
+				back: location.href
 			};
 			ajax = $.ajax(href,{
 					data: data,
@@ -133,9 +135,11 @@
 						if(exists(callback)){
 							callback(d);
 						}
-						flag('handled',true);
-						stateChange();
-						flag('handled',false);
+						if(!exists(d['error'])){
+							flag('handled',true);
+							stateChange();
+							flag('handled',false);
+						}
 					},
 					error: function(x,t,e){
 						error({
@@ -155,7 +159,8 @@
 			$('#loading').show();
 			var data = {
 				get:'state',
-				timestamp: +new Date
+				timestamp: +new Date,
+				back: State.data.back
 			};
 			$.ajax(href,{
 					data: data,
@@ -172,9 +177,11 @@
 						if(exists(callback)){
 							callback(d);
 						}
-						flag('handled',true);
-						stateChange();
-						flag('handled',false);
+						if(!exists(d['error'])){
+							flag('handled',true);
+							stateChange();
+							flag('handled',false);
+						}
 					},
 					error: function(x,t,e){
 						error({
@@ -209,22 +216,29 @@
 				switch(State.data.type){
 					case 'page':case 'user':case 'project':
 						apiCall(State.data,function(d){
-							if(exists(d.context)){
-								if(!exists(d.context.key)&&Key!==null){
-									console.log('Context detected console.logout');
-									setKey(null);
-								}
-								if(exists(d.template)){
-									template(State.data.type+'-'+State.data.id,d.template);
+							if(!exists(d.error)){
+								if(exists(d.context)){
+									if(!exists(d.context.key)&&Key!==null){
+										console.log('Context detected console.logout');
+										setKey(null);
+									}
+									if(exists(d.template)){
+										template(State.data.type+'-'+State.data.id,d.template);
+									}else{
+										d.template = template(State.data.type+'-'+State.data.id);
+									}
+									render.topbar(d.topbar.template,d.topbar.context);
+									render.content(d.template,d.context);
+									$(window).resize();
+									$('#loading').hide();
 								}else{
-									d.template = template(State.data.type+'-'+State.data.id);
+									console.error('No context given');
+									if(!History.back()){
+										location.reload();
+									}
 								}
-								render.topbar(d.topbar.template,d.topbar.context);
-								render.content(d.template,d.context);
-								$(window).resize();
-								$('#loading').hide();
 							}else{
-								console.error('No context given');
+								error(d);
 								if(!History.back()){
 									location.reload();
 								}
@@ -264,6 +278,10 @@
 				render.links('#topbar');
 				render.buttons('#topbar');
 				render.menus('#topbar');
+				if(!State.data.back || State.url == location.origin+'/page-index'){
+					$('#topbar').find('.topbar-history').hide();
+				}
+				$('#topbar').addClass('overflow-hide');
 				$(window).resize();
 			},
 			content: function(t,c){
@@ -321,13 +339,13 @@
 							try{
 								if(($(this).hasClass('topbar-home') || $(this).hasClass('topbar-back'))&&$(window).width()<767){
 									$('#topbar').children('div.topbar-right,div.topbar-left').toggle();
+									$('#topbar').toggleClass('overflow-hide');
 									$(window).resize();
 								}else if($(this).hasClass('topbar-history')){
-									if(!History.back()){
-										console.log('Reloading on failed back');
+									if(State.data.back){
+										loadState(State.data.back);
+									}else if(!History.back()){
 										location.reload();
-									}else{
-										console.log('Going back');
 									}
 								}else{
 									loadState(href);
@@ -401,7 +419,8 @@
 		});
 		var data = {
 			get: 'settings',
-			timestamp: +new Date
+			timestamp: +new Date,
+			back: false
 		};
 		$.get(location.href,data,function(d){
 			settings = d;

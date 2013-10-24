@@ -147,6 +147,12 @@ div#loading{
 .top{
 	z-index: 2147483638;
 }
+.overflow-hide{
+	overflow: hidden;
+}
+#topbar.overflow-hide{
+	max-height: 50px;
+}
 @media screen and (max-width: 767px){
 	div#topbar a.menuitem:not(.topbar-home){
 		padding-left: 5px;
@@ -157,6 +163,9 @@ div#loading{
 	}
 	a.topbar-home{
 		padding: 0;
+	}
+	a.topbar-current{
+		max-width: 205px;
 	}
 	div.topbar-left a.topbar-current{
 		float: right !important;
