@@ -102,6 +102,7 @@
 					if(location.href.substr(location.href.lastIndexOf('/')+1) != d.state.url){
 						console.log('Forced redirection to '+d.state.url);
 						History.replaceState(d.state.data,d.state.title,d.state.url);
+						getNewState();
 					}
 				}
 				if(exists(callback)){
@@ -132,6 +133,9 @@
 						if(exists(callback)){
 							callback(d);
 						}
+						flag('handled',true);
+						stateChange();
+						flag('handled',false);
 					},
 					error: function(x,t,e){
 						error({
@@ -168,6 +172,9 @@
 						if(exists(callback)){
 							callback(d);
 						}
+						flag('handled',true);
+						stateChange();
+						flag('handled',false);
 					},
 					error: function(x,t,e){
 						error({
@@ -193,6 +200,49 @@
 			console.log("State change. "+JSON.stringify(State.data));
 			if (!window.location.origin) {
 				window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
+			}
+		},
+	stateChange = function(){
+			getNewState();
+			if(!equal(State.data,Old)){
+				document.title = State.title;
+				switch(State.data.type){
+					case 'page':case 'user':case 'project':
+						apiCall(State.data,function(d){
+							if(exists(d.context)){
+								if(!exists(d.context.key)&&Key!==null){
+									console.log('Context detected console.logout');
+									setKey(null);
+								}
+								if(exists(d.template)){
+									template(State.data.type+'-'+State.data.id,d.template);
+								}else{
+									d.template = template(State.data.type+'-'+State.data.id);
+								}
+								render.topbar(d.topbar.template,d.topbar.context);
+								render.content(d.template,d.context);
+								$(window).resize();
+								$('#loading').hide();
+							}else{
+								console.error('No context given');
+								if(!History.back()){
+									location.reload();
+								}
+							}
+						});
+					break;
+					case 'action':break;
+					default:
+						error({
+							url: State.url,
+							error: "Something went wrong!"
+						});
+				}
+				Old = State.data;
+			}else{
+				console.log(State.data,Old);
+				console.warn('Stopped double load of '+Old.type+'-'+Old.id);
+				$('#loading').hide();
 			}
 		},
 		equal = function(o1,o2){
@@ -328,49 +378,6 @@
 		if(!exists($.support.touch)){
 			$.support.touch = 'ontouchstart' in window || 'onmsgesturechange' in window;
 		}
-		$(window).on('statechange',function(){
-			getNewState();
-			if(!equal(State.data,Old)){
-				document.title = State.title;
-				switch(State.data.type){
-					case 'page':case 'user':case 'project':
-						apiCall(State.data,function(d){
-							if(exists(d.context)){
-								if(!exists(d.context.key)&&Key!==null){
-									console.log('Context detected console.logout');
-									setKey(null);
-								}
-								if(exists(d.template)){
-									template(State.data.type+'-'+State.data.id,d.template);
-								}else{
-									d.template = template(State.data.type+'-'+State.data.id);
-								}
-								render.topbar(d.topbar.template,d.topbar.context);
-								render.content(d.template,d.context);
-								$(window).resize();
-								$('#loading').hide();
-							}else{
-								console.error('No context given');
-								if(!History.back()){
-									location.reload();
-								}
-							}
-						});
-					break;
-					case 'action':break;
-					default:
-						error({
-							url: State.url,
-							error: "Something went wrong!"
-						});
-				}
-				Old = State.data;
-			}else{
-				console.log(State.data,Old);
-				console.warn('Stopped double load of '+Old.type+'-'+Old.id);
-				$('#loading').hide();
-			}
-		});
 		$('#content').niceScroll({
 			cursorwidth: 10,
 			nativeparentscrolling: false,
@@ -400,6 +407,12 @@
 			settings = d;
 			apiState(location.href);
 		},'json');
+		$(window).on('statechange',function(){
+			if(!flag('handled')){
+				console.log('unhandled state change event');
+				stateChange();
+			}
+		});
 	});
 	shortcut.add('f12',function(){
 		if(!flag('firebug-lite')){
