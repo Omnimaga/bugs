@@ -342,8 +342,8 @@
 					input.after(
 						$('<div>').css({
 							position: 'absolute',
-							right: $(window).width() - (input.outerWidth() + input.position().left),
-							top: input.position().top,
+							right: $(window).width() - (input.outerWidth() + input.position().left)+2,
+							top: input.position().top+2,
 							'background-image': 'url(img/headers/icons/clear.png)',
 							'background-position': 'center',
 							'background-size': '17px 17px',
