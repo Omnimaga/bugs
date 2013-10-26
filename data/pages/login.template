@@ -1,31 +1,13 @@
 <form id="form" class="table outline ui-corner-all">
 	<div class="row">
-		<span class="cell align-right">
-			<label from="login" for="login-username">
-				Username:
-			</label>
-		</span>
-		<span class="cell">
-			<input name="username" id="login-username" type="text"/>
-		</span>
+		<input name="username" placeholder="Username" id="login-username" type="text"/>
 	</div>
 	<div class="row">
-		<span class="cell align-right">
-			<label from="login" for="login-password">
-				Password:
-			</label>
-		</span>
-		<span class="cell">
-			<input id="login-password" name="password" type="password"/>
-		</span>
+		<input id="login-password" placeholder="Password" name="password" type="password"/>
 	</div>
 	<div class="row">
-		<div class="cell align-right">
-			<input type="button" value="cancel" class="cancel"/>
-		</div>
-		<div class="cell">
-			<input type="submit" value="login"/>
-		</div>
+		<input type="button" value="cancel" class="cancel left"/>
+		<input type="submit" class="right" value="login"/>
 	</div>
 </form>
 <script>
@@ -51,8 +33,8 @@
 				return false;
 			});
 			return false;
-		}).children('.cancel').click(function(){
-			History.back();
+		}).find('.cancel').click(function(){
+			back();
 			return false;
 		});
 	{{/if}}

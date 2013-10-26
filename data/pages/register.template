@@ -1,82 +1,58 @@
 <form id="form" class="table outline ui-corner-all">
 	<div class="row">
-		<span class="cell align-right">
-			Email:
-		</span>
-		<span class="cell">
-			<input name="email" type="text"/>
-		</span>
+		<input name="email" placeholder="Email" type="text"/>
 	</div>
 	<div class="row">
-		<span class="cell align-right">
-			Username:
-		</span>
-		<span id="cell">
-			<input name="username" type="text"/>
-		</span>
+		<input name="username" placeholder="Username" type="text"/>
 	</div>
 	<div class="row">
-		<span class="cell align-right">
-			Password:
-		</span>
-		<span class="cell">
-			<input name="password" type="password"/>
-		</span>
+		<input name="password"  placeholder="Password" type="password"/>
 	</div>
 	<div class="row">
-		<span class="cell align-right">
-			Verify Password:
-		</span>
-		<span class="cell">
-			<input name="password1" type="password"/>
-		</span>
+		<input name="password1"  placeholder="Verify Password" type="password"/>
 	</div>
-	<div class="align-right">
-		<image id="captcha" src="index.php?get=captcha"/>
+	<div class="fill-width" style="height:20px;background-repeat:no-repeat;background-position:center;background-size:165px 20px;" id="captcha"></div>
+	<div class="row">
+		<input name="captcha" placeholder="Captcha" type="text"/>
 	</div>
 	<div class="row">
-		<span class="cell align-right">
-			Captcha:
-		</span>
-		<span class="cell">
-			<input name="captcha" type="text"/>
-		</span>
-	</div>
-	<div class="row">
-		<div class="cell align-right">
-			<input type="button" value="cancel" class="cancel"/>
-		</div>
-		<div class="cell">
-			<input type="submit" value="login"/>
-		</div>
+		<input type="button" value="cancel" class="cancel left"/>
+		<input type="submit" value="register" class="right"/>
 	</div>
 </form>
 <script>
 	{{#if key}}
-		History.back();
+		replaceState('page-index');
 	{{else}}
-		$('form#form').submit(function(){
-			var data = $(this).serializeObject(),
-					State = History.getState();
-				for(var i in State.data){
-					data[i] = State.data;
-				}
-				data.type = 'action';
-				data.id = 'register';
-				apiCall(data,function(d){
-					if(!d.error){
-						setKey(d.key);
-						loadState('page-index');
-					}else{
-						setKey(null);
-						$('#captcha').attr('src','index.php?get=captcha&timestamp='+new Date);
-						$('#loading').hide();
+		$(document).ready(function(){
+			var reloadCaptcha = function(){
+				$('#captcha').css('background-image','url(index.php?get=captcha&timestamp='+(+new Date)+')');
+				$('input[name=captcha]').val('');
+			};
+			reloadCaptcha();
+			$('form#form').submit(function(){
+				var data = $(this).serializeObject(),
+						State = History.getState();
+					for(var i in State.data){
+						data[i] = State.data;
 					}
-				});
-			return false;
-		}).children('.cancel').click(function(){
-			History.back();
-			return false;
+					data.type = 'action';
+					data.id = 'register';
+					apiCall(data,function(d){
+						if(!d.error){
+							setKey(d.key);
+							loadState('page-index');
+						}else{
+							setKey(null);
+							reloadCaptcha();
+							$('#loading').hide();
+						}
+					});
+				return false;
+			}).find('.cancel').click(function(){
+				back();
+				return false;
+			});
 		});
 	{{/if}}
 </script>

@@ -160,6 +160,12 @@ div#loading{
 .overflow-hide{
 	overflow: hidden;
 }
+.left{
+	float: left;
+}
+.right{
+	float: right;
+}
 #topbar.overflow-hide{
 	max-height: 50px;
 }

@@ -384,7 +384,7 @@
 				});
 			}
 		},
-		back = function(){
+		back = window.back = function(){
 			if(exists(State.data.back)){
 				if(!History.back()){
 					loadState(State.data.back);

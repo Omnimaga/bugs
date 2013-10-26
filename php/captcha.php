@@ -2,10 +2,10 @@
     require_once(realpath(dirname(__FILE__)).'/config.php');
     require_once(PATH_PHP.'security.php');
     function generate_captcha(){
-		$captcha = substr(md5(rand()),0,7);
+		$captcha = substr(md5(rand()),0,15);
 		$_SESSION['captcha'] = $captcha;
 		//Set the image width and height
-		$width = 100;
+		$width = 165;
 		$height = 20; 
 		//Create the image resource 
 		$image = ImageCreate($width, $height);  
