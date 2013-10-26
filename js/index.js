@@ -177,6 +177,7 @@
 						if(exists(callback)){
 							callback(d);
 						}
+						console.log(d.state.title);
 						if(!exists(d['error'])){
 							flag('handled',true);
 							stateChange();
@@ -197,22 +198,24 @@
 			});
 		},
 		error = function(e){
-			var msg = '['+State.url+']'+e.error;
-			console.error(msg.trim()+"\n"+(exists(e.state)?JSON.stringify(e.state):''));
-			alert(msg.trim());
-			$('#loading').hide();
+			if(!flag('error')){
+				flag('error',true);
+				var msg = '['+State.url+']'+e.error;
+				console.error(msg.trim()+"\n"+(exists(e.state)?JSON.stringify(e.state):''));
+				alert(msg.trim());
+			}
 		},
 		getNewState = function(){
 			State = History.getState();
-			console.log("State change. "+JSON.stringify(State.data));
-			if (!window.location.origin) {
+			console.log("State change: ["+State.title+"] "+JSON.stringify(State.data));
+			if(!window.location.origin){
 				window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
 			}
+			document.title = State.title;
 		},
-	stateChange = function(){
+		stateChange = function(){
 			getNewState();
 			if(!equal(State.data,Old)){
-				document.title = State.title;
 				switch(State.data.type){
 					case 'page':case 'user':case 'project':
 						apiCall(State.data,function(d){
@@ -230,18 +233,14 @@
 									render.topbar(d.topbar.template,d.topbar.context);
 									render.content(d.template,d.context);
 									$(window).resize();
-									$('#loading').hide();
+									loading(false);
 								}else{
 									console.error('No context given');
-									if(!History.back()){
-										location.reload();
-									}
+									back();
 								}
 							}else{
 								error(d);
-								if(!History.back()){
-									location.reload();
-								}
+								back();
 							}
 						});
 					break;
@@ -256,7 +255,7 @@
 			}else{
 				console.log(State.data,Old);
 				console.warn('Stopped double load of '+Old.type+'-'+Old.id);
-				$('#loading').hide();
+				loading(false);
 			}
 		},
 		equal = function(o1,o2){
@@ -278,14 +277,13 @@
 				render.links('#topbar');
 				render.buttons('#topbar');
 				render.menus('#topbar');
-				if(!State.data.back || State.url == location.origin+'/page-index'){
+				if(State.url == location.origin+'/page-index'){
 					$('#topbar').find('.topbar-history').hide();
 				}
 				$('#topbar').addClass('overflow-hide');
 				$(window).resize();
 			},
 			content: function(t,c){
-				console.log(c);
 				$('#content').html(
 					Handlebars.compile(t)(c)
 				);
@@ -330,6 +328,16 @@
 			form: function(selector){
 				$(selector).find('#form').position({of:selector,my:'center',at:'center'});
 			},
+			dialog: function(selector){
+				$(selector).dialog({
+					close: function(){
+						loading(false);
+						flag('error',false);
+					},
+					resizable: false,
+					draggable: false
+				});
+			},
 			links: function(selector){
 				$(selector).find('a').each(function(){
 					var href = this.href;
@@ -342,11 +350,7 @@
 									$('#topbar').toggleClass('overflow-hide');
 									$(window).resize();
 								}else if($(this).hasClass('topbar-history')){
-									if(State.data.back){
-										loadState(State.data.back);
-									}else if(!History.back()){
-										location.reload();
-									}
+									back();
 								}else{
 									loadState(href);
 								}
@@ -358,6 +362,30 @@
 						});
 					}
 				});
+			}
+		},
+		back = function(){
+			if(exists(State.data.back)){
+				if(!History.back()){
+					loadState(State.data.back);
+				}
+			}else if(State.data.type != 'page' || State.data.id != 'index'){
+				loadState('page-index');
+			}else{
+				location.reload();
+			}
+		},
+		alert = function(text){
+			$('#dialog').text(text);
+			render.dialog('#dialog');
+		},
+		loading = function(state){
+			state = exists(state)?state:false;
+			console.log('loading state '+state);
+			if(!flag('error') && !state){
+				$('#loading').hide();
+			}else if(state){
+				$('#loading').show();
 			}
 		};
 	if(exists($.cookie('key'))){
@@ -432,6 +460,14 @@
 				stateChange();
 			}
 		});
+		var getState = History.getState;
+		History.getState = function(flag){
+			if(exists(flag)){
+				return State;
+			}else{
+				return getState.call(History);
+			}
+		};
 	});
 	shortcut.add('f12',function(){
 		if(!flag('firebug-lite')){

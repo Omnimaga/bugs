@@ -22,7 +22,11 @@
 		}
 		// Title
 		if(is_null($title)){
-			$title = $_GET['id'];
+			if(!isset($context['title'])){
+				$title = $_GET['id'];
+			}else{
+				$title = $context['title'];
+			}
 		}
 		$json['state']['title'] = $title;
 		// URL

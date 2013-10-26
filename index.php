@@ -117,5 +117,6 @@
 		<div id="topbar" class="overflow-hide"></div>
 		<div id="content" class="container"></div>
 		<div id="loading"></div>
+		<div id="dialog"></div>
 	</body>
 </html>
