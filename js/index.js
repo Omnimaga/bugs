@@ -208,7 +208,7 @@
 				flag('error',true);
 				var msg = '['+State.url+']'+e.error;
 				console.error(msg.trim()+"\n"+(exists(e.state)?JSON.stringify(e.state):''));
-				alert(msg.trim(),callback);
+				alert(msg.trim(),'Error',callback);
 			}
 		},
 		getNewState = function(){
@@ -334,7 +334,7 @@
 			form: function(selector){
 				$(selector).find('#form').position({of:selector,my:'center',at:'center'});
 			},
-			dialog: function(selector){
+			dialog: function(selector,title){
 				$(selector).dialog({
 					close: function(){
 						flag('error',false);
@@ -345,7 +345,17 @@
 						loading(false);
 					},
 					resizable: false,
-					draggable: false
+					draggable: false,
+					title: title,
+					buttons: [
+						{
+							text: 'Ok',
+							class: 'recommend-force',
+							click: function(){
+								$(this).dialog('close');
+							}
+						}
+					]
 				});
 			},
 			links: function(selector){
@@ -385,9 +395,9 @@
 				location.reload();
 			}
 		},
-		alert = function(text,callback){
+		alert = function(text,title,callback){
 			$('#dialog').text(text).data('callback',callback);
-			render.dialog('#dialog');
+			render.dialog('#dialog',title,callback);
 		},
 		loading = function(state){
 			state = exists(state)?state:false;

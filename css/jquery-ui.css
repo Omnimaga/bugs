@@ -194,7 +194,6 @@
 	cursor: default;
 }
 .ui-button {
-	text-shadow: 0.1rem 0.1rem 0 rgba(255,255,255,0.3);
 	display: inline-block;
 	position: relative;
 	padding: 0;
@@ -231,6 +230,7 @@ button.ui-button-icons-only {
 .ui-button .ui-button-text {
 	display: block;
 	line-height: normal;
+	font-weight: 500;
 }
 .ui-button-text-only .ui-button-text {
 	padding: .4em 1em;
@@ -792,7 +792,6 @@ body .ui-tooltip {
 /* Component containers
 ----------------------------------*/
 .ui-widget {
-	font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;
 	font-size: 1.1em;
 }
 .ui-widget .ui-widget {
@@ -802,7 +801,6 @@ body .ui-tooltip {
 .ui-widget select,
 .ui-widget textarea,
 .ui-widget button {
-	font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;
 	font-size: 1em;
 }
 .ui-widget-content {
@@ -815,7 +813,7 @@ body .ui-tooltip {
 }
 .ui-widget-header {
 	border: 1px solid #e78f08;
-	background: #f6a828 url(images/ui-bg_gloss-wave_35_f6a828_500x100.png) 50% 50% repeat-x;
+	background: #fafafa url(../img/headers/ui/header.png) repeat-x left bottom;
 	color: #ffffff;
 	font-weight: bold;
 }
@@ -1132,25 +1130,25 @@ body .ui-tooltip {
 .ui-corner-top,
 .ui-corner-left,
 .ui-corner-tl {
-	border-top-left-radius: 4px;
+	border-top-left-radius: 2px;
 }
 .ui-corner-all,
 .ui-corner-top,
 .ui-corner-right,
 .ui-corner-tr {
-	border-top-right-radius: 4px;
+	border-top-right-radius: 2px;
 }
 .ui-corner-all,
 .ui-corner-bottom,
 .ui-corner-left,
 .ui-corner-bl {
-	border-bottom-left-radius: 4px;
+	border-bottom-left-radius: 2px;
 }
 .ui-corner-all,
 .ui-corner-bottom,
 .ui-corner-right,
 .ui-corner-br {
-	border-bottom-right-radius: 4px;
+	border-bottom-right-radius: 2px;
 }
 
 /* Overlays */

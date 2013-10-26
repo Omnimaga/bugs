@@ -25,6 +25,16 @@ input[type=submit]:active,button.recommend:active{
 	background: #008aaa;
 	color: #333;
 }
+.recommend-force{
+	background-image: url(../img/buttons/ui/recommend.png) !important;
+	background-color: #00caf2 !important;
+	border-color: #00acce !important;
+}
+.recommend-force:active{
+	border-color: #008aaa !important;
+	background: #008aaa !important;
+	color: #333 !important;
+}
 .cancel{
 	background-image: url(../images/buttons/ui/danger.png);
 	background-color: #b70404;

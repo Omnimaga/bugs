@@ -1,6 +1,7 @@
 *{
 	font-family: 'FiraSans';
 	word-wrap: break-word;
+	font-weight: normal;
 }
 body,input[type=text],input[type=password]{
 	font-size: 130%;
