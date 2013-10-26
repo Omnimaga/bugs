@@ -89,120 +89,126 @@
 		},
 		apiCall = window.apiCall = function(data,callback){
 			console.log('apiCall('+data.type+'-'+data.id+')');
+			if(!flag('error')){
 			loading(true);
 			data.get = 'api';
-			data.back = State.data.back;
-			data.timestamp = +new Date;
-			if(''!=template(data.type+'-'+data.id)){
-				data.template = false;
-			}
-			$.get(location.href,data,function(d){
-				if(exists(d['error'])){
-					error(d);
-				}else{
-					if(location.href.substr(location.href.lastIndexOf('/')+1) != d.state.url){
-						console.log('Forced redirection to '+d.state.url);
-						History.replaceState(d.state.data,d.state.title,d.state.url);
-						getNewState();
+				data.back = State.data.back;
+				data.timestamp = +new Date;
+				if(''!=template(data.type+'-'+data.id)){
+					data.template = false;
+				}
+				$.get(location.href,data,function(d){
+					if(exists(d['error'])){
+						error(d);
+					}else{
+						if(location.href.substr(location.href.lastIndexOf('/')+1) != d.state.url){
+							console.log('Forced redirection to '+d.state.url);
+							History.replaceState(d.state.data,d.state.title,d.state.url);
+							getNewState();
+						}
 					}
-				}
-				if(exists(callback)){
-					console.log('Running apiCall callback');
-					callback(d);
-				}
-			},'json');
+					if(exists(callback)){
+						console.log('Running apiCall callback');
+						callback(d);
+					}
+				},'json');
+			}
 		},
 		loadState = window.loadState = function(href,callback){
 			console.log('loadState('+href+')');
-			loading(true);
-			var data = {
-				get:'state',
-				timestamp: +new Date,
-				back: location.href
-			};
-			ajax = $.ajax(href,{
-					data: data,
-					async: true,
-					type: 'GET',
-					success: function(d){
-						if(exists(d['error'])){
-							error(d);
-						}else{
-							console.log('pushState: '+d.state.title+'['+href+']');
-							History.pushState(d.state.data,d.state.title,href);
-							getNewState();
-						}
-						if(exists(callback)){
-							callback(d);
-						}
-						if(!exists(d['error'])){
-							flag('handled',true);
-							stateChange();
-							flag('handled',false);
-						}
-					},
-					error: function(x,t,e){
-						error({
-							error: '['+t+'] '+e
-						});
-						if(exists(callback)){
-							callback({
+			if(!flag('error')){
+				loading(true);
+				var data = {
+					get:'state',
+					timestamp: +new Date,
+					back: location.href
+				};
+				ajax = $.ajax(href,{
+						data: data,
+						async: true,
+						type: 'GET',
+						success: function(d){
+							if(exists(d['error'])){
+								error(d);
+							}else{
+								console.log('pushState: '+d.state.title+'['+href+']');
+								History.pushState(d.state.data,d.state.title,href);
+								getNewState();
+							}
+							if(exists(callback)){
+								callback(d);
+							}
+							if(!exists(d['error'])){
+								flag('handled',true);
+								stateChange();
+								flag('handled',false);
+							}
+						},
+						error: function(x,t,e){
+							error({
 								error: '['+t+'] '+e
 							});
-						}
-					},
-					dataType: 'json'
-			});
+							if(exists(callback)){
+								callback({
+									error: '['+t+'] '+e
+								});
+							}
+						},
+						dataType: 'json'
+				});
+			}
 		},
 		apiState = window.apiState = function(href,callback){
 			console.log('apiState('+href+')');
-			loading(true);
-			var data = {
-				get:'state',
-				timestamp: +new Date,
-				back: State.data.back
-			};
-			$.ajax(href,{
-					data: data,
-					async: true,
-					type: 'GET',
-					success: function(d){
-						if(exists(d['error'])){
-							error(d);
-						}else{
-							console.log('pushState: '+d.state.title+'['+href+']');
-							History.replaceState(d.state.data,d.state.title,href);
-							getNewState();
-						}
-						if(exists(callback)){
-							callback(d);
-						}
-						console.log(d.state.title);
-						if(!exists(d['error'])){
-							flag('handled',true);
-							stateChange();
-							flag('handled',false);
-						}
-					},
-					error: function(x,t,e){
-						error({
-							error: '['+t+'] '+e
-						});
-						if(exists(callback)){
-							callback({
+			if(!flag('error')){
+				loading(true);
+				var data = {
+					get:'state',
+					timestamp: +new Date,
+					back: State.data.back
+				};
+				$.ajax(href,{
+						data: data,
+						async: true,
+						type: 'GET',
+						success: function(d){
+							if(exists(d['error'])){
+								error(d);
+							}else{
+								console.log('pushState: '+d.state.title+'['+href+']');
+								History.replaceState(d.state.data,d.state.title,href);
+								getNewState();
+							}
+							if(exists(callback)){
+								callback(d);
+							}
+							console.log(d.state.title);
+							if(!exists(d['error'])){
+								flag('handled',true);
+								stateChange();
+								flag('handled',false);
+							}
+						},
+						error: function(x,t,e){
+							error({
 								error: '['+t+'] '+e
 							});
-						}
-					},
-					dataType: 'json'
-			});
+							if(exists(callback)){
+								callback({
+									error: '['+t+'] '+e
+								});
+							}
+						},
+						dataType: 'json'
+				});
+			}
 		},
-		error = function(e){
+		error = function(e,callback){
 			if(!flag('error')){
 				flag('error',true);
 				var msg = '['+State.url+']'+e.error;
 				console.error(msg.trim()+"\n"+(exists(e.state)?JSON.stringify(e.state):''));
-				alert(msg.trim());
+				alert(msg.trim(),callback);
 			}
 		},
 		getNewState = function(){
@@ -331,8 +337,12 @@
 			dialog: function(selector){
 				$(selector).dialog({
 					close: function(){
-						loading(false);
 						flag('error',false);
+						var fn = $(this).data('callback');
+						if(exists(fn)){
+							fn();
+						}
+						loading(false);
 					},
 					resizable: false,
 					draggable: false
@@ -375,8 +385,8 @@
 				location.reload();
 			}
 		},
-		alert = function(text){
-			$('#dialog').text(text);
+		alert = function(text,callback){
+			$('#dialog').text(text).data('callback',callback);
 			render.dialog('#dialog');
 		},
 		loading = function(state){
