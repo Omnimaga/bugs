@@ -1,21 +1,21 @@
-<form id="form" class="table outline ui-corner-all">
-	<div class="row">
-		<input name="email" placeholder="Email" type="text"/>
+<form id="form">
+	<div>
+		<input name="email" class="fill-width" placeholder="Email" type="text"/>
 	</div>
-	<div class="row">
-		<input name="username" placeholder="Username" type="text"/>
+	<div>
+		<input name="username" class="fill-width" placeholder="Username" type="text"/>
 	</div>
-	<div class="row">
-		<input name="password"  placeholder="Password" type="password"/>
+	<div>
+		<input name="password" class="fill-width"  placeholder="Password" type="password"/>
 	</div>
-	<div class="row">
-		<input name="password1"  placeholder="Verify Password" type="password"/>
+	<div>
+		<input name="password1" class="fill-width"  placeholder="Verify Password" type="password"/>
 	</div>
 	<div class="fill-width" style="height:20px;background-repeat:no-repeat;background-position:center;background-size:165px 20px;" id="captcha"></div>
-	<div class="row">
-		<input name="captcha" placeholder="Captcha" type="text"/>
+	<div>
+		<input name="captcha" class="fill-width" placeholder="Captcha" type="text"/>
 	</div>
-	<div class="row">
+	<div>
 		<input type="button" value="cancel" class="cancel left"/>
 		<input type="submit" value="register" class="right"/>
 	</div>

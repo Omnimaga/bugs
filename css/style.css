@@ -25,6 +25,9 @@ input[type=submit]:active,button.recommend:active{
 	background: #008aaa;
 	color: #333;
 }
+form#form{
+	width: 320px;
+}
 .recommend-force{
 	background-image: url(../img/buttons/ui/recommend.png) !important;
 	background-color: #00caf2 !important;

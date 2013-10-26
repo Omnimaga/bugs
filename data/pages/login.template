@@ -1,13 +1,13 @@
-<form id="form" class="table outline ui-corner-all">
-	<div class="row">
-		<input name="username" placeholder="Username" id="login-username" type="text"/>
+<form id="form">
+	<div>
+		<input name="username" class="fill-width" placeholder="Username" id="login-username" type="text"/>
 	</div>
-	<div class="row">
-		<input id="login-password" placeholder="Password" name="password" type="password"/>
+	<div >
+		<input id="login-password" class="fill-width" placeholder="Password" name="password" type="password"/>
 	</div>
-	<div class="row">
-		<input type="button" value="cancel" class="cancel left"/>
-		<input type="submit" class="right" value="login"/>
+	<div>
+		<input type="button" value="cancel" class="cancel"/>
+		<input type="submit" value="login"/>
 	</div>
 </form>
 <script>

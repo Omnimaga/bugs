@@ -332,7 +332,32 @@
 				});
 			},
 			form: function(selector){
-				$(selector).find('#form').position({of:selector,my:'center',at:'center'});
+				$(selector).find('#form').width('320px').children();
+				render.inputs(selector);
+			},
+			inputs: function(selector){
+				$(selector).find('input[type=text],input[type=password]').each(function(){
+					var input = $(this);
+					input.siblings('.input-clear').remove();
+					input.after(
+						$('<div>').css({
+							position: 'absolute',
+							right: $(window).width() - (input.outerWidth() + input.position().left),
+							top: input.position().top,
+							'background-image': 'url(img/headers/icons/clear.png)',
+							'background-position': 'center',
+							'background-size': '17px 17px',
+							'background-repeat': 'no repeat',
+							width: input.outerHeight(),
+							height: input.outerHeight(),
+							'max-width':  '17px',
+							'max-height': '17px',
+							cursor: 'pointer'
+						}).addClass('input-clear').click(function(){
+							input.val('');
+						})
+					);
+				});
 			},
 			dialog: function(selector,title){
 				$(selector).dialog({
