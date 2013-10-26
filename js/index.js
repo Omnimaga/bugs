@@ -89,7 +89,7 @@
 		},
 		apiCall = window.apiCall = function(data,callback){
 			console.log('apiCall('+data.type+'-'+data.id+')');
-			$('#loading').show();
+			loading(true);
 			data.get = 'api';
 			data.back = State.data.back;
 			data.timestamp = +new Date;
@@ -114,7 +114,7 @@
 		},
 		loadState = window.loadState = function(href,callback){
 			console.log('loadState('+href+')');
-			$('#loading').show();
+			loading(true);
 			var data = {
 				get:'state',
 				timestamp: +new Date,
@@ -156,7 +156,7 @@
 		},
 		apiState = window.apiState = function(href,callback){
 			console.log('apiState('+href+')');
-			$('#loading').show();
+			loading(true);
 			var data = {
 				get:'state',
 				timestamp: +new Date,
