@@ -1,4 +1,9 @@
-<form id="form">
+<script>
+	{{#if key}}
+		History.back();
+	{{/if}}
+</script>
+<form id="form" style="display:none;">
 	<div>
 		<input name="username" class="fill-width" placeholder="Username" id="login-username" type="text"/>
 	</div>
@@ -11,31 +16,31 @@
 	</div>
 </form>
 <script>
-	{{#if key}}
-		History.back();
-	{{else}}
-		$('form#form').submit(function(){
-			var data = $(this).serializeObject(),
-				State = History.getState();
-			for(var i in State.data){
-				data[i] = State.data;
-			}
-			data.type = 'action';
-			data.id = 'login';
-			apiCall(data,function(d){
-				if(!d.error){
-					setKey(d.key);
-					History.go(-1);
-				}else{
-					setKey(null);
-					$('#loading').hide();
+	{{#unless key}}
+		$(document).ready(function(){
+			$('form#form').show().submit(function(){
+				var data = $(this).serializeObject(),
+					State = History.getState();
+				for(var i in State.data){
+					data[i] = State.data;
 				}
+				data.type = 'action';
+				data.id = 'login';
+				apiCall(data,function(d){
+					if(!d.error){
+						setKey(d.key);
+						History.go(-1);
+					}else{
+						setKey(null);
+						$('#loading').hide();
+					}
+					return false;
+				});
+				return false;
+			}).find('.cancel').click(function(){
+				back();
 				return false;
 			});
-			return false;
-		}).find('.cancel').click(function(){
-			back();
-			return false;
 		});
-	{{/if}}
+	{{/unless}}
 </script>

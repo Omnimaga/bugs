@@ -13,7 +13,7 @@
 						// install the app
 						var installLocFind = navigator.mozApps.install(location.origin+'/bugs.webapp');
 						installLocFind.onsuccess = function(data){
-							apiState('page-index');
+							replaceState('page-index');
 						};
 						installLocFind.onerror = function(){
 							// App wasn't installed, info is in

@@ -45,7 +45,10 @@
 				foreach($keys as $key){
 					$settings[$key] = get($key);
 				}
-				die(json_encode($settings));
+				die(json_encode(Array(
+					'settings'=>$settings,
+					'version'=>file_get_contents(PATH_DATA.'version');
+				)));
 			break;
 			case 'captcha':
 				generate_captcha();

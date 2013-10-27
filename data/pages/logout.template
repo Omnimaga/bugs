@@ -1,4 +1,4 @@
 <script>
 	setKey(null);
-	apiState('page-index');
+	replaceState('page-index');
 </script>

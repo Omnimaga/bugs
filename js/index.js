@@ -158,7 +158,7 @@
 				});
 			}
 		},
-		apiState = window.apiState = function(href,callback){
+		replaceState = window.replaceState = function(href,callback){
 			console.log('apiState('+href+')');
 			if(!flag('error')){
 				loading(true);
@@ -337,7 +337,8 @@
 			},
 			inputs: function(selector){
 				$(selector).find('input[type=text],input[type=password]').each(function(){
-					var input = $(this);
+					var input = $(this),
+						height = input.height()>=17?17:input.height();
 					input.siblings('.input-clear').remove();
 					input.after(
 						$('<div>').css({
@@ -346,12 +347,10 @@
 							top: input.position().top+2,
 							'background-image': 'url(img/headers/icons/clear.png)',
 							'background-position': 'center',
-							'background-size': '17px 17px',
-							'background-repeat': 'no repeat',
-							width: input.outerHeight(),
-							height: input.outerHeight(),
-							'max-width':  '17px',
-							'max-height': '17px',
+							'background-size': height+'px '+height+'px',
+							'background-repeat': 'no-repeat',
+							width: input.height(),
+							height: input.height(),
 							cursor: 'pointer'
 						}).addClass('input-clear').click(function(){
 							input.val('');
@@ -462,10 +461,6 @@
 		 $(document).ajaxError(function(event, request, settings) {
 			error({error:'Request timed out'});
 		});
-		templates = $.localStorage('templates');
-		if(templates === null){
-			templates = [];
-		}
 		if(!exists($.support.touch)){
 			$.support.touch = 'ontouchstart' in window || 'onmsgesturechange' in window;
 		}
@@ -488,16 +483,30 @@
 			}
 			$('#content').height($('body').height()-$('#topbar').height());
 			$('#content').getNiceScroll().resize();
-			render.form('#content');
+			render.inputs('#content');
+			render.inputs('#topbar');
 		});
-		var data = {
+		$.get(location.href,{
 			get: 'settings',
 			timestamp: +new Date,
 			back: false
-		};
-		$.get(location.href,data,function(d){
-			settings = d;
-			apiState(location.href);
+		},function(d){
+			if(!exists(d.error)){
+				settings = d.settings;
+				if(d.version != $.localStorage('version')){
+					$.localStorage('version',d.version);
+					$.localStorage('templates',null);
+					templates = [];
+				}else{
+					templates = $.localStorage('templates');
+					if(templates === null){
+						templates = [];
+					}
+				}
+				replaceState(location.href);
+			}else{
+				error(d.error);
+			}
 		},'json');
 		$(window).on('statechange',function(){
 			if(!flag('handled')){

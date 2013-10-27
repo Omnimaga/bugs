@@ -1,4 +1,9 @@
-<form id="form">
+<script>
+	{{#if key}}
+		History.back();
+	{{/if}}
+</script>
+<form id="form" style="display:none;">
 	<div>
 		<input name="email" class="fill-width" placeholder="Email" type="text"/>
 	</div>
@@ -21,16 +26,14 @@
 	</div>
 </form>
 <script>
-	{{#if key}}
-		replaceState('page-index');
-	{{else}}
+	{{#unless key}}
 		$(document).ready(function(){
 			var reloadCaptcha = function(){
 				$('#captcha').css('background-image','url(index.php?get=captcha&timestamp='+(+new Date)+')');
 				$('input[name=captcha]').val('');
 			};
 			reloadCaptcha();
-			$('form#form').submit(function(){
+			$('form#form').show().submit(function(){
 				var data = $(this).serializeObject(),
 						State = History.getState();
 					for(var i in State.data){
@@ -54,5 +57,5 @@
 				return false;
 			});
 		});
-	{{/if}}
+	{{/unless}}
 </script>

@@ -1,6 +1,4 @@
 CACHE MANIFEST
-# Version 2013-10-21 11:49am
-
 js/handlebars.js
 js/index.js
 js/jquery-ui.min.js
@@ -113,3 +111,4 @@ NETWORK:
 *
 
 FALLBACK:
+Version Sat, Oct 26, 2013 10:07:51 PM
