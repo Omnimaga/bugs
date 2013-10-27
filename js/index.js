@@ -101,11 +101,13 @@
 					if(exists(d['error'])){
 						error(d);
 					}else{
+						d.state.title = d.state.title.capitalize();
 						if(location.href.substr(location.href.lastIndexOf('/')+1) != d.state.url){
 							console.log('Forced redirection to '+d.state.url);
 							History.replaceState(d.state.data,d.state.title,d.state.url);
 							getNewState();
 						}
+						document.title = d.state.title;
 					}
 					if(exists(callback)){
 						console.log('Running apiCall callback');
@@ -131,6 +133,7 @@
 							if(exists(d['error'])){
 								error(d);
 							}else{
+								d.state.title = d.state.title.capitalize();
 								console.log('pushState: '+d.state.title+'['+href+']');
 								History.pushState(d.state.data,d.state.title,href);
 								getNewState();
@@ -175,6 +178,7 @@
 							if(exists(d['error'])){
 								error(d);
 							}else{
+								d.state.title = d.state.title.capitalize();
 								console.log('pushState: '+d.state.title+'['+href+']');
 								History.replaceState(d.state.data,d.state.title,href);
 								getNewState();
@@ -217,7 +221,6 @@
 			if(!window.location.origin){
 				window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
 			}
-			document.title = State.title;
 		},
 		stateChange = function(){
 			getNewState();
@@ -446,21 +449,6 @@
 		setKey(null);
 	}
 	$(document).ready(function(){
-		$.fn.serializeObject = function(){
-			var o = {},
-				a = this.serializeArray();
-			$.each(a,function(){
-				if(o[this.name] !== undefined){
-					if(!o[this.name].push){
-						o[this.name] = [o[this.name]];
-					}
-					o[this.name].push(this.value || '');
-				}else{
-					o[this.name] = this.value || '';
-				}
-			});
-			return o;
-		};
 		$.ajaxSetup({
 			async: false,
 			cache: false,
@@ -575,4 +563,24 @@
 		$.localStorage('templates',null);
 		console.log('Templates cleared.');
 	});
+	$.fn.serializeObject = function(){
+		var o = {},
+			a = this.serializeArray();
+		$.each(a,function(){
+			if(o[this.name] !== undefined){
+				if(!o[this.name].push){
+					o[this.name] = [o[this.name]];
+				}
+				o[this.name].push(this.value || '');
+			}else{
+				o[this.name] = this.value || '';
+			}
+		});
+		return o;
+	};
+	String.prototype.capitalize = function(lower) {
+		return (lower?this.toLowerCase():this).replace(/(?:^|\s)\S/g, function(a){
+			return a.toUpperCase();
+		});
+	};
 })(jQuery,History,console);
