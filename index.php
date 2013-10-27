@@ -47,7 +47,7 @@
 				}
 				die(json_encode(Array(
 					'settings'=>$settings,
-					'version'=>file_get_contents(PATH_DATA.'version');
+					'version'=>file_get_contents(PATH_DATA.'version')
 				)));
 			break;
 			case 'captcha':
