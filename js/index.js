@@ -340,7 +340,7 @@
 					var input = $(this),
 						height = input.height()>=17?17:input.height();
 					input.siblings('.input-clear').remove();
-					input.after(
+					input.off('focus').off('blur').after(
 						$('<div>').css({
 							position: 'absolute',
 							right: $(window).width() - (input.outerWidth() + input.position().left)+2,
@@ -352,10 +352,18 @@
 							width: input.height(),
 							height: input.height(),
 							cursor: 'pointer'
-						}).addClass('input-clear').click(function(){
+						}).hide().addClass('input-clear').mousedown(function(){
 							input.val('');
 						})
 					);
+					if(input.hasClass('fill-width')){
+						input.css('width','calc(100% - '+(input.outerWidth()-input.width())+'px)');
+					}
+					input.focus(function(){
+						input.next().show();
+					}).blur(function(e){
+						input.next().hide();
+					});
 				});
 			},
 			dialog: function(selector,title){

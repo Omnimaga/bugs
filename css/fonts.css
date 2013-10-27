@@ -18,12 +18,12 @@ pre {
 }
 @media only screen and (min-width: 800px){
 	body,input[type=text],input[type=password]{
-		font-size: 100%;
+		font-size: 110%;
 	}
 }
 @media only screen and (min-width: 1100px){
 	body,input[type=text],input[type=password]{
-		font-size: 90%;
+		font-size: 100%;
 	}
 }
 @font-face {
