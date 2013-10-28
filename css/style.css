@@ -28,6 +28,9 @@ input[type=submit]:active,button.recommend:active{
 	background: #008aaa;
 	color: #333;
 }
+textarea{
+	min-height: 50px;
+}
 form#form{
 	width: 320px;
 }

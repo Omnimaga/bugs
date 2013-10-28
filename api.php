@@ -8,6 +8,7 @@
 			$id = $_GET['id'];
 			switch($_GET['type']){
 				case 'user':
+					back(true);
 					if(!isset($_GET['template'])){
 						$ret['template'] = file_get_contents(PATH_DATA.'pages/user.template');
 					}
@@ -24,15 +25,19 @@
 					retj($ret,'User - '.$context['name']);
 				break;
 				case 'group':
+					back(true);
 					// TODO - handle group requests
 				break;
 				case 'issue':
+					back(true);
 					// TODO - handle issue requests
 				break;
 				case 'scrum':
+					back(true);
 					// TODO - handle scrum requests
 				break;
 				case 'project':
+					back(true);
 					if(!isset($_GET['template'])){
 						$ret['template'] = file_get_contents(PATH_DATA.'pages/project.template');
 					}
@@ -46,9 +51,11 @@
 					retj($ret,'Project - '.$context['title']);
 				break;
 				case 'admin':
+					back(true);
 					// TODO - handle admin requests
 				break;
 				case 'page':
+					$title = $id;
 					if(file_exists(PATH_DATA.'pages/'.$id.'.template')){
 						if(!isset($_GET['template'])){
 							$ret['template'] = file_get_contents(PATH_DATA.'pages/'.$id.'.template');
@@ -60,21 +67,29 @@
 						};
 						if(file_exists(PATH_DATA.'pages/'.$id.'.options')){
 							$options = objectToArray(json_decode(file_get_contents(PATH_DATA.'pages/'.$id.'.options'),true));
-							foreach($options as $key){
-								switch($key){
-									case 'users':
-										if($res = query("SELECT name FROM `users`;")){
-											$context['users'] = fetch_all($res,MYSQLI_ASSOC);
-										}
-									break;
-									case 'projects':
-										if($res = query("SELECT p.title,p.id,p.description,u.name as user FROM `projects` p JOIN `users` u ON u.id = p.u_id")){
-											$context['projects'] = fetch_all($res,MYSQLI_ASSOC);
-											foreach($context['projects'] as $key => $project){
-												$context['projects'][$key]['user'] = userObj($project['user']);
+							if(isset($options['secure'])&&$options['secure']&&!$LOGGEDIN){
+								back(true);
+							}
+							if(isset($options['title'])){
+								$title = $options['title'];
+							}
+							if(isset($options['context'])){
+								foreach($options['context'] as $key){
+									switch($key){
+										case 'users':
+											if($res = query("SELECT name FROM `users`;")){
+												$context['users'] = fetch_all($res,MYSQLI_ASSOC);
 											}
-										}
-									break;
+										break;
+										case 'projects':
+											if($res = query("SELECT p.title,p.id,p.description,u.name as user FROM `projects` p JOIN `users` u ON u.id = p.u_id")){
+												$context['projects'] = fetch_all($res,MYSQLI_ASSOC);
+												foreach($context['projects'] as $key => $project){
+													$context['projects'][$key]['user'] = userObj($project['user']);
+												}
+											}
+										break;
+									}
 								}
 							}
 						}
@@ -82,7 +97,7 @@
 					}else{
 						$ret['error'] = 'That page does not exist';
 					}
-					retj($ret,$id);
+					retj($ret,$title);
 				break;
 				case 'action':
 						switch($id){
@@ -112,7 +127,7 @@
 										'id'=>'register'
 									)
 								);
-								if(isvalid('username')&&isvalid('password')&&isvalid('password1')&&isvalid('email')&&isvalid('captcha')){
+								if(is_valid('username')&&is_valid('password')&&is_valid('password1')&&is_valid('email')&&is_valid('captcha')){
 									if($_GET['password']==$_GET['password1']){
 										if(compare_captcha($_GET['captcha'])){
 											if(addUser($_GET['username'],$_GET['password'],$_GET['email'])){
@@ -133,17 +148,44 @@
 								}
 								retj($ret,$id);
 							break;
+							case 'project':
+								back(true);
+								$ret['state'] = Array(
+									'data'=>Array(
+										'type'=>'page',
+										'id'=>$id,
+									)
+								);
+								if(isset($_GET['pid'])){
+									$ret['error'] = 'Invalid Action';
+								}elseif(is_valid('title')&&is_valid('description')){
+									if(!newProject($_GET['title'],$_GET['description'])){
+										$ret['error'] = 'Unable to create project.';
+									}
+								}else{
+									$ret['error'] = 'Fill in all the details.';
+								}
+								retj($ret,$id);
+							break;
 							default:
-								die('invalid action');
+								retj(Array(
+									'error'=>'Invalid action.'
+								));
 						}
 				break;
 				default:
-					die("invalid type");
+					retj(Array(
+						'error'=>'Invalid type.'
+					));
 			}
 		}else{
-			die("id missing");
+			retj(Array(
+				'error'=>'ID missing.'
+			));
 		}
 	}else{
-		die("type missing");
+		retj(Array(
+		'error'=>'Type missing.'
+	));
 	}
 ?>

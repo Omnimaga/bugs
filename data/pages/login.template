@@ -1,6 +1,6 @@
 <script>
 	{{#if key}}
-		History.back();
+		back();
 	{{/if}}
 </script>
 <form id="form" style="display:none;">
@@ -29,7 +29,7 @@
 				apiCall(data,function(d){
 					if(!d.error){
 						setKey(d.key);
-						History.go(-1);
+						back();
 					}else{
 						setKey(null);
 						$('#loading').hide();

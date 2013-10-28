@@ -29,15 +29,19 @@
 			}
 		}
 		$json['state']['title'] = $title;
-		// URL
-		switch($type){
-			case 'user':$url='~'.$id;break;
-			case 'group':$url='+'.$id;break;
-			case 'issue':$url='!'.$id;break;
-			case 'action':$url='';break;
-			default:$url=$type.'-'.$id;
+		if(!isset($json['state']['url'])){
+			// URL
+			switch($type){
+				case 'user':$url='~'.$id;break;
+				case 'group':$url='+'.$id;break;
+				case 'issue':$url='!'.$id;break;
+				case 'action':$url='';break;
+				default:$url=$type.'-'.$id;
+			}
+			$json['state']['url'] = $url;
+		}else{
+			$url = $json['state']['url'];
 		}
-		$json['state']['url'] = $url;
 		// Tobar
 		if($LOGGEDIN){
 			$context = Array(
@@ -49,13 +53,18 @@
 		}
 		$context['title'] = $title;
 		$context['url'] = $url;
+		if(file_exists(PATH_DATA.'topbars/'.$type.'-'.$id)){
+			$topbar = file_get_contents(PATH_DATA.'topbars/'.$type.'-'.$id.'.template');
+		}else{
+			$topbar = file_get_contents(PATH_DATA.'topbars/default.template');
+		}
 		$json['topbar'] = Array(
-			'template'=>file_get_contents(PATH_DATA.'pages/topbar.template'),
+			'template'=>$topbar,
 			'context'=>$context
 		);
 		die(json_encode($json));
 	}
-	function isvalid($col,$v=null){
+	function is_valid($col,$v=null){
 		if($v == null){
 			$v = $_GET;
 		}
@@ -72,5 +81,16 @@
 		}else{
 			return false;
 		}
+	}
+	function back($ifNotLoggedIn=false){
+		global $LOGGEDIN;
+		if($ifNotLoggedIn && $LOGGEDIN){
+			return false;
+		}
+		retj(Array(
+			'state'=>Array(
+				'url'=>isset($_GET['back'])?$_GET['back']:'page-index'
+			)
+		));
 	}
 ?>

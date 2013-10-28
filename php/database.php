@@ -10,7 +10,7 @@
 		for ($i=0;$i<count($args);$i++){
 			if(is_string($args[$i])){
 				$args[$i] = $mysqli->real_escape_string($args[$i]);
-			}else{
+			}elseif(!is_numeric($args[$i])){
 				return false;
 			}
 		}

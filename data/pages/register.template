@@ -1,6 +1,6 @@
 <script>
 	{{#if key}}
-		History.back();
+		back();
 	{{/if}}
 </script>
 <form id="form" style="display:none;">

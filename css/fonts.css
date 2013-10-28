@@ -3,7 +3,7 @@
 	word-wrap: break-word;
 	font-weight: normal;
 }
-body,input[type=text],input[type=password]{
+body,input[type=text],input[type=password],textarea{
 	font-size: 130%;
 	line-height: 1.6875;
 }
@@ -12,17 +12,17 @@ pre {
 	white-space: pre-wrap;
 }
 @media only screen and (min-width: 400px){
-	body,input[type=text],input[type=password]{
+	body,input[type=text],input[type=password],textarea{
 		font-size: 120%;
 	}
 }
 @media only screen and (min-width: 800px){
-	body,input[type=text],input[type=password]{
+	body,input[type=text],input[type=password],textarea{
 		font-size: 110%;
 	}
 }
 @media only screen and (min-width: 1100px){
-	body,input[type=text],input[type=password]{
+	body,input[type=text],input[type=password],textarea{
 		font-size: 100%;
 	}
 }

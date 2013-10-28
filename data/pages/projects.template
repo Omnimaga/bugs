@@ -1,8 +1,6 @@
-{{#if key}}
-	<a class="button" href="#page-newproject">
-		New
-	</a>
-{{/if}}
+<a class="button" href="#page-newproject">
+	New
+</a>
 <div class="accordion">
 	<span class="icons">
 		{

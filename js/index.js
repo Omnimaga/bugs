@@ -293,6 +293,7 @@
 				$(window).resize();
 			},
 			content: function(t,c){
+				$(document).unbind('ready');
 				$('#content').html(
 					Handlebars.compile(t)(c)
 				);
@@ -359,14 +360,17 @@
 							input.val('');
 						})
 					);
-					if(input.hasClass('fill-width')){
-						input.css('width','calc(100% - '+(input.outerWidth()-input.width())+'px)');
-					}
 					input.focus(function(){
 						input.next().show();
 					}).blur(function(e){
 						input.next().hide();
 					});
+				});
+				$(selector).find('input[type=text],input[type=password],textarea').each(function(){
+					var input = $(this);
+					if(input.hasClass('fill-width')){
+						input.css('width','calc(100% - '+(input.outerWidth()-input.width())+'px)');
+					}
 				});
 			},
 			dialog: function(selector,title){
@@ -452,7 +456,7 @@
 		$.ajaxSetup({
 			async: false,
 			cache: false,
-			timeout: 2000
+			timeout: 30000 // 30 seconds
 		});
 		 $(document).ajaxError(function(event, request, settings) {
 			error({error:'Request timed out'});
