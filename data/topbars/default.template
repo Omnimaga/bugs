@@ -71,6 +71,11 @@
 					</a>
 				</li>
 				<li>
+					<a href="#page-messages">
+						Messages
+					</a>
+				</li>
+				<li>
 					<a href="#page-logout">
 						Logout
 					</a>
@@ -83,6 +88,9 @@
 			</a>
 			<a class="menuitem" href="#~{{user.name}}">
 				Profile
+			</a>
+			<a class="menuitem" href="#page-messages">
+				Messages
 			</a>
 			<a class="menuitem" href="#page-projects">
 				Projects

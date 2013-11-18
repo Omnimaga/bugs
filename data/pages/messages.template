@@ -1,0 +1,24 @@
+<a class="button" href="#page-newmessage">
+	New
+</a>
+<div class="accordion">
+	<span class="icons">
+		{
+			"header": "ui-icon-mail-closed",
+			"activeHeader": "ui-icon-mail-open"
+		}
+	</span>
+	{{#each messages}}
+		<h3>
+			<a class="button" href="#~{{from}}">
+				From: {{from}}
+			</a>
+			<a class="button" href="#~{{to}}">
+				To: {{to}}
+			</a>
+		</h3>
+		<div>
+			{{message}}
+		</div>
+	{{/each}}
+</div>

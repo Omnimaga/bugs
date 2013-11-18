@@ -50,6 +50,9 @@
 					$ret['context'] = $context;
 					retj($ret,'Project - '.$context['title']);
 				break;
+				case 'message':
+					// TODO - handle message requests
+				break;
 				case 'admin':
 					back(true);
 					// TODO - handle admin requests
@@ -57,7 +60,7 @@
 				case 'page':
 					$title = $id;
 					if(file_exists(PATH_DATA.'pages/'.$id.'.template')){
-						if(!isset($_GET['template'])){
+						if(!isset($_GET['template'])||$_GET['template']=='true'){
 							$ret['template'] = file_get_contents(PATH_DATA.'pages/'.$id.'.template');
 						}
 						$context = Array();
@@ -87,6 +90,13 @@
 												foreach($context['projects'] as $key => $project){
 													$context['projects'][$key]['user'] = userObj($project['user']);
 												}
+											}
+										break;
+										case 'messages':
+											if($LOGGEDIN){
+												$context['messages'] = messages($context['user']['id'],'user');
+											}else{
+												$context['messages'] = Array();
 											}
 										break;
 									}

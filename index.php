@@ -104,6 +104,7 @@
 				window.applicationCache.addEventListener('updateready',function(){
 					location.reload();
 				});
+				window.screen.lockOrientation('portrait');
 			})(window,Modernizr);
 		</script>
 		<script src="js/jquery.min.js"></script>
