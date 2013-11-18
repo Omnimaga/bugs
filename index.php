@@ -113,6 +113,7 @@
 		<script src="js/jquery.storage.js"></script>
 		<script src="js/jquery.cookie.js"></script>
 		<script src="js/jquery.nicescroll.js"></script>
+		<script src="js/jquery.timeago.js"></script>
 		<script src="js/shortcut.js"></script>
 		<script src="js/index.js"></script>
 	</head>

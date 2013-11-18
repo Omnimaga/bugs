@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 21, 2013 at 01:08 AM
+-- Generation Time: Nov 18, 2013 at 07:31 PM
 -- Server version: 5.6.11
 -- PHP Version: 5.5.3
 
@@ -22,7 +22,7 @@ SET time_zone = "+00:00";
 --
 -- Table structure for table `issues`
 --
--- Creation: Oct 06, 2013 at 08:17 PM
+-- Creation: Oct 07, 2013 at 07:42 PM
 --
 
 DROP TABLE IF EXISTS `issues`;
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `issues` (
   KEY `u_id` (`u_id`),
   KEY `u_id_2` (`u_id`),
   KEY `s_id` (`s_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
 -- RELATIONS FOR TABLE `issues`:
@@ -51,12 +51,13 @@ CREATE TABLE IF NOT EXISTS `issues` (
 --
 -- Table structure for table `messages`
 --
--- Creation: Oct 20, 2013 at 11:07 PM
+-- Creation: Nov 18, 2013 at 06:30 PM
 --
 
 DROP TABLE IF EXISTS `messages`;
 CREATE TABLE IF NOT EXISTS `messages` (
   `id` int(100) NOT NULL AUTO_INCREMENT,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `from_id` int(100) NOT NULL,
   `to_id` int(100) DEFAULT NULL,
   `p_id` int(11) DEFAULT NULL,
@@ -69,12 +70,10 @@ CREATE TABLE IF NOT EXISTS `messages` (
   KEY `s_id` (`s_id`),
   KEY `i_id` (`i_id`),
   KEY `p_id` (`p_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
 -- RELATIONS FOR TABLE `messages`:
---   `p_id`
---       `projects` -> `id`
 --   `from_id`
 --       `users` -> `id`
 --   `to_id`
@@ -83,6 +82,8 @@ CREATE TABLE IF NOT EXISTS `messages` (
 --       `scrums` -> `id`
 --   `i_id`
 --       `issues` -> `id`
+--   `p_id`
+--       `projects` -> `id`
 --
 
 -- --------------------------------------------------------
@@ -90,7 +91,7 @@ CREATE TABLE IF NOT EXISTS `messages` (
 --
 -- Table structure for table `projects`
 --
--- Creation: Oct 20, 2013 at 11:04 PM
+-- Creation: Oct 24, 2013 at 04:53 PM
 --
 
 DROP TABLE IF EXISTS `projects`;
@@ -101,7 +102,7 @@ CREATE TABLE IF NOT EXISTS `projects` (
   `description` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `u_id` (`u_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
 -- RELATIONS FOR TABLE `projects`:
@@ -114,7 +115,7 @@ CREATE TABLE IF NOT EXISTS `projects` (
 --
 -- Table structure for table `rels`
 --
--- Creation: Oct 06, 2013 at 08:21 PM
+-- Creation: Oct 07, 2013 at 07:42 PM
 --
 
 DROP TABLE IF EXISTS `rels`;
@@ -144,7 +145,7 @@ CREATE TABLE IF NOT EXISTS `rels` (
 --
 -- Table structure for table `scrums`
 --
--- Creation: Oct 20, 2013 at 11:05 PM
+-- Creation: Oct 07, 2013 at 07:42 PM
 --
 
 DROP TABLE IF EXISTS `scrums`;
@@ -157,14 +158,14 @@ CREATE TABLE IF NOT EXISTS `scrums` (
   PRIMARY KEY (`id`),
   KEY `u_id` (`u_id`),
   KEY `p_id` (`p_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
 -- RELATIONS FOR TABLE `scrums`:
---   `p_id`
---       `projects` -> `id`
 --   `u_id`
 --       `users` -> `id`
+--   `p_id`
+--       `projects` -> `id`
 --
 
 -- --------------------------------------------------------
@@ -172,7 +173,7 @@ CREATE TABLE IF NOT EXISTS `scrums` (
 --
 -- Table structure for table `users`
 --
--- Creation: Oct 06, 2013 at 08:17 PM
+-- Creation: Oct 07, 2013 at 07:42 PM
 --
 
 DROP TABLE IF EXISTS `users`;
@@ -185,7 +186,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `key` varchar(128) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
 
 --
 -- Constraints for dumped tables
@@ -202,11 +203,11 @@ ALTER TABLE `issues`
 -- Constraints for table `messages`
 --
 ALTER TABLE `messages`
-  ADD CONSTRAINT `messages_ibfk_5` FOREIGN KEY (`p_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`from_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `messages_ibfk_2` FOREIGN KEY (`to_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
   ADD CONSTRAINT `messages_ibfk_3` FOREIGN KEY (`s_id`) REFERENCES `scrums` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `messages_ibfk_4` FOREIGN KEY (`i_id`) REFERENCES `issues` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `messages_ibfk_4` FOREIGN KEY (`i_id`) REFERENCES `issues` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `messages_ibfk_5` FOREIGN KEY (`p_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `projects`
@@ -226,9 +227,8 @@ ALTER TABLE `rels`
 -- Constraints for table `scrums`
 --
 ALTER TABLE `scrums`
-  ADD CONSTRAINT `scrums_ibfk_2` FOREIGN KEY (`p_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `scrums_ibfk_1` FOREIGN KEY (`u_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-SET FOREIGN_KEY_CHECKS=1;
+  ADD CONSTRAINT `scrums_ibfk_1` FOREIGN KEY (`u_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `scrums_ibfk_2` FOREIGN KEY (`p_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

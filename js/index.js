@@ -1,4 +1,4 @@
-// TODO - Add initial page loading and handlers
+   // TODO - Add initial page loading and handlers
 (function($,History,console){
 	var State = History.getState(),
 		Old = {},
@@ -286,6 +286,7 @@
 				render.links('#topbar');
 				render.buttons('#topbar');
 				render.menus('#topbar');
+				render.time('#topbar');
 				if(State.url == location.origin+'/page-index'){
 					$('#topbar').find('.topbar-history').hide();
 				}
@@ -302,7 +303,16 @@
 				render.accordions('#content');
 				render.menus('#content');
 				render.form('#content');
+				render.time('#content');
 				$(window).resize();
+			},
+			time: function(selector){
+				$(selector).find('time.timeago').each(function(){
+					var time = new Date($(this).text()*1000);
+					$(this).replaceWith(
+						$('<abbr>').attr('title',time.toISOString()).timeago()
+					);
+				});
 			},
 			accordions: function(selector){
 				$(selector).find('.accordion').each(function(){

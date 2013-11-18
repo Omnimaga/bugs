@@ -4,3 +4,21 @@
 <div>
 	{{description}}
 </div>
+<h4>
+	Comments
+</h4>
+<ul>
+	{{#each comments}}
+		<li>
+			<a style="font-size:small;color:gray;text-decoration:none;" href="#~{{name}}">
+				{{name}}
+			</a>
+			<time class="timeago">
+				{{timestamp}}
+			</time>
+			<div>
+				{{message}}
+			</div>
+		</li>
+	{{/each}}
+</ul>
