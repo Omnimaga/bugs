@@ -310,7 +310,10 @@
 				$(selector).find('time.timeago').each(function(){
 					var time = new Date($(this).text()*1000);
 					$(this).replaceWith(
-						$('<abbr>').attr('title',time.toISOString()).timeago()
+						$('<abbr>').attr({
+							'title': time.toISOString(),
+							'style': $(this).attr('style')
+						}).addClass($(this).attr('class')).timeago()
 					);
 				});
 			},
