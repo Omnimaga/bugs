@@ -54,6 +54,16 @@ form#form{
 	background-image: url(../images/buttons/ui/danger-press.png);
 	background-color: #890707;
 }
+.cancel-force{
+	background-image: url(../images/buttons/ui/danger.png) !important;
+	background-color: #b70404 !important;
+	color: #fff !important;
+	border: none !important;
+}
+.cancel-force:active{
+	background-image: url(../images/buttons/ui/danger-press.png) !important;
+	background-color: #890707 !important;
+}
 #cacheStatus{
 	height: 100% !important;
 	top: 0 !important;

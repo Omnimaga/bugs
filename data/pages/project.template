@@ -5,7 +5,7 @@
 	{{description}}
 </div>
 <span style="font-size:small;">
-	Comments
+	Comments <button class="comment">{"text":"comment","id":{{id}},"type":"project","title":"Comment"}</button>
 </span>
 <ul>
 	{{#each comments}}

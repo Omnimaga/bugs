@@ -123,5 +123,12 @@
 		<div id="content" class="container"></div>
 		<div id="loading"></div>
 		<div id="dialog"></div>
+		<div id="comment">
+			<form>
+				<input type="hidden" name="type"/>
+				<input type="hidden" name="id"/>
+				<textarea name="message"></textarea>
+			</form>
+		</div>
 	</body>
 </html>

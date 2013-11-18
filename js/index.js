@@ -336,6 +336,52 @@
 				$(selector).find('input[type=submit]').button();
 				$(selector).find('input[type=button]').button();
 				$(selector).find('button').button();
+				render.comment.buttons(selector);
+			},
+			comment: {
+				buttons: function(selector){
+					$(selector).find('button.comment').each(function(){
+						var context = JSON.parse($(this).text());
+						$(this).text(context.text);
+						$(this).click(function(){
+							render.comment.dialog(context.id,context.type,context.title);
+						});
+					});
+				},
+				dialog: function(id,type,title){
+					$('#comment').find('form').find('input[name=type]').val(type);
+					$('#comment').find('form').find('input[name=id]').val(id);
+					$('#comment').dialog({
+						close: function(){
+							$('#comment').find('form').find('input[name=type]').val('');
+							$('#comment').find('form').find('input[name=id]').val('');
+						},
+						resizable: false,
+						draggable: false,
+						title: title,
+						buttons: [
+							{
+								text: 'Ok',
+								class: 'recommend-force',
+								click: function(){
+									var context = $(this).find('form').serializeObject();
+									if(context.message!=''){
+										console.log(context);
+										// TODO - Handle sending to server and then refresh page
+										$(this).dialog('close');
+									}
+								}
+							},
+							{
+								text: 'Cancel',
+								class: 'cancel-force',
+								click: function(){
+									$(this).dialog('close');
+								}
+							}
+						]
+					});
+				},
 			},
 			menus: function(selector){
 				$(selector).find('.menu').css({
