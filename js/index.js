@@ -340,9 +340,10 @@
 			},
 			comment: {
 				buttons: function(selector){
-					$(selector).find('button.comment').each(function(){
+					$(selector).find('.comment').each(function(){
 						var context = JSON.parse($(this).text());
 						$(this).text(context.text);
+						$(this).button();
 						$(this).click(function(){
 							render.comment.dialog(context.id,context.type,context.title);
 						});
@@ -351,6 +352,7 @@
 				dialog: function(id,type,title){
 					$('#comment').find('form').find('input[name=type]').val(type);
 					$('#comment').find('form').find('input[name=id]').val(id);
+					$('#comment').find('form').find('textarea[name=message]').val('');
 					$('#comment').dialog({
 						close: function(){
 							$('#comment').find('form').find('input[name=type]').val('');

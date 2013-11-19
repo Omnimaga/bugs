@@ -5,7 +5,7 @@
 	{{description}}
 </div>
 <span style="font-size:small;">
-	Comments <button class="comment">{"text":"comment","id":{{id}},"type":"project","title":"Comment"}</button>
+	Comments
 </span>
 <ul>
 	{{#each comments}}
@@ -22,3 +22,11 @@
 		</li>
 	{{/each}}
 </ul>
+<a class="comment">
+	{
+		"text": "comment",
+		"id": {{id}},
+		"type": "project",
+		"title": "Comment"
+	}
+</a>
