@@ -103,7 +103,7 @@
 					}else{
 						console.log(d);
 						d.state.title = d.state.title.capitalize();
-						if(location.href.substr(location.href.lastIndexOf('/')+1) != d.state.url){
+						if(location.href.substr(location.href.lastIndexOf('/')+1) != d.state.url && d.state.url != ''){
 							console.log('Forced redirection to '+d.state.url);
 							History.replaceState(d.state.data,d.state.title,d.state.url);
 							getNewState();
@@ -135,6 +135,7 @@
 								error(d);
 							}else{
 								d.state.title = d.state.title.capitalize();
+								d.state.url = href;
 								console.log('pushState: '+d.state.title+'['+href+']');
 								History.pushState(d.state.data,d.state.title,href);
 								getNewState();
@@ -180,6 +181,7 @@
 								error(d);
 							}else{
 								d.state.title = d.state.title.capitalize();
+								d.state.url = href;
 								console.log('pushState: '+d.state.title+'['+href+']');
 								History.replaceState(d.state.data,d.state.title,href);
 								getNewState();
@@ -216,7 +218,7 @@
 				alert(msg.trim(),'Error',callback);
 			}
 		},
-		getNewState = function(){
+		getNewState = function(state){
 			State = History.getState();
 			console.log("State change: ["+State.title+"] "+JSON.stringify(State.data));
 			if(!window.location.origin){
@@ -497,13 +499,23 @@
 				});
 			}
 		},
-		back = window.back = function(){
+		back = window.back = function(reload){
+			console.log('reload',exists(reload));
+			var go = function(url){
+				if(exists(reload)){
+					console.log('FORCING RELOAD');
+					location = url;
+				}else{
+					console.log('FORCING LOADSTATE');
+					loadState(url);
+				}
+			}
 			if(exists(State.data.back)){
 				if(!History.back()){
 					loadState(State.data.back);
 				}
 			}else if(State.data.type != 'page' || State.data.id != 'index'){
-				loadState('page-index');
+				go('page-index');
 			}else{
 				location.reload();
 			}
