@@ -22,10 +22,12 @@
 		}
 		// Title
 		if(is_null($title)){
-			if(!isset($context['title'])){
-				$title = $_GET['id'];
+			if(isset($json['title'])){
+				$title = $json['title'];
+			}elseif(isset($json['state']['title'])){
+				$title = $json['state']['title'];
 			}else{
-				$title = $context['title'];
+				$title = $_GET['id'];
 			}
 		}
 		$json['state']['title'] = $title;
@@ -92,5 +94,26 @@
 				'url'=>isset($_GET['back'])?$_GET['back']:'page-index'
 			)
 		));
+	}
+	function stateObj($type,$id){
+		$json = Array(
+			'data'=>$_GET
+		);
+		$title = ucwords($type.' - '.$id);
+		switch($type){
+			case 'user':$url='~'.$id;break;
+			case 'group':$url='+'.$id;break;
+			case 'issue':$url='!'.$id;break;
+			case 'page':$url='page-'.$id;break;
+			case 'project':
+				$url=$type.'-'.$id;
+				$title = projectObj($id);
+				$title = 'Project - '.$title['title'];
+			break;
+			default:$url=$type.'-'.$id;
+		}
+		$json['url'] = $url;
+		$json['title'] = $title;
+		return $json;
 	}
 ?>

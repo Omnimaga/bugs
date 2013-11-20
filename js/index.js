@@ -101,6 +101,7 @@
 					if(exists(d['error'])){
 						error(d);
 					}else{
+						console.log(d);
 						d.state.title = d.state.title.capitalize();
 						if(location.href.substr(location.href.lastIndexOf('/')+1) != d.state.url){
 							console.log('Forced redirection to '+d.state.url);
@@ -350,13 +351,15 @@
 					});
 				},
 				dialog: function(id,type,title){
-					$('#comment').find('form').find('input[name=type]').val(type);
-					$('#comment').find('form').find('input[name=id]').val(id);
+					loading(true);
+					flag('ignore_statechange',true);
+					$('#comment').find('form').find('input[name=comment_type]').val(type);
+					$('#comment').find('form').find('input[name=comment_id]').val(id);
 					$('#comment').find('form').find('textarea[name=message]').val('');
 					$('#comment').dialog({
 						close: function(){
-							$('#comment').find('form').find('input[name=type]').val('');
-							$('#comment').find('form').find('input[name=id]').val('');
+							$('#comment').find('form').find('input[name=comment_type]').val('');
+							$('#comment').find('form').find('input[name=comment_id]').val('');
 						},
 						resizable: false,
 						draggable: false,
@@ -366,19 +369,29 @@
 								text: 'Ok',
 								class: 'recommend-force',
 								click: function(){
-									var context = $(this).find('form').serializeObject();
-									if(context.message!=''){
-										console.log(context);
-										// TODO - Handle sending to server and then refresh page
-										$(this).dialog('close');
+									var diag = $(this),
+										context = diag.find('form').serializeObject();
+									if(context.message !== ''){
+										context.type = 'action';
+										context.id = 'comment';
+										context.url = State.url;
+										context.title = State.title;
+										apiCall(context,function(d){
+											if(!exists(d.error)){
+												diag.dialog('close');
+												flag('ignore_statechange',false);
+												loading(false);
+											}
+										});
 									}
 								}
-							},
-							{
+							},{
 								text: 'Cancel',
 								class: 'cancel-force',
 								click: function(){
 									$(this).dialog('close');
+									flag('ignore_statechange',false);
+									loading(false);
 								}
 							}
 						]
@@ -500,12 +513,14 @@
 			render.dialog('#dialog',title,callback);
 		},
 		loading = function(state){
-			state = exists(state)?state:false;
-			console.log('loading state '+state);
-			if(!flag('error') && !state){
-				$('#loading').hide();
-			}else if(state){
-				$('#loading').show();
+			if(!flag('ignore_statechange')){
+				state = exists(state)?state:false;
+				console.log('loading state '+state);
+				if(!flag('error') && !state){
+					$('#loading').hide();
+				}else if(state){
+					$('#loading').show();
+				}
 			}
 		};
 	if(exists($.cookie('key'))){

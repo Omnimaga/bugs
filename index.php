@@ -22,19 +22,13 @@
 		}
 		switch($get){
 			case 'state':
-				$json = Array();
-				$json['state'] = Array();
-				$json['state']['data'] = $_GET;
-				switch($type){
-					case 'user':$url='~'.$id;break;
-					case 'group':$url='+'.$id;break;
-					case 'issue':$url='!'.$id;break;
-					case 'page':$url='page-'.$id;break;
-					default:$url=$type.'-'.$id;
-				}
-				$json['state']['url'] = $url;
-				$json['state']['title'] = ucwords($type.' - '.$id);
-				die(json_encode($json));
+				die(
+					json_encode(
+						Array(
+							'state'=>stateObj($type,$id)
+						)
+					)
+				);
 			break;
 			case 'api':
 				require_once('api.php');
@@ -125,8 +119,8 @@
 		<div id="dialog"></div>
 		<div id="comment">
 			<form>
-				<input type="hidden" name="type"/>
-				<input type="hidden" name="id"/>
+				<input type="hidden" name="comment_type"/>
+				<input type="hidden" name="comment_id"/>
 				<textarea name="message"></textarea>
 			</form>
 		</div>

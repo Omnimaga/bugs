@@ -177,6 +177,12 @@
 								}
 								retj($ret,$id);
 							break;
+							case 'comment':
+								$ret = Array(
+									'state'=>stateObj($_GET['comment_type'],$_GET['comment_id'])
+								);
+								retj($ret,$ret['state']['title']);
+							break;
 							default:
 								retj(Array(
 									'error'=>'Invalid action.'
