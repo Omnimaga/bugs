@@ -87,11 +87,13 @@
 				return '';
 			}
 		},
-		apiCall = window.apiCall = function(data,callback){
+		apiCall = window.apiCall = function(data,callback,background){
 			console.log('apiCall('+data.type+'-'+data.id+')');
 			if(!flag('error')){
-			loading(true);
-			data.get = 'api';
+				if(exists(background)&&!background){
+					loading(true);
+				}
+				data.get = 'api';
 				data.back = State.data.back;
 				data.timestamp = +new Date;
 				if(''!=template(data.type+'-'+data.id)){
@@ -101,7 +103,6 @@
 					if(exists(d['error'])){
 						error(d);
 					}else{
-						console.log(d);
 						d.state.title = d.state.title.capitalize();
 						if(location.href.substr(location.href.lastIndexOf('/')+1) != d.state.url && d.state.url != ''){
 							console.log('Forced redirection to '+d.state.url);
@@ -524,8 +525,12 @@
 			}
 		},
 		alert = function(text,title,callback){
-			$('#dialog').text(text).data('callback',callback);
-			render.dialog('#dialog',title,callback);
+			if(exists(text)){
+				title=exists(title)?title:'';
+				callback=exists(callback)?callback:function(){};
+				$('#dialog').text(text).data('callback',callback);
+				render.dialog('#dialog',title,callback);
+			}
 		},
 		loading = function(state){
 			if(!flag('ignore_statechange')){
@@ -549,7 +554,7 @@
 			cache: false,
 			timeout: 30000 // 30 seconds
 		});
-		 $(document).ajaxError(function(event, request, settings) {
+		$(document).ajaxError(function(event, request, settings) {
 			error({error:'Request timed out'});
 		});
 		if(!exists($.support.touch)){
@@ -613,6 +618,23 @@
 				return getState.call(History);
 			}
 		};
+		(function notifications(){
+			var context = State;
+			context.type = 'action';
+			context.id = 'notifications';
+			context.url = State.url;
+			context.title = State.title;
+			context.topbar = false;
+			apiCall(context,function(d){
+				if(!exists(d.error)){
+					if(d.count>0 && $.localStorage('last_pm_check') < d.timestamp){
+						alert('You have '+d.count+' new messages');
+					}
+					$.localStorage('last_pm_check',d.timestamp);
+				}
+				setTimeout(notifications,5*1000); // every 5 seconds
+			},true);
+		})();
 	});
 	shortcut.add('f12',function(){
 		if(!flag('firebug-lite')){

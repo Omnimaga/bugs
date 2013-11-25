@@ -1,0 +1,45 @@
+{{#if key}}
+	<form id="form">
+		<div>
+			<input type="text" name="to" class="fill-width" placeholder="To"/>
+		</div>
+		<div>
+			<textarea name="message" class="fill-width" placeholder="Message"/></textarea>
+		</div>
+		<div>
+			<input type="button" value="cancel" class="cancel"/>
+			<input type="submit" value="create"/>
+		</div>
+	</form>
+	<script>
+		$(document).ready(function(){
+			$('form#form').submit(function(){
+				var data = $(this).serializeObject(),
+					State = History.getState();
+				for(var i in State.data){
+					data[i] = State.data;
+				}
+				data.type = 'action';
+				data.id = 'message';
+				apiCall(data,function(d){
+					if(!d.error){
+						back();
+					}else{
+						$('#loading').hide();
+					}
+					return false;
+				});
+				return false;
+			}).find('.cancel').click(function(){
+				back();
+				return false;
+			});
+		});
+	</script>
+{{else}}
+	<script>
+		$(document).ready(function(){
+			back();
+		});
+	</script>
+{{/if}}

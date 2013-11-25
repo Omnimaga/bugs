@@ -2,5 +2,8 @@
 	"secure": true,
 	"context": [
 		"messages"
+	],
+	"actions": [
+		"pm_mark_read"
 	]
 }

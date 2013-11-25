@@ -152,6 +152,15 @@
 									}
 								}
 							}
+							if(isset($options['actions'])){
+								foreach($options['actions'] as $key){
+									switch($key){
+										case 'pm_mark_read':
+											query("UPDATE `users` SET last_pm_check=CURRENT_TIMESTAMP WHERE id='%d'; ",Array(userId($_SESSION['username'])));
+										break;
+									}
+								}
+							}
 						}
 						$ret['context'] = $context;
 					}else{
@@ -224,6 +233,29 @@
 									}
 								}else{
 									$ret['error'] = 'Fill in all the details.';
+								}
+								retj($ret,$id);
+							break;
+							case 'message':
+								back(true);
+								if(isset($_GET['to'])&&isset($_GET['message'])){
+									if($uid = userId($_GET['to'])){
+										if(!personal_message($uid,$_GET['message'])){
+											$ret['error'] = 'Could not send message';
+										}
+									}else{
+										$ret['error'] = "That user doesn't exist";
+									}
+								}else{
+									$ret['error'] = 'Empty details';
+								}
+								retj($ret,$id);
+							break;
+							case 'notifications':
+								if($res = query("SELECT count(m.id) as notifications,UNIX_TIMESTAMP(max(m.timestamp)) as timestamp FROM `messages` m JOIN `users` u ON u.id = m.to_id WHERE u.id = %d AND u.last_pm_check < m.timestamp;",Array(userId($_SESSION['username'])))){
+									$res = $res->fetch_assoc();
+									$ret['count'] = $res['notifications'];
+									$ret['timestamp'] = $res['timestamp'];
 								}
 								retj($ret,$id);
 							break;

@@ -30,4 +30,10 @@
 		}
 		return false;
 	}
+	function personal_message($toId,$message){
+		if(query("INSERT INTO `bugs`.`messages` (`id`,`timestamp`,`from_id`,`to_id`,`p_id`,`s_id`,`i_id`,`message`) VALUES(NULL,CURRENT_TIMESTAMP,'%d','%d',NULL,NULL,NULL,'%s');",Array(userId($_SESSION['username']),$toId,$message))){
+			return true;
+		}
+		return false;
+	}
 ?>

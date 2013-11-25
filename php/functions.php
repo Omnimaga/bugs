@@ -44,26 +44,28 @@
 		}else{
 			$url = $json['state']['url'];
 		}
-		// Tobar
-		if($LOGGEDIN){
-			$context = Array(
-				'user'=>userObj($_SESSION['username']),
-				'key'=>true
+		if(!isset($_GET['topbar'])){
+			// Tobar
+			if($LOGGEDIN){
+				$context = Array(
+					'user'=>userObj($_SESSION['username']),
+					'key'=>true
+				);
+			}else{
+				$context = Array();
+			}
+			$context['title'] = $title;
+			$context['url'] = $url;
+			if(file_exists(PATH_DATA.'topbars/'.$type.'-'.$id)){
+				$topbar = file_get_contents(PATH_DATA.'topbars/'.$type.'-'.$id.'.template');
+			}else{
+				$topbar = file_get_contents(PATH_DATA.'topbars/default.template');
+			}
+			$json['topbar'] = Array(
+				'template'=>$topbar,
+				'context'=>$context
 			);
-		}else{
-			$context = Array();
 		}
-		$context['title'] = $title;
-		$context['url'] = $url;
-		if(file_exists(PATH_DATA.'topbars/'.$type.'-'.$id)){
-			$topbar = file_get_contents(PATH_DATA.'topbars/'.$type.'-'.$id.'.template');
-		}else{
-			$topbar = file_get_contents(PATH_DATA.'topbars/default.template');
-		}
-		$json['topbar'] = Array(
-			'template'=>$topbar,
-			'context'=>$context
-		);
 		echo json_encode($json);
 		die();
 	}
