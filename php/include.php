@@ -4,7 +4,9 @@
 			'error'=>'Session save path ('.session_save_path().') is not writable.'
 		),'error');
 	}
-	@session_start();
+	if(session_status() == PHP_SESSION_NONE){
+		@session_start();
+	}
 	require_once(realpath(dirname(__FILE__)).'/config.php');
 	require_once(PATH_PHP.'database.php');
 	require_once(PATH_PHP.'functions.php');

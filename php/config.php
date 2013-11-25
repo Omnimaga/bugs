@@ -4,7 +4,7 @@
 	// START ERROR HANDLING
 	function shutdown_handler(){
 		$error = error_get_last();
-		if ($error['type'] == 1) {
+		if(!is_null($error)){
 			ob_end_clean();
 			switch($error['type']){
 				case E_USER_ERROR:$errnostr='Fatal Error';break;
@@ -29,7 +29,9 @@
 	}
 	register_shutdown_function('shutdown_handler');
 	// END ERROR HANDLING
-	@session_start();
+	if(session_status() == PHP_SESSION_NONE){
+		@session_start();
+	}
 	define('PATH_ROOT',realpath(dirname(__FILE__)).'/../');
 	define('PATH_CONFIG',PATH_ROOT.'config.json');
 	define('PATH_DEFAULT_CONFIG',PATH_ROOT.'config.default.json');
