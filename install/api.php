@@ -115,6 +115,7 @@
 					if($id == "run"){
 						$path = realpath(dirname(__FILE__));
 						if(isset($_GET['dbuser'])&&isset($_GET['dbpass'])&&isset($_GET['dbname'])&&isset($_GET['dbhost'])&&isset($_GET['dbtemplate'])&&isset($_GET['email'])){
+							global $mysqli;
 							$dbuser = $_GET['dbuser'];
 							$dbpass = $_GET['dbpass'];
 							$dbname = $_GET['dbname'];
@@ -128,7 +129,7 @@
 							file_put_contents('../config.default.json',"{\"host\":\"{$dbhost}\",\"user\":\"{$dbuser}\",\"password\":\"{$dbpass}\",\"database\":\"{$dbname}\",\"expire\":86400,\"email\":\"{$email}\"}");
 							require_once('../php/database.php');
 							foreach($sql_query as $sql){
-								query($sql) or die('error in query');
+								query($sql) or die('Error in query: '.$mysqli->error);
 							}
 							echo 'pass';
 						}else{

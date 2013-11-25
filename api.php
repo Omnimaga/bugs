@@ -252,10 +252,12 @@
 								retj($ret,$id);
 							break;
 							case 'notifications':
-								if($res = query("SELECT count(m.id) as notifications,UNIX_TIMESTAMP(max(m.timestamp)) as timestamp FROM `messages` m JOIN `users` u ON u.id = m.to_id WHERE u.id = %d AND u.last_pm_check < m.timestamp;",Array(userId($_SESSION['username'])))){
-									$res = $res->fetch_assoc();
-									$ret['count'] = $res['notifications'];
-									$ret['timestamp'] = $res['timestamp'];
+								if($LOGGEDIN){
+									if($res = query("SELECT count(m.id) as notifications,UNIX_TIMESTAMP(max(m.timestamp)) as timestamp FROM `messages` m JOIN `users` u ON u.id = m.to_id WHERE u.id = %d AND u.last_pm_check < m.timestamp;",Array(userId($_SESSION['username'])))){
+										$res = $res->fetch_assoc();
+										$ret['count'] = $res['notifications'];
+										$ret['timestamp'] = $res['timestamp'];
+									}
 								}
 								retj($ret,$id);
 							break;

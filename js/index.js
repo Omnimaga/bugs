@@ -628,7 +628,7 @@
 			apiCall(context,function(d){
 				if(!exists(d.error)){
 					if(d.count>0 && $.localStorage('last_pm_check') < d.timestamp){
-						alert('You have '+d.count+' new messages');
+						alert('You have '+d.count+' new message'+(d.count>1?'s':''));
 					}
 					$.localStorage('last_pm_check',d.timestamp);
 				}
