@@ -12,50 +12,100 @@
 					if(!isset($_GET['template'])){
 						$ret['template'] = file_get_contents(PATH_DATA.'pages/user.template');
 					}
-					$user = userObj($id);
-					$context = Array(
-						'name'=>$user['name'],
-						'email'=>$user['email']
-					);
-					if($LOGGEDIN){
-						$context['key'] = true;
-						$context['user'] = userObj($_SESSION['username']);
-					};
-					$ret['context'] = $context;
+					if($user = userObj($id)){
+						$context = Array(
+							'name'=>$user['name'],
+							'email'=>$user['email']
+						);
+						if($LOGGEDIN){
+							$context['key'] = true;
+							$context['user'] = userObj($_SESSION['username']);
+						};
+						$ret['context'] = $context;
+					}else{
+						$ret['state'] = Array(
+							'url'=>isset($_GET['back'])?$_GET['back']:'page-index'
+						);
+					}
 					retj($ret,'User - '.$context['name']);
 				break;
 				case 'group':
 					back(true);
 					// TODO - handle group requests
+					if(false){
+						// TODO
+					}else{
+						$ret['state'] = Array(
+							'url'=>isset($_GET['back'])?$_GET['back']:'page-index'
+						);
+					}
+					retj($ret,'Project - '.$context['title']);
 				break;
 				case 'issue':
 					back(true);
 					// TODO - handle issue requests
+					if(false){
+						// TODO
+					}else{
+						$ret['state'] = Array(
+							'url'=>isset($_GET['back'])?$_GET['back']:'page-index'
+						);
+					}
+					retj($ret,'Project - '.$context['title']);
 				break;
 				case 'scrum':
 					back(true);
 					// TODO - handle scrum requests
+					if(false){
+						// TODO
+					}else{
+						$ret['state'] = Array(
+							'url'=>isset($_GET['back'])?$_GET['back']:'page-index'
+						);
+					}
+					retj($ret,'Project - '.$context['title']);
 				break;
 				case 'project':
 					back(true);
 					if(!isset($_GET['template'])){
 						$ret['template'] = file_get_contents(PATH_DATA.'pages/project.template');
 					}
-					$context = projectObj($id);
-					$context['user'] = userObj($context['user']);
-					if($LOGGEDIN){
-						$context['key'] = true;
-						$context['user'] = userObj($_SESSION['username']);
-					};
-					$ret['context'] = $context;
+					if($context = projectObj($id)){
+						$context['user'] = userObj($context['user']);
+						if($LOGGEDIN){
+							$context['key'] = true;
+							$context['user'] = userObj($_SESSION['username']);
+						};
+						$ret['context'] = $context;
+					}else{
+						$ret['state'] = Array(
+							'url'=>isset($_GET['back'])?$_GET['back']:'page-index'
+						);
+					}
 					retj($ret,'Project - '.$context['title']);
 				break;
 				case 'message':
 					// TODO - handle message requests
+					if(false){
+						// TODO
+					}else{
+						$ret['state'] = Array(
+							'url'=>isset($_GET['back'])?$_GET['back']:'page-index'
+						);
+					}
+					retj($ret,'Project - '.$context['title']);
 				break;
 				case 'admin':
 					back(true);
 					// TODO - handle admin requests
+					if(false){
+						// TODO
+					}else{
+						$ret['state'] = Array(
+							'url'=>isset($_GET['back'])?$_GET['back']:'page-index'
+						);
+					}
+					retj($ret,'Project - '.$context['title']);
 				break;
 				case 'page':
 					$title = $id;
@@ -178,9 +228,31 @@
 								retj($ret,$id);
 							break;
 							case 'comment':
-								$ret = Array(
-									'state'=>stateObj($_GET['comment_type'],$_GET['comment_id'])
-								);
+								if(isset($_GET['comment_type'])&&isset($_GET['comment_id'])&&isset($_GET['message'])){
+									$cid = $_GET['comment_id'];
+									$ret = Array(
+										'state'=>stateObj($_GET['comment_type'],$cid)
+									);
+									switch($_GET['comment_type']){
+										case 'project':
+											if(!function_exists('project_comment')){
+												$ret['error'] = "fn doesn't exist!";
+											}
+											if(!project_comment($cid,$_GET['message'])){
+												$ret = Array(
+													'error'=>'Could not comment on project'
+												);
+											}
+										break;
+										default:
+											$ret['error'] = 'Comment type not implemented';
+									}
+								}else{
+									$ret['error'] = 'Missing comment paremeters';
+									$ret['state'] = Array(
+										'title'=>'error'
+									);
+								}
 								retj($ret,$ret['state']['title']);
 							break;
 							default:

@@ -64,7 +64,8 @@
 			'template'=>$topbar,
 			'context'=>$context
 		);
-		die(json_encode($json));
+		echo json_encode($json);
+		die();
 	}
 	function is_valid($col,$v=null){
 		if($v == null){

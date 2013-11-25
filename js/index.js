@@ -214,8 +214,9 @@
 			if(!flag('error')){
 				flag('error',true);
 				var msg = '['+State.url+']'+e.error;
-				console.error(msg.trim()+"\n"+(exists(e.state)?JSON.stringify(e.state):''));
+				console.error((msg.trim()+"\n"+(exists(e.state)?JSON.stringify(e.state):'')).trim());
 				alert(msg.trim(),'Error',callback);
+				console.trace();
 			}
 		},
 		getNewState = function(state){
@@ -382,7 +383,7 @@
 											if(!exists(d.error)){
 												diag.dialog('close');
 												flag('ignore_statechange',false);
-												loading(false);
+												$('.topbar-current').click();
 											}
 										});
 									}
@@ -486,6 +487,8 @@
 									$(window).resize();
 								}else if($(this).hasClass('topbar-history')){
 									back();
+								}else if($(this).hasClass('topbar-current')){
+									replaceState(href);
 								}else{
 									loadState(href);
 								}

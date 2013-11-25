@@ -16,4 +16,10 @@
 		}
 		return Array();
 	}
+	function project_comment($project,$message){
+		if(query("INSERT INTO `bugs`.`messages` (`id`,`timestamp`,`from_id`,`to_id`,`p_id`,`s_id`,`i_id`,`message`) VALUES(NULL,CURRENT_TIMESTAMP,'%d',NULL,'%d',NULL,NULL,'%s');",Array(userId($_SESSION['username']),$project,$message))){
+			return true;
+		}
+		return false;
+	}
 ?>

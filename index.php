@@ -47,6 +47,15 @@
 			case 'captcha':
 				generate_captcha();
 			break;
+			case 'error':
+				die(
+					json_encode(
+						Array(
+							'error'=>isset($_GET['error'])?$_GET['error']:'Error'
+						)
+					)
+				);
+			break;
 		}
 	}
 	if(!isset($_GET['type'])||!isset($_GET['id'])){
@@ -98,7 +107,9 @@
 				window.applicationCache.addEventListener('updateready',function(){
 					location.reload();
 				});
-				window.screen.lockOrientation('portrait');
+				if(typeof window.screen.lockOrientation != 'undefined'){
+					window.screen.lockOrientation('portrait');
+				}
 			})(window,Modernizr);
 		</script>
 		<script src="js/jquery.min.js"></script>
@@ -117,7 +128,7 @@
 		<div id="content" class="container"></div>
 		<div id="loading"></div>
 		<div id="dialog"></div>
-		<div id="comment">
+		<div id="comment" style="display:none;">
 			<form>
 				<input type="hidden" name="comment_type"/>
 				<input type="hidden" name="comment_id"/>

@@ -22,8 +22,19 @@
 			}
 			$user = userId($user);
 			if(false != $user){
+				if($res = query("SELECT id FROM `projects` WHERE title = '%s' AND u_id = %d",Array($title,$user))){
+					if($res->num_rows){
+						return false;
+					}
+				}
 				if(query("INSERT INTO `projects` (title,description,u_id) VALUES ('%s','%s',%d)",Array($title,$description,$user))){
-					return true;
+					if($res = query("SELECT id FROM `projects` WHERE title = '%s' AND description = '%s' AND u_id = %d",Array($title,$description,$user))){
+						if($res->num_rows == 1){
+							$res = $res->fetch_assoc();
+							project_comment($res['id'],'Project created');
+						}
+						return true;
+					}
 				}
 			}
 		}

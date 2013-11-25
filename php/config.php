@@ -1,4 +1,34 @@
 <?php
+	error_reporting(0);
+	ob_start();
+	// START ERROR HANDLING
+	function shutdown_handler(){
+		$error = error_get_last();
+		if ($error['type'] == 1) {
+			ob_end_clean();
+			switch($error['type']){
+				case E_USER_ERROR:$errnostr='Fatal Error';break;
+				case E_USER_WARNING:$errnostr='Warning';break;
+				case E_USER_NOTICE:$errnostr='Notice';break;
+				case E_ERROR:$errnostr='Error';break;
+				case E_PARSE:$errnostr='Parse Error';break;
+				case E_CORE_ERROR:$errnostr='Core Error';break;
+				case E_CORE_WARNING:$errnostr='Core Warning';break;
+				case E_COMPILE_ERROR:$errnostr='Compile Error';break;
+				case E_COMPILE_WARNING:$errnostr='Compile Warning';break;
+				//case E_:$errnostr='';break;
+				default:$errnostr='Unkown Error';
+			}
+			echo json_encode(Array(
+				'error'=>"\n{$errnostr}: {$error['message']} on {$error['file']}[{$error['line']}]"
+			));
+		}else{
+			obj_end_flush();
+		}
+		echo $error['type'].PHP_EOL;
+	}
+	register_shutdown_function('shutdown_handler');
+	// END ERROR HANDLING
 	@session_start();
 	define('PATH_ROOT',realpath(dirname(__FILE__)).'/../');
 	define('PATH_CONFIG',PATH_ROOT.'config.json');
