@@ -29,7 +29,7 @@
 	}
 	register_shutdown_function('shutdown_handler');
 	// END ERROR HANDLING
-	if(session_status() == PHP_SESSION_NONE){
+	if(session_id() == ''){
 		@session_start();
 	}
 	define('PATH_ROOT',realpath(dirname(__FILE__)).'/../');
