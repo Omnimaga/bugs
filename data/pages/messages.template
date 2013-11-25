@@ -10,6 +10,11 @@
 	</span>
 	{{#each messages}}
 		<h3>
+			<span style="float:right;">
+				<time style="font-size:smaller;" class="timeago">
+					{{timestamp}}
+				</time>
+			</span>
 			<a class="button" href="#~{{from}}">
 				From: {{from}}
 			</a>

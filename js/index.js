@@ -103,13 +103,15 @@
 					if(exists(d['error'])){
 						error(d);
 					}else{
-						d.state.title = d.state.title.capitalize();
-						if(location.href.substr(location.href.lastIndexOf('/')+1) != d.state.url && d.state.url != ''){
-							console.log('Forced redirection to '+d.state.url);
-							History.replaceState(d.state.data,d.state.title,d.state.url);
-							getNewState();
+						if(exists(d.state)){
+							d.state.title = d.state.title.capitalize();
+							if(location.href.substr(location.href.lastIndexOf('/')+1) != d.state.url && d.state.url != ''){
+								console.log('Forced redirection to '+d.state.url);
+								History.replaceState(d.state.data,d.state.title,d.state.url);
+								getNewState();
+							}
+							document.title = d.state.title;
 						}
-						document.title = d.state.title;
 					}
 					if(exists(callback)){
 						console.log('Running apiCall callback');
@@ -585,7 +587,8 @@
 		$.get(location.href,{
 			get: 'settings',
 			timestamp: +new Date,
-			back: false
+			back: false,
+			no_state: true
 		},function(d){
 			if(!exists(d.error)){
 				settings = d.settings;
@@ -625,6 +628,7 @@
 			context.url = State.url;
 			context.title = State.title;
 			context.topbar = false;
+			context.no_state = true;
 			apiCall(context,function(d){
 				if(!exists(d.error)){
 					if(d.count>0 && $.localStorage('last_pm_check') < d.timestamp){

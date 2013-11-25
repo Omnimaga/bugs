@@ -5,18 +5,20 @@
 		global $LOGGEDIN;
 		$type=$_GET['type'];
 		$id=$_GET['id'];
-		// State
-		if(!isset($json['state'])){
-			$json['state'] = Array();
-		}
-		unset($_GET['password']);
-		unset($_GET['password1']);
-		if(!isset($json['state']['data'])){
-			$json['state']['data'] = $_GET;
-		}else{
-			foreach($_GET as $key => $val){
-				if(!isset($json['state']['data'][$key])&&$key!='password'){
-					$json['state']['data'][$key] = $val;
+		if(!isset($_GET['no_state'])){
+			// State
+			if(!isset($json['state'])){
+				$json['state'] = Array();
+			}
+			unset($_GET['password']);
+			unset($_GET['password1']);
+			if(!isset($json['state']['data'])){
+				$json['state']['data'] = $_GET;
+			}else{
+				foreach($_GET as $key => $val){
+					if(!isset($json['state']['data'][$key])&&$key!='password'){
+						$json['state']['data'][$key] = $val;
+					}
 				}
 			}
 		}
@@ -24,25 +26,27 @@
 		if(is_null($title)){
 			if(isset($json['title'])){
 				$title = $json['title'];
-			}elseif(isset($json['state']['title'])){
+			}elseif(isset($json['state']['title'])&&!isset($_GET['no_state'])){
 				$title = $json['state']['title'];
 			}else{
 				$title = $_GET['id'];
 			}
 		}
-		$json['state']['title'] = $title;
-		if(!isset($json['state']['url'])){
-			// URL
-			switch($type){
-				case 'user':$url='~'.$id;break;
-				case 'group':$url='+'.$id;break;
-				case 'issue':$url='!'.$id;break;
-				case 'action':$url='';break;
-				default:$url=$type.'-'.$id;
+		if(!isset($_GET['no_state'])){
+			$json['state']['title'] = $title;
+			if(!isset($json['state']['url'])){
+				// URL
+				switch($type){
+					case 'user':$url='~'.$id;break;
+					case 'group':$url='+'.$id;break;
+					case 'issue':$url='!'.$id;break;
+					case 'action':$url='';break;
+					default:$url=$type.'-'.$id;
+				}
+				$json['state']['url'] = $url;
+			}else{
+				$url = $json['state']['url'];
 			}
-			$json['state']['url'] = $url;
-		}else{
-			$url = $json['state']['url'];
 		}
 		if(!isset($_GET['topbar'])){
 			// Tobar
@@ -55,7 +59,9 @@
 				$context = Array();
 			}
 			$context['title'] = $title;
-			$context['url'] = $url;
+			if(!isset($_GET['no_state'])){
+				$context['url'] = $url;
+			}
 			if(file_exists(PATH_DATA.'topbars/'.$type.'-'.$id)){
 				$topbar = file_get_contents(PATH_DATA.'topbars/'.$type.'-'.$id.'.template');
 			}else{

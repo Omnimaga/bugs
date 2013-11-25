@@ -259,7 +259,7 @@
 										$ret['timestamp'] = $res['timestamp'];
 									}
 								}
-								retj($ret,$id);
+								retj($ret,$_GET['title']);
 							break;
 							case 'comment':
 								if(isset($_GET['comment_type'])&&isset($_GET['comment_id'])&&isset($_GET['message'])){
