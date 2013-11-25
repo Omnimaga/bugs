@@ -25,7 +25,7 @@
 		}else{
 			obj_end_flush();
 		}
-		echo $error['type'].PHP_EOL;
+		echo PHP_EOL;
 	}
 	register_shutdown_function('shutdown_handler');
 	// END ERROR HANDLING
