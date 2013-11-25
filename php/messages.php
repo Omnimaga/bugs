@@ -6,7 +6,7 @@
 			case 'project':
 				if($res = query("SELECT m.id, u.name, m.message, UNIX_TIMESTAMP(m.timestamp) as timestamp FROM `messages` m JOIN `users` u ON u.id = m.from_id WHERE m.p_id='%d'",Array($id))){
 					$arr = Array();
-					while($row = $res->fetch_assoc())){
+					while($row = $res->fetch_assoc()){
 						array_push($arr,$row);
 					}
 					return $arr;
