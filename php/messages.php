@@ -13,10 +13,20 @@
 				}
 			break;
 			case 'user':
-				if($res = query("SELECT  m.id, uf.name as \"from\", ut.name as \"to\", m.message, UNIX_TIMESTAMP(m.timestamp) as timestamp FROM `messages` m JOIN `users` uf ON uf.id = m.from_id JOIN `users` ut ON ut.id = m.to_id WHERE (m.from_id='%d' AND m.to_id IS NOT NULL) OR m.to_id='%d'",Array($id,$id))){
+				if($res = query("SELECT  m.id, uf.name as \"from\", ut.name as \"to\", m.message, UNIX_TIMESTAMP(m.timestamp) as timestamp, m.timestamp > ut.last_pm_check as is_new FROM `messages` m JOIN `users` uf ON uf.id = m.from_id JOIN `users` ut ON ut.id = m.to_id WHERE (m.from_id='%d' AND m.to_id IS NOT NULL) OR m.to_id='%d' ORDER BY m.timestamp DESC",Array($id,$id))){
 					$arr = Array();
 					while($row = $res->fetch_assoc()){
-						array_push($arr,$row);
+						$msg = Array(
+							'id'=>$row['id'],
+							'from'=>$row['from'],
+							'to'=>$row['to'],
+							'message'=>$row['message'],
+							'timestamp'=>$row['timestamp']
+						);
+						if($row['is_new']){
+							$msg['is_new'] = true;
+						}
+						array_push($arr,$msg);
 					}
 					return $arr;
 				}

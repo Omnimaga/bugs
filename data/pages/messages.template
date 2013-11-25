@@ -15,6 +15,9 @@
 					{{timestamp}}
 				</time>
 			</span>
+			{{#if is_new}}
+				NEW
+			{{/if}}
 			<a class="button" href="#~{{from}}">
 				From: {{from}}
 			</a>
