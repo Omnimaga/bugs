@@ -17,4 +17,7 @@
 		"navigation": false
 	},
 	"fullscreen": "true"
+	"permissions": {
+		"desktop-notification":{}
+	}
 }

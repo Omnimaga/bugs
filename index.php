@@ -78,6 +78,7 @@
 		<link rel="shortcut icon" href="img/favicon.ico" />
 		<link rel="icon" type="image/png" href="img/favicon-60.png" />
 		<link href="css/jquery-ui.css" rel="stylesheet" type="text/css"/>
+		<link href="css/ui.notify.css" rel="stylesheet" type="text/css"/>
 		<link href="css/style.css" rel="stylesheet" type="text/css"/>
 		<title>Bugs</title>
 		<script src="js/modernizr.js"></script>
@@ -120,6 +121,7 @@
 		<script src="js/jquery.cookie.js"></script>
 		<script src="js/jquery.nicescroll.js"></script>
 		<script src="js/jquery.timeago.js"></script>
+		<script src="js/jquery.notify.js"></script>
 		<script src="js/shortcut.js"></script>
 		<script src="js/index.js"></script>
 	</head>
@@ -134,6 +136,19 @@
 				<input type="hidden" name="comment_id"/>
 				<textarea name="message"></textarea>
 			</form>
+		</div>
+		<div id="notification-container" style="display:none;">
+			<div id="basic-template">
+				<a class="ui-notify-cross ui-notify-close" href="#">
+					x
+				</a>
+				<h1>
+					#{title}
+				</h1>
+				<p>
+					#{text}
+				</p>
+			</div>
 		</div>
 	</body>
 </html>

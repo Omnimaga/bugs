@@ -534,6 +534,40 @@
 				render.dialog('#dialog',title,callback);
 			}
 		},
+		notify = window.notify = function(title,text,onclick,onclose){
+			var notification;
+			if(exists(window.Notification)&&!exists(window.webkitNotifications)&&!flag('default_notify')){
+				if(Notification.permission === 'denied'){
+					flag('default_notify',true);
+					notify(title,text,onclick,onclose);
+				}else if(Notification.permission === 'granted'){
+					notification = new Notification(title,{
+						body: text,
+						icon: 'favicon.ico'
+					});
+					notification.onclick = onclick;
+					notification.onclose = onclose;
+				}else{
+					Notification.requestPermission(function(p){
+						console.log('permission for notify: '+p);
+						Notification.permission = p;
+						notify(title,text,onclick,onclose);
+					});
+				}
+			}else if(exists(window.navigator.mozNotification)){
+				notification = window.navigator.mozNotification.createNotification(title,text,'favicon.ico');
+				notification.onclick = onclick;
+				notification.onclose = onclose;
+				notification.show();
+			}else{
+				$('#notification-container').notify('create',{
+					title: title,
+					text: text,
+					click: onclick,
+					close: onclose
+				});
+			}
+		},
 		loading = function(state){
 			if(!flag('ignore_statechange')){
 				state = exists(state)?state:false;
@@ -621,6 +655,7 @@
 				return getState.call(History);
 			}
 		};
+		$('#notification-container').notify();
 		(function notifications(){
 			var context = State;
 			context.type = 'action';
@@ -632,7 +667,9 @@
 			apiCall(context,function(d){
 				if(!exists(d.error)){
 					if(d.count>0 && $.localStorage('last_pm_check') < d.timestamp){
-						alert('You have '+d.count+' new message'+(d.count>1?'s':''));
+						notify('Alert','You have '+d.count+' new message'+(d.count>1?'s':''),function(){
+							loadState('page-messages');
+						});
 					}
 					$('.topbar-notifications').css('display',d.count>0?'':'none').text('('+d.count+')');
 					$.localStorage('last_pm_check',d.timestamp);
