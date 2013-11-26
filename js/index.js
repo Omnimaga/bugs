@@ -634,6 +634,7 @@
 					if(d.count>0 && $.localStorage('last_pm_check') < d.timestamp){
 						alert('You have '+d.count+' new message'+(d.count>1?'s':''));
 					}
+					$('.topbar-notifications').css('display',d.count>0?'':'none').text('('+d.count+')');
 					$.localStorage('last_pm_check',d.timestamp);
 				}
 				setTimeout(notifications,5*1000); // every 5 seconds

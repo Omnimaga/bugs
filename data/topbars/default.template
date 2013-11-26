@@ -10,6 +10,7 @@
 	<a class="topbar-home menuitem" href="#page-index">
 		<span class="screen-small" style="background-image:url(img/headers/icons/menu.png);background-repeat:no-repeat;height:50px;background-position:center;"></span>
 	</a>
+	<a href="#page-messages" class="topbar-notifications menuitem screen-small"></a>
 	{{#if key}}
 		<span class="menuitem screen-large" onclick="$(this).children('.menu').toggle();">
 			<span  style="background-image:url(img/headers/icons/menu.png);background-repeat:no-repeat;height:50px;width:35px;background-position:center;float:left;"></span>			
@@ -62,7 +63,7 @@
 		<span class="menuitem screen-large" onclick="$(this).children('.menu').toggle();">
 			<span style="background-image:url(img/headers/icons/user.png);height:35px;width:35px;background-position:center;float:left;margin-top:5px;"></span>
 			<span style="float:left">
-				{{user.name}}
+				{{user.name}} <span class="topbar-notifications"></span>
 			</span>
 			<ul class="menu top" style="display:none;margin-top:50px;position:absolute;right:0;">
 				<li>
@@ -72,7 +73,7 @@
 				</li>
 				<li>
 					<a href="#page-messages">
-						Messages
+						<span class="topbar-notifications"></span> Messages
 					</a>
 				</li>
 				<li>
@@ -90,7 +91,7 @@
 				Profile
 			</a>
 			<a class="menuitem" href="#page-messages">
-				Messages
+				<span class="topbar-notifications"></span> Messages
 			</a>
 			<a class="menuitem" href="#page-projects">
 				Projects
