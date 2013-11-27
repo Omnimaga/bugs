@@ -44,6 +44,7 @@
 					apiCall(data,function(d){
 						if(!d.error){
 							setKey(d.key);
+							notify('register','You have successfully registered');
 							loadState('page-index');
 						}else{
 							setKey(null);

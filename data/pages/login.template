@@ -29,6 +29,7 @@
 				apiCall(data,function(d){
 					if(!d.error){
 						setKey(d.key);
+						notify('login','You have logged in successfully');
 						back(true);
 					}else{
 						setKey(null);
