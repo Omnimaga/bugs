@@ -213,7 +213,7 @@
 				});
 			}
 		},
-		error = function(e,callback){
+		error = window.error = function(e,callback){
 			if(!flag('error')){
 				flag('error',true);
 				var msg = '['+State.url+']'+e.error;
@@ -534,9 +534,17 @@
 				render.dialog('#dialog',title,callback);
 			}
 		},
+		hasFocus = function(){
+			if(typeof document.hasFocus === 'undefined'){
+				document.hasFocus = function(){
+					return document.visibilityState == 'visible';
+				}
+			}
+			return document.hasFocus();
+		},
 		notify = window.notify = function(title,text,onclick,onclose){
 			var notification;
-			if(exists(window.Notification)&&!exists(window.webkitNotifications)&&!flag('default_notify')){
+			if(exists(window.Notification)&&!exists(window.webkitNotifications)&&!flag('default_notify')&&!hasFocus()){
 				if(Notification.permission === 'denied'){
 					flag('default_notify',true);
 					notify(title,text,onclick,onclose);
@@ -554,7 +562,7 @@
 						notify(title,text,onclick,onclose);
 					});
 				}
-			}else if(exists(window.navigator.mozNotification)){
+			}else if(exists(window.navigator.mozNotification)&&!hasFocus()){
 				notification = window.navigator.mozNotification.createNotification(title,text,'favicon.ico');
 				notification.onclick = onclick;
 				notification.onclose = onclose;
@@ -585,6 +593,9 @@
 		setKey(null);
 	}
 	$(document).ready(function(){
+		if(exists(typeof Notification.permission)&&Notification.permission !== 'granted'){
+			Notification.requestPermission();
+		}
 		$.ajaxSetup({
 			async: false,
 			cache: false,

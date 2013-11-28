@@ -16,8 +16,8 @@
 	"chrome": {
 		"navigation": false
 	},
-	"fullscreen": "true"
+	"fullscreen": "true",
 	"permissions": {
-		"desktop-notification":{}
+		"desktop-notification": {}
 	}
 }

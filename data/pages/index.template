@@ -11,14 +11,14 @@
 					$('button#install').click(function(e){
 						e.preventDefault();
 						// install the app
-						var installLocFind = navigator.mozApps.install(location.origin+'/bugs.webapp');
-						installLocFind.onsuccess = function(data){
+						var request = navigator.mozApps.install(location.origin+'/bugs.webapp');
+						request.onsuccess = function(data){
 							replaceState('page-index');
 						};
-						installLocFind.onerror = function(){
+						request.onerror = function(){
 							// App wasn't installed, info is in
 							// installapp.error.name
-							error(installapp.error.name);
+							error(request.error.name);
 						};
 						return false;
 					});
