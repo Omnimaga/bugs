@@ -551,7 +551,7 @@
 				}else if(Notification.permission === 'granted'){
 					notification = new Notification(title,{
 						body: text,
-						icon: 'favicon.ico'
+						icon: location.origin+'/img/favicon.ico'
 					});
 					notification.onclick = onclick;
 					notification.onclose = onclose;
@@ -563,7 +563,7 @@
 					});
 				}
 			}else if(exists(window.navigator.mozNotification)&&!hasFocus()){
-				notification = window.navigator.mozNotification.createNotification(title,text,'favicon.ico');
+				notification = window.navigator.mozNotification.createNotification(title,text,location.origin+'/img/favicon.ico');
 				notification.onclick = onclick;
 				notification.onclose = onclose;
 				notification.show();
