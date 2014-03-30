@@ -586,6 +586,56 @@
 					$('#loading').show();
 				}
 			}
+		},
+		debug = window.debug = {
+			hardReload: function(){
+				debug.clearCache();
+				location.reload();
+			},
+			clearCache: function(){
+				templates = [];
+				$.localStorage('templates',null);
+				console.log('Templates cleared.');
+			},
+			manifesto: function(){
+				if(!flag('manifesto')){
+					if(window.applicationCache){
+						if(window.applicationCache.status==window.applicationCache.UNCACHED){
+							$('head').append(
+								$('<script>').attr({
+									'type': 'text/javascript',
+									'src': 'http://manifesto.ericdelabar.com/manifesto.js?x="+(Math.random())'
+								})
+							);
+							(function wait(){
+								if($('#cacheStatus').length === 0){
+									setTimeout(wait,10);
+								}else{
+									$('#cacheStatus').niceScroll();
+								}
+							})();
+						}else{
+							alert("Manifest file is valid.");
+						}
+					}else{
+						alert("This browser does not support HTML5 Offline Application Cache.");
+					}
+					flag('manifesto',true);
+				}
+			},
+			firebug: function(){
+				if(!flag('firebug-lite')){
+					$('head').append(
+						$('<script>').attr({
+							'type': 'text/javascript',
+							'src': 'https://getfirebug.com/firebug-lite.js#startOpened',
+							'id': 'FirebugLite'
+						})
+					);
+					$('<image>').attr('src','https://getfirebug.com/releases/lite/latest/skin/xp/sprite.png');
+					flag('firebug-lite',true);
+				}
+			}
 		};
 	if(exists($.cookie('key'))){
 		setKey($.cookie('key'));
@@ -682,7 +732,7 @@
 							loadState('page-messages');
 						});
 					}
-					$('.topbar-notifications').css('display',d.count>0?'':'none').text('('+d.count+')');
+					$('.topbar-notifications').css('display',d.count>0?'block':'').text('('+d.count+')');
 					$.localStorage('last_pm_check',d.timestamp);
 				}
 				setTimeout(notifications,5*1000); // every 5 seconds
@@ -690,48 +740,13 @@
 		})();
 	});
 	shortcut.add('f12',function(){
-		if(!flag('firebug-lite')){
-			$('head').append(
-				$('<script>').attr({
-					'type': 'text/javascript',
-					'src': 'https://getfirebug.com/firebug-lite.js#startOpened',
-					'id': 'FirebugLite'
-				})
-			);
-			$('<image>').attr('src','https://getfirebug.com/releases/lite/latest/skin/xp/sprite.png');
-			flag('firebug-lite',true);
-		}
+		debug.firebug();
 	});
 	shortcut.add('Ctrl+f12',function(){
-		if(!flag('manifesto')){
-			if(window.applicationCache){
-				if(window.applicationCache.status==window.applicationCache.UNCACHED){
-					$('head').append(
-						$('<script>').attr({
-							'type': 'text/javascript',
-							'src': 'http://manifesto.ericdelabar.com/manifesto.js?x="+(Math.random())'
-						})
-					);
-					(function wait(){
-						if($('#cacheStatus').length == 0){
-							setTimeout(wait,10);
-						}else{
-							$('#cacheStatus').niceScroll();
-						}
-					})();
-				}else{
-					alert("Manifest file is valid.");
-				}
-			}else{
-				alert("This browser does not support HTML5 Offline Application Cache.");
-			}
-			flag('manifesto',true);
-		}
+		debug.manifesto();
 	});
 	shortcut.add('Shift+f12',function(){
-		templates = [];
-		$.localStorage('templates',null);
-		console.log('Templates cleared.');
+		debug.clearCache();
 	});
 	$.fn.serializeObject = function(){
 		var o = {},

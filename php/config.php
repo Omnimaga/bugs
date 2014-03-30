@@ -23,7 +23,7 @@
 				'error'=>"\n{$errnostr}: {$error['message']} on {$error['file']}[{$error['line']}]"
 			));
 		}else{
-			obj_end_flush();
+			ob_end_flush();
 		}
 		echo PHP_EOL;
 	}

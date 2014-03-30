@@ -116,6 +116,9 @@ div.topbar-right{
 div.topbar-left{
 	float: left;
 }
+.topbar-notifications{
+	display: none;
+}
 div#content{
 	width: 100%;
 	-webkit-overflow-scrolling: touch;
@@ -238,7 +241,7 @@ div#loading{
 	.topbar-back,.topbar-history{
 		background: url(../img/headers/ui/separator.png) no-repeat scroll right center transparent;
 	}
-	.screen-small{
+	.screen-small:not(.topbar-notifications){
 		display: block;
 	}
 }
