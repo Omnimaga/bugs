@@ -24,7 +24,7 @@
 			case 'state':
 				die(
 					json_encode(
-						Array(
+						array(
 							'state'=>stateObj($type,$id)
 						)
 					)
@@ -34,12 +34,12 @@
 				require_once('api.php');
 			break;
 			case 'settings':
-				$settings = Array();
-				$keys = Array('expire');
+				$settings = array();
+				$keys = array('expire');
 				foreach($keys as $key){
 					$settings[$key] = get($key);
 				}
-				die(json_encode(Array(
+				die(json_encode(array(
 					'settings'=>$settings,
 					'version'=>file_get_contents(PATH_DATA.'version')
 				)));
@@ -50,7 +50,7 @@
 			case 'error':
 				die(
 					json_encode(
-						Array(
+						array(
 							'error'=>isset($_GET['error'])?$_GET['error']:'Error'
 						)
 					)

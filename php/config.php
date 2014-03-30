@@ -19,7 +19,7 @@
 				//case E_:$errnostr='';break;
 				default:$errnostr='Unkown Error';
 			}
-			echo json_encode(Array(
+			echo json_encode(array(
 				'error'=>"\n{$errnostr}: {$error['message']} on {$error['file']}[{$error['line']}]"
 			));
 		}else{
@@ -41,11 +41,11 @@
 	define('PATH_DATA',PATH_ROOT.'data/');
 	global $config;
 	if(file_exists(PATH_CONFIG)){
-		$config = objectToArray(json_decode(file_get_contents(PATH_CONFIG),true));
+		$config = objectToarray(json_decode(file_get_contents(PATH_CONFIG),true));
 	}else{
-		$config = Array();
+		$config = array();
 	}
-	$config = array_merge($config,objectToArray(json_decode(file_get_contents(PATH_DEFAULT_CONFIG),true)));
+	$config = array_merge($config,objectToarray(json_decode(file_get_contents(PATH_DEFAULT_CONFIG),true)));
 	function get($setting){
 		global $config;
 		if(isset($config[$setting])){
@@ -60,7 +60,7 @@
 		file_put_contents(PAT_CONFIG,json_encode($config));
 		return $value;
 	}
-	function objectToArray($d){
+	function objectToarray($d){
 		if(is_object($d)){
 			// Gets the properties of the given object
 			// with get_object_vars function

@@ -2,7 +2,7 @@
 	require_once('php/include.php');
 	// TODO - Add API handling.
 	$method = $_SERVER['REQUEST_METHOD'];
-	$ret = Array();
+	$ret = array();
 	if(isset($_GET['type'])){
 		if(isset($_GET['id'])){
 			$id = $_GET['id'];
@@ -13,7 +13,7 @@
 						$ret['template'] = file_get_contents(PATH_DATA.'pages/user.template');
 					}
 					if($user = userObj($id)){
-						$context = Array(
+						$context = array(
 							'name'=>$user['name'],
 							'email'=>$user['email']
 						);
@@ -23,7 +23,7 @@
 						};
 						$ret['context'] = $context;
 					}else{
-						$ret['state'] = Array(
+						$ret['state'] = array(
 							'url'=>isset($_GET['back'])?$_GET['back']:'page-index'
 						);
 					}
@@ -35,7 +35,7 @@
 					if(false){
 						// TODO
 					}else{
-						$ret['state'] = Array(
+						$ret['state'] = array(
 							'url'=>isset($_GET['back'])?$_GET['back']:'page-index'
 						);
 					}
@@ -47,7 +47,7 @@
 					if(false){
 						// TODO
 					}else{
-						$ret['state'] = Array(
+						$ret['state'] = array(
 							'url'=>isset($_GET['back'])?$_GET['back']:'page-index'
 						);
 					}
@@ -59,7 +59,7 @@
 					if(false){
 						// TODO
 					}else{
-						$ret['state'] = Array(
+						$ret['state'] = array(
 							'url'=>isset($_GET['back'])?$_GET['back']:'page-index'
 						);
 					}
@@ -78,7 +78,7 @@
 						};
 						$ret['context'] = $context;
 					}else{
-						$ret['state'] = Array(
+						$ret['state'] = array(
 							'url'=>isset($_GET['back'])?$_GET['back']:'page-index'
 						);
 					}
@@ -89,7 +89,7 @@
 					if(false){
 						// TODO
 					}else{
-						$ret['state'] = Array(
+						$ret['state'] = array(
 							'url'=>isset($_GET['back'])?$_GET['back']:'page-index'
 						);
 					}
@@ -101,7 +101,7 @@
 					if(false){
 						// TODO
 					}else{
-						$ret['state'] = Array(
+						$ret['state'] = array(
 							'url'=>isset($_GET['back'])?$_GET['back']:'page-index'
 						);
 					}
@@ -113,13 +113,13 @@
 						if(!isset($_GET['template'])||$_GET['template']=='true'){
 							$ret['template'] = file_get_contents(PATH_DATA.'pages/'.$id.'.template');
 						}
-						$context = Array();
+						$context = array();
 						if($LOGGEDIN){
 							$context['key'] = true;
 							$context['user'] = userObj($_SESSION['username']);
 						};
 						if(file_exists(PATH_DATA.'pages/'.$id.'.options')){
-							$options = objectToArray(json_decode(file_get_contents(PATH_DATA.'pages/'.$id.'.options'),true));
+							$options = objectToarray(json_decode(file_get_contents(PATH_DATA.'pages/'.$id.'.options'),true));
 							if(isset($options['secure'])&&$options['secure']&&!$LOGGEDIN){
 								back(true);
 							}
@@ -146,7 +146,7 @@
 											if($LOGGEDIN){
 												$context['messages'] = messages($context['user']['id'],'user');
 											}else{
-												$context['messages'] = Array();
+												$context['messages'] = array();
 											}
 										break;
 									}
@@ -156,7 +156,7 @@
 								foreach($options['actions'] as $key){
 									switch($key){
 										case 'pm_mark_read':
-											query("UPDATE `users` SET last_pm_check=CURRENT_TIMESTAMP WHERE id='%d'; ",Array(userId($_SESSION['username'])));
+											query("UPDATE `users` SET last_pm_check=CURRENT_TIMESTAMP WHERE id='%d'; ",array(userId($_SESSION['username'])));
 										break;
 									}
 								}
@@ -168,11 +168,28 @@
 					}
 					retj($ret,$title);
 				break;
+				case 'manifest':
+					case 'pages':
+						if(isset($_GET['manifest'])){
+							$files = array_diff(scandir(dirname(PATH_DATA.'/'.$_GET['manifest'])),array('..', '.'));
+							foreach($files as $k => $file){
+								$files[$k] = basename($file)."\n";
+							}
+							retj(array(
+								'manifest'=>$files
+							));
+						}else{
+							retj(array(
+								'error'=>'Manifest not defined'
+							));
+						}
+					break;
+				break;
 				case 'action':
 						switch($id){
 							case 'login':
-								$ret['state'] = Array(
-									'data'=>Array(
+								$ret['state'] = array(
+									'data'=>array(
 										'type'=>'page',
 										'id'=>'login',
 									)
@@ -190,8 +207,8 @@
 								retj($ret,$id);
 							break;
 							case 'register':
-								$ret['state'] = Array(
-									'data'=>Array(
+								$ret['state'] = array(
+									'data'=>array(
 										'type'=>'page',
 										'id'=>'register'
 									)
@@ -202,7 +219,7 @@
 											if(addUser($_GET['username'],$_GET['password'],$_GET['email'])){
 												$key = login($_GET['username'],$_GET['password']);
 												$_SESSION['username'] = $_GET['username'];
-												sendMail('welcome','Welcome!',$_GET['email'],get('email'),Array($_GET['username'],$_GET['password'],get('email')));
+												sendMail('welcome','Welcome!',$_GET['email'],get('email'),array($_GET['username'],$_GET['password'],get('email')));
 											}else{
 												$ret['error'] = "Could not add user. ".$mysqli->error;
 											}
@@ -219,8 +236,8 @@
 							break;
 							case 'project':
 								back(true);
-								$ret['state'] = Array(
-									'data'=>Array(
+								$ret['state'] = array(
+									'data'=>array(
 										'type'=>'page',
 										'id'=>$id,
 									)
@@ -253,7 +270,7 @@
 							break;
 							case 'notifications':
 								if($LOGGEDIN){
-									if($res = query("SELECT count(m.id) as notifications,UNIX_TIMESTAMP(max(m.timestamp)) as timestamp FROM `messages` m JOIN `users` u ON u.id = m.to_id WHERE u.id = %d AND u.last_pm_check < m.timestamp;",Array(userId($_SESSION['username'])))){
+									if($res = query("SELECT count(m.id) as notifications,UNIX_TIMESTAMP(max(m.timestamp)) as timestamp FROM `messages` m JOIN `users` u ON u.id = m.to_id WHERE u.id = %d AND u.last_pm_check < m.timestamp;",array(userId($_SESSION['username'])))){
 										$res = $res->fetch_assoc();
 										$ret['count'] = $res['notifications'];
 										$ret['timestamp'] = $res['timestamp'];
@@ -264,7 +281,7 @@
 							case 'comment':
 								if(isset($_GET['comment_type'])&&isset($_GET['comment_id'])&&isset($_GET['message'])){
 									$cid = $_GET['comment_id'];
-									$ret = Array(
+									$ret = array(
 										'state'=>stateObj($_GET['comment_type'],$cid)
 									);
 									switch($_GET['comment_type']){
@@ -273,7 +290,7 @@
 												$ret['error'] = "fn doesn't exist!";
 											}
 											if(!project_comment($cid,$_GET['message'])){
-												$ret = Array(
+												$ret = array(
 													'error'=>'Could not comment on project'
 												);
 											}
@@ -283,30 +300,30 @@
 									}
 								}else{
 									$ret['error'] = 'Missing comment paremeters';
-									$ret['state'] = Array(
+									$ret['state'] = array(
 										'title'=>'error'
 									);
 								}
 								retj($ret,$ret['state']['title']);
 							break;
 							default:
-								retj(Array(
+								retj(array(
 									'error'=>'Invalid action.'
 								));
 						}
 				break;
 				default:
-					retj(Array(
+					retj(array(
 						'error'=>'Invalid type.'
 					));
 			}
 		}else{
-			retj(Array(
+			retj(array(
 				'error'=>'ID missing.'
 			));
 		}
 	}else{
-		retj(Array(
+		retj(array(
 		'error'=>'Type missing.'
 	));
 	}

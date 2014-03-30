@@ -8,7 +8,7 @@
 		if(!isset($_GET['no_state'])){
 			// State
 			if(!isset($json['state'])){
-				$json['state'] = Array();
+				$json['state'] = array();
 			}
 			unset($_GET['password']);
 			unset($_GET['password1']);
@@ -51,12 +51,12 @@
 		if(!isset($_GET['topbar'])){
 			// Tobar
 			if($LOGGEDIN){
-				$context = Array(
+				$context = array(
 					'user'=>userObj($_SESSION['username']),
 					'key'=>true
 				);
 			}else{
-				$context = Array();
+				$context = array();
 			}
 			$context['title'] = $title;
 			if(!isset($_GET['no_state'])){
@@ -67,7 +67,7 @@
 			}else{
 				$topbar = file_get_contents(PATH_DATA.'topbars/default.template');
 			}
-			$json['topbar'] = Array(
+			$json['topbar'] = array(
 				'template'=>$topbar,
 				'context'=>$context
 			);
@@ -98,14 +98,14 @@
 		if($ifNotLoggedIn && $LOGGEDIN){
 			return false;
 		}
-		retj(Array(
-			'state'=>Array(
+		retj(array(
+			'state'=>array(
 				'url'=>isset($_GET['back'])?$_GET['back']:'page-index'
 			)
 		));
 	}
 	function stateObj($type,$id){
-		$json = Array(
+		$json = array(
 			'data'=>$_GET
 		);
 		$title = ucwords($type.' - '.$id);

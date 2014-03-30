@@ -1,6 +1,6 @@
 <?php
 	if(!is_writable(session_save_path())){
-		retj(Array(
+		retj(array(
 			'error'=>'Session save path ('.session_save_path().') is not writable.'
 		),'error');
 	}
