@@ -110,9 +110,6 @@
 				case 'page':
 					$title = $id;
 					if(file_exists(PATH_DATA.'pages/'.$id.'.template')){
-						if(!isset($_GET['template'])||$_GET['template']=='true'){
-							$ret['template'] = file_get_contents(PATH_DATA.'pages/'.$id.'.template');
-						}
 						$context = array();
 						if($LOGGEDIN){
 							$context['key'] = true;
@@ -170,20 +167,34 @@
 				break;
 				case 'manifest':
 					case 'pages':
-						if(isset($_GET['manifest'])){
-							$files = array_diff(scandir(dirname(PATH_DATA.'/'.$_GET['manifest'])),array('..', '.'));
+						if(isset($_GET['id'])){
+							$manifest = array();
+							$files = array_diff(scandir(PATH_DATA.'/'.$_GET['id']),array('..', '.','.htaccess','version'));
 							foreach($files as $k => $file){
-								$files[$k] = basename($file)."\n";
+								if(pathinfo(PATH_DATA.'/'.$_GET['id'].'/'.$file,PATHINFO_EXTENSION) == 'template'){
+									array_push($manifest,basename($file,'.template'));
+								}
 							}
 							retj(array(
-								'manifest'=>$files
+								'manifest'=>$manifest
 							));
 						}else{
 							retj(array(
-								'error'=>'Manifest not defined'
+								'error'=>'Manifest ID not defined'
 							));
 						}
 					break;
+				break;
+				case 'template':
+					if(isset($_GET['name'])){
+						retj(array(
+							'template'=>file_get_conetents(PATH_DATA.'/'.$_GET['id'].'/'.$_GET['name'])
+						));
+					}else{
+						retj(array(
+							'error'=>'Template name missing'
+						));
+					}
 				break;
 				case 'action':
 						switch($id){

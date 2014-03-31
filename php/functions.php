@@ -72,8 +72,8 @@
 				'context'=>$context
 			);
 		}
-		echo json_encode($json);
-		die();
+		header('Content-type: application/json');
+		die(json_encode($json));
 	}
 	function is_valid($col,$v=null){
 		if($v == null){
