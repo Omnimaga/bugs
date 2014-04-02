@@ -9,9 +9,7 @@
 			switch($_GET['type']){
 				case 'user':
 					back(true);
-					if(!isset($_GET['template'])){
-						$ret['template'] = file_get_contents(PATH_DATA.'pages/user.template');
-					}
+					$ret['template'] = 'user';
 					if($user = userObj($id)){
 						$context = array(
 							'name'=>$user['name'],
@@ -67,9 +65,7 @@
 				break;
 				case 'project':
 					back(true);
-					if(!isset($_GET['template'])){
-						$ret['template'] = file_get_contents(PATH_DATA.'pages/project.template');
-					}
+					$ret['template'] = 'project';
 					if($context = projectObj($id)){
 						$context['user'] = userObj($context['user']);
 						if($LOGGEDIN){
