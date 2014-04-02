@@ -369,6 +369,8 @@
 						close: function(){
 							$('#comment').find('form').find('input[name=comment_type]').val('');
 							$('#comment').find('form').find('input[name=comment_id]').val('');
+							flag('ignore_statechange',false);
+							loading(false);
 						},
 						resizable: false,
 						draggable: false,
@@ -399,8 +401,6 @@
 								class: 'cancel-force',
 								click: function(){
 									$(this).dialog('close');
-									flag('ignore_statechange',false);
-									loading(false);
 								}
 							}
 						]
