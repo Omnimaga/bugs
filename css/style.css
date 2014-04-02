@@ -137,6 +137,10 @@ div#loading{
 	background-repeat: no-repeat;
 	background-position: center;
 }
+#comment>form>textarea[name=message]{
+	width: 100%;
+	height: 100%;
+}
 .screen-small, .screen-large{
 	display: none;
 }

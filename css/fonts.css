@@ -5,8 +5,8 @@
 }
 body,input[type=text],input[type=password],textarea{
 	font-size: 130%;
-	line-height: 1.6875;
 }
+
 pre {
 	font-family: 'FiraMono';
 	white-space: pre-wrap;
