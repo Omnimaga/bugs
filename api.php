@@ -9,7 +9,10 @@
 			switch($_GET['type']){
 				case 'user':
 					back(true);
-					$ret['template'] = 'user';
+					$ret['template'] = array(
+						'type'=>'pages',
+						'name'=>'user'
+					);
 					if($user = userObj($id)){
 						$context = array(
 							'name'=>$user['name'],
@@ -65,7 +68,10 @@
 				break;
 				case 'project':
 					back(true);
-					$ret['template'] = 'project';
+					$ret['template'] = array(
+						'type'=>'pages',
+						'name'=>'project'
+					);
 					if($context = projectObj($id)){
 						$context['user'] = userObj($context['user']);
 						if($LOGGEDIN){
@@ -107,7 +113,10 @@
 					$title = $id;
 					if(file_exists(PATH_DATA.'pages/'.$id.'.template')){
 						$context = array();
-						$ret['template'] = $id;
+						$ret['template'] = array(
+							'type'=>'pages',
+							'name'=>$id
+						);
 						if($LOGGEDIN){
 							$context['key'] = true;
 							$context['user'] = userObj($_SESSION['username']);
@@ -173,7 +182,8 @@
 								}
 							}
 							retj(array(
-								'manifest'=>$manifest
+								'manifest'=>$manifest,
+								'type'=>$_GET['id']
 							));
 						}else{
 							retj(array(
@@ -186,7 +196,8 @@
 					if(isset($_GET['name'])){
 						retj(array(
 							'template'=>file_get_contents(PATH_DATA.'/'.$_GET['id'].'/'.$_GET['name'].'.template'),
-							'name'=>$_GET['name']
+							'name'=>$_GET['name'],
+							'type'=>$_GET['id']
 						));
 					}else{
 						retj(array(

@@ -7,8 +7,8 @@
 		&#128281;	Arrow with back under
 -->
 <div class="topbar-left">
-	<a class="topbar-home menuitem" href="#page-index">
-		<span class="screen-small" style="background-image:url(img/headers/icons/menu.png);background-repeat:no-repeat;height:50px;background-position:center;"></span>
+	<a class="topbar-home menuitem" href="#page-index" style="min-width: 20px;">
+		<span class="screen-small" style="background-image:url(img/headers/icons/menu.png);background-repeat:no-repeat;height:50px;background-position:center;margin-left:-10px;"></span>
 	</a>
 	<a href="#page-messages" class="topbar-notifications menuitem screen-small"></a>
 	{{#if key}}

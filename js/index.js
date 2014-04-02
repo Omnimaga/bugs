@@ -41,16 +41,16 @@
 		getKey = window.getKey = function(){
 			return Key;
 		},
-		template = window.template = function(name,template){
+		template = window.template = function(type,name,template){
 			var d = +new Date,
-				id = (function(name){
+				id = (function(type,name){
 					for(var i in templates){
-						if(templates[i].name == name){
+						if(templates[i].name == name && templates[i].type == type){
 							return i;
 						}
 					}
 					return false;
-				})(name);
+				})(type,name);
 			if(exists(template)){
 				if(template === null){
 					if(id!==false){
@@ -63,7 +63,8 @@
 					var o = {
 						name: name,
 						template: template,
-						date: get('expire')+d
+						type: type,
+						date: Number(get('expire'))+Number(d)
 					}
 					if(id===false){
 						console.log('Storing new template for: '+name);
@@ -83,7 +84,7 @@
 				}
 				return template;
 			}else{
-				console.log('No cached template stored for: '+name);
+				console.log('No cached template stored for: '+type+':'+name);
 				return '';
 			}
 		},
@@ -244,8 +245,8 @@
 									}
 									render.topbar(d.topbar.template,d.topbar.context);
 									if(exists(d.template)){
-										console.log('Using template: '+d.template);
-										d.template = template(d.template);
+										console.log('Using template: '+d.template.type+':'+d.template.name);
+										d.template = template(d.template.type,d.template.name);
 										render.content(d.template,d.context);
 									}else{
 										console.log('No template used');
@@ -639,16 +640,17 @@
 				}
 			}
 		},
-		getTemplates = window.getTemplates = function(callback){
+		getTemplates = function(callback){
 			$.get('api.php',{
 					type: 'manifest',
 					id: 'pages'
 				},function(d){
 				if(!exists(d.error)){
-					var count = d.manifest.length;
+					var count = d.manifest.length,
+						m = +new Date;
 					for(var i in d.manifest){
 						console.log('Loading template('+(Number(i)+1)+'/'+d.manifest.length+'): '+d.manifest[i]);
-						if(template(d.manifest[i]) === ''){
+						if(template('pages',d.manifest[i]) === ''){
 							$.get('api.php',{
 								type: 'template',
 								id: 'pages',
@@ -656,7 +658,9 @@
 							},function(d){
 								templates.push({
 									name: d.name,
-									template: d.template
+									template: d.template,
+									type: d.type,
+									date: Number(get('expire'))+Number(m)
 								});
 								$.localStorage('templates',templates);
 								count--;
