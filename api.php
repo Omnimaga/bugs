@@ -174,17 +174,23 @@
 				case 'manifest':
 					case 'pages':
 						if(isset($_GET['id'])){
-							$manifest = array();
-							$files = array_diff(scandir(PATH_DATA.'/'.$_GET['id']),array('..', '.','.htaccess','version'));
-							foreach($files as $k => $file){
-								if(pathinfo(PATH_DATA.'/'.$_GET['id'].'/'.$file,PATHINFO_EXTENSION) == 'template'){
-									array_push($manifest,basename($file,'.template'));
+							if($_GET['id'] != 'emails'){
+								$manifest = array();
+								$files = array_diff(scandir(PATH_DATA.'/'.$_GET['id']),array('..', '.','.htaccess','version'));
+								foreach($files as $k => $file){
+									if(pathinfo(PATH_DATA.'/'.$_GET['id'].'/'.$file,PATHINFO_EXTENSION) == 'template'){
+										array_push($manifest,basename($file,'.template'));
+									}
 								}
+								retj(array(
+									'manifest'=>$manifest,
+									'type'=>$_GET['id']
+								));
+							}else{
+								retj(array(
+									'error'=>'Cannot return that manifest'
+								));
 							}
-							retj(array(
-								'manifest'=>$manifest,
-								'type'=>$_GET['id']
-							));
 						}else{
 							retj(array(
 								'error'=>'Manifest ID not defined'
@@ -194,11 +200,17 @@
 				break;
 				case 'template':
 					if(isset($_GET['name'])){
-						retj(array(
-							'template'=>file_get_contents(PATH_DATA.'/'.$_GET['id'].'/'.$_GET['name'].'.template'),
-							'name'=>$_GET['name'],
-							'type'=>$_GET['id']
-						));
+						if($_GET['id'] != 'emails'){
+							retj(array(
+								'template'=>file_get_contents(PATH_DATA.'/'.$_GET['id'].'/'.$_GET['name'].'.template'),
+								'name'=>$_GET['name'],
+								'type'=>$_GET['id']
+							));
+						}else{
+							retj(array(
+								'error'=>'Cannot return that type of template'
+							));
+						}
 					}else{
 						retj(array(
 							'error'=>'Template name missing'
