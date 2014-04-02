@@ -111,6 +111,7 @@
 					$title = $id;
 					if(file_exists(PATH_DATA.'pages/'.$id.'.template')){
 						$context = array();
+						$ret['template'] = $id;
 						if($LOGGEDIN){
 							$context['key'] = true;
 							$context['user'] = userObj($_SESSION['username']);
@@ -188,7 +189,8 @@
 				case 'template':
 					if(isset($_GET['name'])){
 						retj(array(
-							'template'=>file_get_conetents(PATH_DATA.'/'.$_GET['id'].'/'.$_GET['name'])
+							'template'=>file_get_contents(PATH_DATA.'/'.$_GET['id'].'/'.$_GET['name'].'.template'),
+							'name'=>$_GET['name']
 						));
 					}else{
 						retj(array(
@@ -334,6 +336,7 @@
 			));
 		}
 	}else{
+		$_GET['type'] = '';
 		retj(array(
 		'error'=>'Type missing.'
 	));

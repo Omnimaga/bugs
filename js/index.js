@@ -96,16 +96,13 @@
 				data.get = 'api';
 				data.back = State.data.back;
 				data.timestamp = +new Date;
-				if(''!=template(data.type+'-'+data.id)){
-					data.template = false;
-				}
 				$.get(location.href,data,function(d){
 					if(exists(d['error'])){
 						error(d);
 					}else{
 						if(exists(d.state)){
 							d.state.title = d.state.title.capitalize();
-							if(location.href.substr(location.href.lastIndexOf('/')+1) != d.state.url && d.state.url != ''){
+							if(location.href.substr(location.href.lastIndexOf('/')+1) != d.state.url && d.state.url !== ''){
 								console.log('Forced redirection to '+d.state.url);
 								History.replaceState(d.state.data,d.state.title,d.state.url);
 								getNewState();
@@ -115,7 +112,11 @@
 					}
 					if(exists(callback)){
 						console.log('Running apiCall callback');
-						callback(d);
+						try{
+							callback(d);
+						}catch(e){
+							error(e);
+						}
 					}
 				},'json');
 			}
@@ -241,13 +242,14 @@
 										console.log('Context detected console.logout');
 										setKey(null);
 									}
-									if(exists(d.template)){
-										template(State.data.type+'-'+State.data.id,d.template);
-									}else{
-										d.template = template(State.data.type+'-'+State.data.id);
-									}
 									render.topbar(d.topbar.template,d.topbar.context);
-									render.content(d.template,d.context);
+									if(exists(d.template)){
+										console.log('Using template: '+d.template);
+										d.template = template(d.template);
+										render.content(d.template,d.context);
+									}else{
+										console.log('No template used');
+									}
 									$(window).resize();
 									loading(false);
 								}else{
@@ -636,6 +638,46 @@
 					flag('firebug-lite',true);
 				}
 			}
+		},
+		getTemplates = window.getTemplates = function(callback){
+			$.get('api.php',{
+					type: 'manifest',
+					id: 'pages'
+				},function(d){
+				if(!exists(d.error)){
+					var count = d.manifest.length;
+					for(var i in d.manifest){
+						console.log('Loading template('+(Number(i)+1)+'/'+d.manifest.length+'): '+d.manifest[i]);
+						if(template(d.manifest[i]) === ''){
+							$.get('api.php',{
+								type: 'template',
+								id: 'pages',
+								name: d.manifest[i]
+							},function(d){
+								templates.push({
+									name: d.name,
+									template: d.template
+								});
+								$.localStorage('templates',templates);
+								count--;
+								console.log('Loaded template('+count+' left): '+d.name);
+							},'json');
+						}else{
+							count--;
+						}
+					}
+					setTimeout(function wait_for_templates(){
+						if(count === 0){
+							console.log('getTemplates callback');
+							callback();
+						}else{
+							setTimeout(wait_for_templates,10);
+						}
+					},10);
+				}else{
+					error(d.error);
+				}
+			},'json');
 		};
 	if(exists($.cookie('key'))){
 		setKey($.cookie('key'));
@@ -697,7 +739,30 @@
 						templates = [];
 					}
 				}
-				replaceState(location.href);
+				getTemplates(function(){
+					replaceState(location.href);
+					(function notifications(){
+						var context = State;
+						context.type = 'action';
+						context.id = 'notifications';
+						context.url = State.url;
+						context.title = State.title;
+						context.topbar = false;
+						context.no_state = true;
+						apiCall(context,function(d){
+							if(!exists(d.error)){
+								if(d.count>0 && $.localStorage('last_pm_check') < d.timestamp){
+									notify('Alert','You have '+d.count+' new message'+(d.count>1?'s':''),function(){
+										loadState('page-messages');
+									});
+								}
+								$('.topbar-notifications').css('display',d.count>0?'block':'').text('('+d.count+')');
+								$.localStorage('last_pm_check',d.timestamp);
+							}
+							setTimeout(notifications,5*1000); // every 5 seconds
+						},true);
+					})();
+				});
 			}else{
 				error(d.error);
 			}
@@ -717,27 +782,6 @@
 			}
 		};
 		$('#notification-container').notify();
-		(function notifications(){
-			var context = State;
-			context.type = 'action';
-			context.id = 'notifications';
-			context.url = State.url;
-			context.title = State.title;
-			context.topbar = false;
-			context.no_state = true;
-			apiCall(context,function(d){
-				if(!exists(d.error)){
-					if(d.count>0 && $.localStorage('last_pm_check') < d.timestamp){
-						notify('Alert','You have '+d.count+' new message'+(d.count>1?'s':''),function(){
-							loadState('page-messages');
-						});
-					}
-					$('.topbar-notifications').css('display',d.count>0?'block':'').text('('+d.count+')');
-					$.localStorage('last_pm_check',d.timestamp);
-				}
-				setTimeout(notifications,5*1000); // every 5 seconds
-			},true);
-		})();
 	});
 	shortcut.add('f12',function(){
 		debug.firebug();
