@@ -63,9 +63,9 @@
 				$context['url'] = $url;
 			}
 			if(file_exists(PATH_DATA.'topbars/'.$type.'-'.$id)){
-				$topbar = file_get_contents(PATH_DATA.'topbars/'.$type.'-'.$id.'.template');
+				$topbar = $type.'-'.$id;
 			}else{
-				$topbar = file_get_contents(PATH_DATA.'topbars/default.template');
+				$topbar = 'default';
 			}
 			$json['topbar'] = array(
 				'template'=>$topbar,

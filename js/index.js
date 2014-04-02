@@ -243,7 +243,7 @@
 										console.log('Context detected console.logout');
 										setKey(null);
 									}
-									render.topbar(d.topbar.template,d.topbar.context);
+									render.topbar(template('topbars',d.topbar.template),d.topbar.context);
 									if(exists(d.template)){
 										console.log('Using template: '+d.template.type+':'+d.template.name);
 										d.template = template(d.template.type,d.template.name);
@@ -641,47 +641,54 @@
 			}
 		},
 		getTemplates = function(callback){
-			$.get('api.php',{
-					type: 'manifest',
-					id: 'pages'
-				},function(d){
-				if(!exists(d.error)){
-					var count = d.manifest.length,
-						m = +new Date;
-					for(var i in d.manifest){
-						console.log('Loading template('+(Number(i)+1)+'/'+d.manifest.length+'): '+d.manifest[i]);
-						if(template('pages',d.manifest[i]) === ''){
-							$.get('api.php',{
-								type: 'template',
-								id: 'pages',
-								name: d.manifest[i]
-							},function(d){
-								templates.push({
-									name: d.name,
-									template: d.template,
-									type: d.type,
-									date: Number(get('expire'))+Number(m)
-								});
-								$.localStorage('templates',templates);
+			var fn = function(type,callback){
+					$.get('api.php',{
+						type: 'manifest',
+						id: type
+					},function(d){
+					if(!exists(d.error)){
+						var count = d.manifest.length,
+							m = +new Date;
+						for(var i in d.manifest){
+							console.log('Loading template('+(Number(i)+1)+'/'+d.manifest.length+'): '+d.manifest[i]);
+							if(template(type,d.manifest[i]) === ''){
+								$.get('api.php',{
+									type: 'template',
+									id: type,
+									name: d.manifest[i]
+								},function(d){
+									templates.push({
+										name: d.name,
+										template: d.template,
+										type: d.type,
+										date: Number(get('expire'))+Number(m)
+									});
+									$.localStorage('templates',templates);
+									count--;
+									console.log('Loaded template('+count+' left): '+d.name);
+								},'json');
+							}else{
 								count--;
-								console.log('Loaded template('+count+' left): '+d.name);
-							},'json');
-						}else{
-							count--;
+							}
 						}
+						setTimeout(function wait_for_templates(){
+							if(count === 0){
+								console.log('getTemplates callback');
+								callback();
+							}else{
+								setTimeout(wait_for_templates,10);
+							}
+						},10);
+					}else{
+						error(d.error);
 					}
-					setTimeout(function wait_for_templates(){
-						if(count === 0){
-							console.log('getTemplates callback');
-							callback();
-						}else{
-							setTimeout(wait_for_templates,10);
-						}
-					},10);
-				}else{
-					error(d.error);
-				}
-			},'json');
+				},'json');
+			};
+			fn('topbars',function(){
+				fn('pages',function(){
+					callback();
+				});
+			});
 		};
 	if(exists($.cookie('key'))){
 		setKey($.cookie('key'));
