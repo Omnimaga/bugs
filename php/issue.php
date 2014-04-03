@@ -3,7 +3,7 @@
 	require_once(PATH_PHP.'database.php');
 	require_once(PATH_PHP.'messages.php');
 	function issueObj($id){
-		if($res = query("SELECT i.id,i.title,i.description,u.name as user FROM `issues` i JOIN `users` u ON u.id = i.u_id  WHERE i.id='%d'",array($id))){
+		if($res = query("SELECT i.id,i.title,i.description,i.s_id,u.name as user FROM `issues` i JOIN `users` u ON u.id = i.u_id  WHERE i.id='%d'",array($id))){
 			if($res->num_rows == 1){
 				$issue = $res->fetch_assoc();
 				$issue['user'] = userObj($issue['user']);
