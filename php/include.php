@@ -15,6 +15,7 @@
 	require_once(PATH_PHP.'messages.php');
 	require_once(PATH_PHP.'user.php');
 	require_once(PATH_PHP.'project.php');
+	require_once(PATH_PHP.'issue.php');
 	require_once(PATH_PHP.'emails.php');
 	authenticate();
 ?>

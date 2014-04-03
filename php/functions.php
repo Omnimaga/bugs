@@ -112,10 +112,14 @@
 		switch($type){
 			case 'user':$url='~'.$id;break;
 			case 'group':$url='+'.$id;break;
-			case 'issue':$url='!'.$id;break;
+			case 'issue':
+				$url = '!'.$id;
+				$title = issueObj($id);
+				$title = 'Issue #'.$title['title'];
+			break;
 			case 'page':$url='page-'.$id;break;
 			case 'project':
-				$url=$type.'-'.$id;
+				$url = $type.'-'.$id;
 				$title = projectObj($id);
 				$title = 'Project - '.$title['title'];
 			break;

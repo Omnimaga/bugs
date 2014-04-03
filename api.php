@@ -40,19 +40,27 @@
 							'url'=>isset($_GET['back'])?$_GET['back']:'page-index'
 						);
 					}
-					retj($ret,'Project - '.$context['title']);
+					retj($ret);
 				break;
 				case 'issue':
 					back(true);
-					// TODO - handle issue requests
-					if(false){
-						// TODO
+					$ret['template'] = array(
+						'type'=>'pages',
+						'name'=>'issue'
+					);
+					if($context = issueObj($id)){
+						$context['user'] = userObj($context['user']);
+						if($LOGGEDIN){
+							$context['key'] = true;
+							$context['user'] = userObj($_SESSION['username']);
+						};
+						$ret['context'] = $context;
 					}else{
 						$ret['state'] = array(
 							'url'=>isset($_GET['back'])?$_GET['back']:'page-index'
 						);
 					}
-					retj($ret,'Project - '.$context['title']);
+					retj($ret,'Issue #'.$id. ' - '.$context['title']);
 				break;
 				case 'scrum':
 					back(true);
@@ -64,7 +72,7 @@
 							'url'=>isset($_GET['back'])?$_GET['back']:'page-index'
 						);
 					}
-					retj($ret,'Project - '.$context['title']);
+					retj($ret);
 				break;
 				case 'project':
 					back(true);
@@ -88,6 +96,7 @@
 				break;
 				case 'message':
 					// TODO - handle message requests
+					$context = array();
 					if(false){
 						// TODO
 					}else{
@@ -107,7 +116,7 @@
 							'url'=>isset($_GET['back'])?$_GET['back']:'page-index'
 						);
 					}
-					retj($ret,'Project - '.$context['title']);
+					retj($ret);
 				break;
 				case 'page':
 					$title = $id;
@@ -150,6 +159,14 @@
 												$context['messages'] = messages($context['user']['id'],'user');
 											}else{
 												$context['messages'] = array();
+											}
+										break;
+										case 'issues':
+											if($res = query("SELECT i.id,i.title,i.description,u.name as user FROM `issues` i JOIN `users` u ON u.id = i.u_id")){
+												$context['issues'] = fetch_all($res,MYSQLI_ASSOC);
+												foreach($context['issues'] as $key => $issue){
+													$context['issues'][$key]['user'] = userObj($issue['user']);
+												}
 											}
 										break;
 									}
@@ -322,6 +339,16 @@
 												$ret['error'] = "fn doesn't exist!";
 											}
 											if(!project_comment($cid,$_GET['message'])){
+												$ret = array(
+													'error'=>'Could not comment on project'
+												);
+											}
+										break;
+										case 'issue':
+											if(!function_exists('issue_comment')){
+												$ret['error'] = "fn doesn't exist!";
+											}
+											if(!issue_comment($cid,$_GET['message'])){
 												$ret = array(
 													'error'=>'Could not comment on project'
 												);

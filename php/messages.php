@@ -31,11 +31,26 @@
 					return $arr;
 				}
 			break;
+			case 'issue':
+				if($res = query("SELECT m.id, u.name, m.message, UNIX_TIMESTAMP(m.timestamp) as timestamp FROM `messages` m JOIN `users` u ON u.id = m.from_id WHERE m.i_id='%d' ORDER BY m.timestamp ASC",array($id))){
+					$arr = array();
+					while($row = $res->fetch_assoc()){
+						array_push($arr,$row);
+					}
+					return $arr;
+				}
+			break;
 		}
 		return array();
 	}
 	function project_comment($project,$message){
 		if(query("INSERT INTO `bugs`.`messages` (`id`,`timestamp`,`from_id`,`to_id`,`p_id`,`s_id`,`i_id`,`message`) VALUES(NULL,CURRENT_TIMESTAMP,'%d',NULL,'%d',NULL,NULL,'%s');",array(userId($_SESSION['username']),$project,$message))){
+			return true;
+		}
+		return false;
+	}
+	function issue_comment($issue,$message){
+		if(query("INSERT INTO `bugs`.`messages` (`id`,`timestamp`,`from_id`,`to_id`,`p_id`,`s_id`,`i_id`,`message`) VALUES(NULL,CURRENT_TIMESTAMP,'%d',NULL,NULL,NULL,'%d','%s');",array(userId($_SESSION['username']),$issue,$message))){
 			return true;
 		}
 		return false;

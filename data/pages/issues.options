@@ -1,0 +1,6 @@
+{
+	"secure": true,
+	"context": [
+		"issues"
+	]
+}

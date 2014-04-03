@@ -102,7 +102,7 @@
 						error(d);
 					}else{
 						if(exists(d.state)){
-							d.state.title = d.state.title.capitalize();
+							d.state.title = (d.state.title+'').capitalize();
 							if(location.href.substr(location.href.lastIndexOf('/')+1) != d.state.url && d.state.url !== ''){
 								console.log('Forced redirection to '+d.state.url);
 								History.replaceState(d.state.data,d.state.title,d.state.url);
@@ -235,7 +235,7 @@
 			getNewState();
 			if(!equal(State.data,Old)){
 				switch(State.data.type){
-					case 'page':case 'user':case 'project':
+					case 'page':case 'user':case 'project':case 'issue':
 						apiCall(State.data,function(d){
 							if(!exists(d.error)){
 								if(exists(d.context)){
@@ -267,7 +267,7 @@
 					default:
 						error({
 							url: State.url,
-							error: "Something went wrong!"
+							error: "Unable to make a request of type "+State.data.type
 						});
 				}
 				Old = State.data;

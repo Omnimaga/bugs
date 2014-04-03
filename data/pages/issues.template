@@ -1,0 +1,22 @@
+<a class="button" href="#page-newissue">
+	New
+</a>
+<div class="accordion">
+	<span class="icons">
+		{
+			"header": "ui-icon-wrench",
+			"activeHeader": "ui-icon-wrench"
+		}
+	</span>
+	{{#each issues}}
+		<h3>
+			{{title}} - <small>{{user.name}}</small>
+			<a href="#!{{id}}" class="button">
+				Open
+			</a>
+		</h3>
+		<div>
+			{{description}}
+		</div>
+	{{/each}}
+</div>
