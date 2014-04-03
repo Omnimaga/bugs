@@ -137,7 +137,7 @@
 				<textarea name="message"></textarea>
 			</form>
 		</div>
-		<div id="notification-container" style="display:none;">
+		<div id="notification-container" class="top" style="display:none;">
 			<div id="basic-template">
 				<a class="ui-notify-cross ui-notify-close" href="#">
 					x
