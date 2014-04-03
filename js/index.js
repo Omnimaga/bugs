@@ -41,9 +41,16 @@
 		getKey = window.getKey = function(){
 			return Key;
 		},
+		templateHash = function(type,name){
+			for(var i in templates){
+				if(templates[i].name == name && templates[i].type == type){
+					return templates[i].hash;
+				}
+			}
+			return false;
+		},
 		template = window.template = function(type,name,template){
-			var d = +new Date,
-				id = (function(type,name){
+			var id = (function(type,name){
 					for(var i in templates){
 						if(templates[i].name == name && templates[i].type == type){
 							return i;
@@ -57,31 +64,27 @@
 						templates.splice(id,1);
 					}
 					$.localStorage('templates',templates);
-					console.log('Dropping template for: '+name);
+					console.log('Dropping template for '+type+':'+name);
 					return '';
 				}else{
 					var o = {
 						name: name,
 						template: template,
 						type: type,
-						date: Number(get('expire'))+Number(d)
+						hash: templates[id].hash
 					}
 					if(id===false){
-						console.log('Storing new template for: '+name);
+						console.log('Storing new template for '+type+':'+name);
 						templates.push(o);
 					}else{
-						console.log('Replacing old template for: '+name);
+						console.log('Replacing old template for '+type+':'+name);
 						templates[id] = o;
 					}
 					$.localStorage('templates',templates);
 				}
 			}else if(id!==false){
-				console.log('Using cached template for: '+name);
+				console.log('Using cached template for '+type+':'+name);
 				var template = templates[id].template;
-				if(templates[id].date < d){
-					delete templates[name];
-					$.localStorage('templates',templates);
-				}
 				return template;
 			}else{
 				console.log('No cached template stored for: '+type+':'+name);
@@ -647,21 +650,20 @@
 						id: type
 					},function(d){
 					if(!exists(d.error)){
-						var count = d.manifest.length,
-							m = +new Date;
+						var count = d.manifest.length;
 						for(var i in d.manifest){
-							console.log('Loading template('+(Number(i)+1)+'/'+d.manifest.length+'): '+d.manifest[i]);
-							if(template(type,d.manifest[i]) === ''){
+							console.log('Loading template('+(Number(i)+1)+'/'+d.manifest.length+'): '+d.manifest[i].name);
+							if(templateHash(type,d.manifest[i].name) !== d.manifest[i].hash){
 								$.get('api.php',{
 									type: 'template',
 									id: type,
-									name: d.manifest[i]
+									name: d.manifest[i].name
 								},function(d){
 									templates.push({
 										name: d.name,
 										template: d.template,
 										type: d.type,
-										date: Number(get('expire'))+Number(m)
+										hash: d.hash
 									});
 									$.localStorage('templates',templates);
 									count--;

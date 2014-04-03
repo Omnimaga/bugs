@@ -35,7 +35,7 @@
 			break;
 			case 'settings':
 				$settings = array();
-				$keys = array('expire');
+				$keys = array();
 				foreach($keys as $key){
 					$settings[$key] = get($key);
 				}

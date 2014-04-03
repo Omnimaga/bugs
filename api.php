@@ -196,7 +196,10 @@
 								$files = array_diff(scandir(PATH_DATA.'/'.$_GET['id']),array('..', '.','.htaccess','version'));
 								foreach($files as $k => $file){
 									if(pathinfo(PATH_DATA.'/'.$_GET['id'].'/'.$file,PATHINFO_EXTENSION) == 'template'){
-										array_push($manifest,basename($file,'.template'));
+										array_push($manifest,array(
+											'name'=>basename($file,'.template'),
+											'hash'=>md5_file(PATH_DATA.'/'.$_GET['id'].'/'.$file)
+										));
 									}
 								}
 								retj(array(
@@ -221,7 +224,8 @@
 							retj(array(
 								'template'=>file_get_contents(PATH_DATA.'/'.$_GET['id'].'/'.$_GET['name'].'.template'),
 								'name'=>$_GET['name'],
-								'type'=>$_GET['id']
+								'type'=>$_GET['id'],
+								'hash'=>md5_file(PATH_DATA.'/'.$_GET['id'].'/'.$_GET['name'].'.template')
 							));
 						}else{
 							retj(array(
