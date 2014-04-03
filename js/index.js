@@ -710,16 +710,8 @@
 		if(!exists($.support.touch)){
 			$.support.touch = 'ontouchstart' in window || 'onmsgesturechange' in window;
 		}
-		// $('#content').niceScroll({
-		// 	cursorwidth: 10,
-		// 	nativeparentscrolling: false,
-		// 	preservenativescrolling: false
-		// });
 		$('#content,#topbar').click(function(){
 			$('.menu').hide();
-		});
-		document.addEventListener('touchmove',function(e){
-			e.preventDefault();
 		});
 		$(window).resize(function(){
 			if($(window).width()>767){
@@ -727,15 +719,6 @@
 					'display': ''
 				});
 			}
-			// var c = $('#content'),
-			// 	flag = c.get(0).scrollHeight-c.scrollTop() == c.outerHeight();
-			// c.height($('body').height()-$('#topbar').height());
-			// c.getNiceScroll().resize();
-			// if(flag){
-			// 	c.animate({
-			// 		scrollTop: c.height()
-			// 	},'slow');
-			// }
 			render.inputs('#content');
 			render.inputs('#topbar');
 		});

@@ -14,7 +14,7 @@
 	{{#if key}}
 		<span class="menuitem screen-large" onclick="$(this).children('.menu').toggle();">
 			<span  style="background-image:url(img/headers/icons/menu.png);background-repeat:no-repeat;height:50px;width:35px;background-position:center;float:left;"></span>			
-			<ul class="menu top" style="display:none;margin-top:50px;position:absolute;left:0;">
+			<ul class="menu top" style="display:none;margin-top:50px;position:fixed;left:0;">
 				<li>
 					<a href="#page-index">
 						Home
@@ -65,7 +65,7 @@
 			<span style="float:left">
 				{{user.name}} <span class="topbar-notifications"></span>
 			</span>
-			<ul class="menu top" style="display:none;margin-top:50px;position:absolute;right:0;">
+			<ul class="menu top" style="display:none;margin-top:50px;position:fixed;right:0;">
 				<li>
 					<a href="#~{{user.name}}">
 						Profile
