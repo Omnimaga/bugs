@@ -4,7 +4,7 @@
 	function messages($id,$type){
 		switch($type){
 			case 'project':
-				if($res = query("SELECT m.id, u.name, m.message, UNIX_TIMESTAMP(m.timestamp) as timestamp FROM `messages` m JOIN `users` u ON u.id = m.from_id WHERE m.p_id='%d'",array($id))){
+				if($res = query("SELECT m.id, u.name, m.message, UNIX_TIMESTAMP(m.timestamp) as timestamp FROM `messages` m JOIN `users` u ON u.id = m.from_id WHERE m.p_id='%d' ORDER BY m.timestamp ASC",array($id))){
 					$arr = array();
 					while($row = $res->fetch_assoc()){
 						array_push($arr,$row);
