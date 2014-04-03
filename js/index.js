@@ -710,11 +710,11 @@
 		if(!exists($.support.touch)){
 			$.support.touch = 'ontouchstart' in window || 'onmsgesturechange' in window;
 		}
-		$('#content').niceScroll({
-			cursorwidth: 10,
-			nativeparentscrolling: false,
-			preservenativescrolling: false
-		});
+		// $('#content').niceScroll({
+		// 	cursorwidth: 10,
+		// 	nativeparentscrolling: false,
+		// 	preservenativescrolling: false
+		// });
 		$('#content,#topbar').click(function(){
 			$('.menu').hide();
 		});
@@ -727,8 +727,15 @@
 					'display': ''
 				});
 			}
-			$('#content').height($('body').height()-$('#topbar').height());
-			$('#content').getNiceScroll().resize();
+			// var c = $('#content'),
+			// 	flag = c.get(0).scrollHeight-c.scrollTop() == c.outerHeight();
+			// c.height($('body').height()-$('#topbar').height());
+			// c.getNiceScroll().resize();
+			// if(flag){
+			// 	c.animate({
+			// 		scrollTop: c.height()
+			// 	},'slow');
+			// }
 			render.inputs('#content');
 			render.inputs('#topbar');
 		});
