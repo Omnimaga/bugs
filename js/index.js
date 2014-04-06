@@ -71,7 +71,7 @@
 						name: name,
 						template: template,
 						type: type,
-						hash: templates[id].hash
+						hash: typeof hash == 'undefined'?'':hash
 					}
 					if(id===false){
 						console.log('Storing new template for '+type+':'+name);
