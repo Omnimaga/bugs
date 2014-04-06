@@ -221,10 +221,11 @@
 		error = window.error = function(e,callback){
 			if(!flag('error')){
 				flag('error',true);
-				var msg = '['+State.url+']'+e.error;
+				var msg = '['+State.url+'] '+e;
 				console.error((msg.trim()+"\n"+(exists(e.state)?JSON.stringify(e.state):'')).trim());
 				alert(msg.trim(),'Error',callback);
 				console.trace();
+				console.log(e);
 			}
 		},
 		getNewState = function(state){
@@ -296,27 +297,26 @@
 		render = window.render = {
 			topbar: function(t,c){
 				$('#topbar').html(Handlebars.compile(t)(c));
-				render.links('#topbar');
-				render.buttons('#topbar');
-				render.menus('#topbar');
-				render.time('#topbar');
 				if(State.url == location.origin+'/page-index'){
 					$('#topbar').find('.topbar-history').hide();
 				}
 				$('#topbar').addClass('overflow-hide');
-				$(window).resize();
+				render.refresh('#topbar');
 			},
 			content: function(t,c){
 				$(document).unbind('ready');
 				$('#content').html(
 					Handlebars.compile(t)(c)
 				);
-				render.links('#content');
-				render.buttons('#content');
-				render.accordions('#content');
-				render.menus('#content');
 				render.form('#content');
-				render.time('#content');
+				render.accordions('#content');
+				render.refresh('#content');
+			},
+			refresh: function(selector){
+				render.links(selector);
+				render.buttons(selector);
+				render.menus(selector);
+				render.time(selector);
 				$(window).resize();
 			},
 			time: function(selector){
@@ -349,6 +349,41 @@
 				$(selector).find('input[type=submit]').button();
 				$(selector).find('input[type=button]').button();
 				$(selector).find('button').button();
+				$(selector).find('.more').off().each(function(){
+					var t = $(this);
+					if(!$.hasData(t)){
+						t.data('type',t.text().trim());
+						t.text('Load More');
+					}
+				}).click(function(){
+					var t = $(this),
+						data = {
+							type: 'action',
+							id: 'more',
+							pid: State.data.id,
+							url: State.url,
+							title: State.title,
+							topbar: false,
+							no_state: true,
+							of: t.data('type'),
+							at: Number(t.children().length)+10
+						};
+					data.start = t.data('at');
+					apiCall(data,function(d){
+						var tmplt = Handlebars.compile(template('pages','comment')),
+							i;
+						for(i in d.messages){
+							try{
+								t.prev().append(
+									tmplt(d.messages[i])
+								);
+							}catch(e){
+								console.log("Could not load message: ",d.messages[i],e);
+							}
+							render.refresh(t.prev());
+						}
+					},true);
+				}).button();
 				render.comment.buttons(selector);
 			},
 			comment: {

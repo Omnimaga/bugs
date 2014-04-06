@@ -22,6 +22,9 @@
 		</li>
 	{{/each}}
 </ul>
+<a class="more">
+	project
+</a>
 <a class="comment">
 	{
 		"text": "comment",
