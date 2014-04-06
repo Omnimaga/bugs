@@ -373,10 +373,11 @@
 								if(isset($_GET['of']) && isset($_GET['pid'])){
 									$ret = array();
 									$limit = array(
-										isset($_GET['start'])?$_GET['start']:0,
+										isset($_GET['at'])?$_GET['at']:0,
 										isset($_GET['amount'])?$_GET['amount']:10
 									);
 									$ret['messages'] = messages($_GET['pid'],$_GET['of'],$limit[0],$limit[1]);
+									$ret['params'] = array($_GET['pid'],$_GET['of'],$limit[0],$limit[1]);
 								}else{
 									$ret['error'] = 'Missing comment parameters';
 								}

@@ -49,7 +49,7 @@
 			}
 			return false;
 		},
-		template = window.template = function(type,name,template){
+		template = window.template = function(type,name,template,hash){
 			var id = (function(type,name){
 					for(var i in templates){
 						if(templates[i].name == name && templates[i].type == type){
@@ -353,6 +353,7 @@
 					var t = $(this);
 					if(!$.hasData(t)){
 						t.data('type',t.text().trim());
+						t.data('at',t.prev().children().length);
 						t.text('Load More');
 					}
 				}).click(function(){
@@ -366,7 +367,7 @@
 							topbar: false,
 							no_state: true,
 							of: t.data('type'),
-							at: Number(t.children().length)+10
+							at: Number(t.data('at'))
 						};
 					data.start = t.data('at');
 					apiCall(data,function(d){
@@ -382,6 +383,7 @@
 							}
 							render.refresh(t.prev());
 						}
+						t.data('at',t.prev().children().length);
 					},true);
 				}).button();
 				render.comment.buttons(selector);
@@ -694,12 +696,7 @@
 									id: type,
 									name: d.manifest[i].name
 								},function(d){
-									templates.push({
-										name: d.name,
-										template: d.template,
-										type: d.type,
-										hash: d.hash
-									});
+									template(d.type,d.name,d.template,d.hash);
 									$.localStorage('templates',templates);
 									count--;
 									console.log('Loaded template('+count+' left): '+d.name);
