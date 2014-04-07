@@ -162,7 +162,7 @@
 											}
 										break;
 										case 'issues':
-											if($res = query("SELECT i.id,i.title,i.description,u.name as user FROM `issues` i JOIN `users` u ON u.id = i.u_id")){
+											if($res = query("SELECT i.id,i.title,i.description,u.name as user,s.name as status,p.name as priority,p.color FROM `issues` i JOIN `users` u ON u.id = i.u_id LEFT JOIN `statuses` s ON s.id = i.st_id LEFT JOIN `priorities` p ON p.id = i.pr_id")){
 												$context['issues'] = fetch_all($res,MYSQLI_ASSOC);
 												foreach($context['issues'] as $key => $issue){
 													$context['issues'][$key]['user'] = userObj($issue['user']);

@@ -10,7 +10,7 @@
 	</span>
 	{{#each issues}}
 		<h3>
-			{{title}} - <small>{{user.name}}</small>
+			{{#if priority}}[<span style="{{#if color}}color:{{color}};{{/if}}">{{priority}}</span>] {{/if}}{{title}}{{#if status}} ({{status}}){{/if}} - <small>{{user.name}}</small>
 			<a href="#!{{id}}" class="button">
 				Open
 			</a>

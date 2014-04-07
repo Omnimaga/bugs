@@ -32,7 +32,7 @@
 				}
 			break;
 			case 'issue':
-				if($res = query("SELECT m.id, u.name, m.message, UNIX_TIMESTAMP(m.timestamp) as timestamp FROM `messages` m JOIN `users` u ON u.id = m.from_id WHERE m.i_id='%d' ORDER BY m.timestamp DESC LIMIT %d,$d",array($id,$start,$amount))){
+				if($res = query("SELECT m.id, u.name, m.message, UNIX_TIMESTAMP(m.timestamp) as timestamp FROM `messages` m JOIN `users` u ON u.id = m.from_id WHERE m.i_id='%d' ORDER BY m.timestamp DESC LIMIT %d,%d",array($id,$start,$amount))){
 					$arr = array();
 					while($row = $res->fetch_assoc()){
 						array_push($arr,$row);
