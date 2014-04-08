@@ -266,7 +266,7 @@
 										'id'=>'register'
 									)
 								);
-								if(is_valid('username')&&is_valid('password')&&is_valid('password1')&&is_valid('email')&&is_valid('captcha')){
+								if(is_valid('username')&& strpos($_GET['username'],' ') !== false&&is_valid('password')&&is_valid('password1')&&is_valid('email')&&is_valid('captcha')){
 									if($_GET['password']==$_GET['password1']){
 										if(compare_captcha($_GET['captcha'])){
 											if(addUser($_GET['username'],$_GET['password'],$_GET['email'])){

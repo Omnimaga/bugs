@@ -823,6 +823,10 @@
 			}
 		};
 		$('#notification-container').notify();
+		$('body').css('margin-top','48px');
+		setTimeout(function(){
+			$('body').css('margin-top','0px').show();
+		},100);
 	});
 	shortcut.add('f12',function(){
 		debug.firebug();

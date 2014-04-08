@@ -287,7 +287,7 @@ TRUNCATE TABLE `priorities`;
 
 INSERT INTO `priorities` (`id`, `name`, `color`) VALUES
 (1, 'low', 'green'),
-(2, 'medium', 'yellow'),
+(2, 'medium', 'orange'),
 (3, 'high', 'red');
 
 --
