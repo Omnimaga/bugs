@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 25, 2013 at 10:20 PM
+-- Generation Time: Apr 08, 2014 at 05:14 AM
 -- Server version: 5.6.11
 -- PHP Version: 5.5.3
 
@@ -25,7 +25,7 @@ SET time_zone = "+00:00";
 --
 -- Table structure for table `issues`
 --
--- Creation: Oct 07, 2013 at 07:42 PM
+-- Creation: Apr 06, 2014 at 11:26 PM
 --
 
 DROP TABLE IF EXISTS `issues`;
@@ -35,14 +35,22 @@ CREATE TABLE IF NOT EXISTS `issues` (
   `s_id` int(100) DEFAULT NULL,
   `title` varchar(100) NOT NULL,
   `description` text NOT NULL,
+  `pr_id` int(100) DEFAULT NULL,
+  `st_id` int(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `u_id` (`u_id`),
   KEY `u_id_2` (`u_id`),
-  KEY `s_id` (`s_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  KEY `s_id` (`s_id`),
+  KEY `pr_id` (`pr_id`,`st_id`),
+  KEY `st_id` (`st_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 --
 -- RELATIONS FOR TABLE `issues`:
+--   `pr_id`
+--       `priorities` -> `id`
+--   `st_id`
+--       `statuses` -> `id`
 --   `u_id`
 --       `users` -> `id`
 --   `s_id`
@@ -54,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `issues` (
 --
 -- Table structure for table `messages`
 --
--- Creation: Nov 18, 2013 at 06:30 PM
+-- Creation: Nov 18, 2013 at 07:30 PM
 --
 
 DROP TABLE IF EXISTS `messages`;
@@ -73,7 +81,7 @@ CREATE TABLE IF NOT EXISTS `messages` (
   KEY `s_id` (`s_id`),
   KEY `i_id` (`i_id`),
   KEY `p_id` (`p_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=39 ;
 
 --
 -- RELATIONS FOR TABLE `messages`:
@@ -92,9 +100,26 @@ CREATE TABLE IF NOT EXISTS `messages` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `priorities`
+--
+-- Creation: Apr 06, 2014 at 11:24 PM
+--
+
+DROP TABLE IF EXISTS `priorities`;
+CREATE TABLE IF NOT EXISTS `priorities` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `color` varchar(6) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `projects`
 --
--- Creation: Oct 24, 2013 at 04:53 PM
+-- Creation: Oct 24, 2013 at 05:53 PM
 --
 
 DROP TABLE IF EXISTS `projects`;
@@ -105,7 +130,7 @@ CREATE TABLE IF NOT EXISTS `projects` (
   `description` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `u_id` (`u_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- RELATIONS FOR TABLE `projects`:
@@ -118,7 +143,7 @@ CREATE TABLE IF NOT EXISTS `projects` (
 --
 -- Table structure for table `rels`
 --
--- Creation: Oct 07, 2013 at 07:42 PM
+-- Creation: Oct 07, 2013 at 08:42 PM
 --
 
 DROP TABLE IF EXISTS `rels`;
@@ -148,7 +173,7 @@ CREATE TABLE IF NOT EXISTS `rels` (
 --
 -- Table structure for table `scrums`
 --
--- Creation: Oct 07, 2013 at 07:42 PM
+-- Creation: Oct 07, 2013 at 08:42 PM
 --
 
 DROP TABLE IF EXISTS `scrums`;
@@ -174,9 +199,25 @@ CREATE TABLE IF NOT EXISTS `scrums` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `statuses`
+--
+-- Creation: Apr 06, 2014 at 11:22 PM
+--
+
+DROP TABLE IF EXISTS `statuses`;
+CREATE TABLE IF NOT EXISTS `statuses` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
--- Creation: Nov 25, 2013 at 05:32 PM
+-- Creation: Nov 25, 2013 at 06:32 PM
 --
 
 DROP TABLE IF EXISTS `users`;
@@ -190,7 +231,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `last_pm_check` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20 ;
 
 --
 -- Constraints for dumped tables
@@ -201,7 +242,9 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 ALTER TABLE `issues`
   ADD CONSTRAINT `issues_ibfk_1` FOREIGN KEY (`u_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `issues_ibfk_2` FOREIGN KEY (`s_id`) REFERENCES `scrums` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `issues_ibfk_2` FOREIGN KEY (`s_id`) REFERENCES `scrums` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `issues_ibfk_3` FOREIGN KEY (`st_id`) REFERENCES `statuses` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `issues_ibfk_4` FOREIGN KEY (`pr_id`) REFERENCES `priorities` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `messages`
@@ -233,7 +276,36 @@ ALTER TABLE `rels`
 ALTER TABLE `scrums`
   ADD CONSTRAINT `scrums_ibfk_1` FOREIGN KEY (`u_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `scrums_ibfk_2` FOREIGN KEY (`p_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-SET FOREIGN_KEY_CHECKS=1;
+
+- Truncate table before insert `priorities`
+--
+
+TRUNCATE TABLE `priorities`;
+--
+-- Dumping data for table `priorities`
+--
+
+INSERT INTO `priorities` (`id`, `name`, `color`) VALUES
+(1, 'low', 'green'),
+(2, 'medium', 'yellow'),
+(3, 'high', 'red');
+
+--
+-- Truncate table before insert `statuses`
+--
+
+TRUNCATE TABLE `statuses`;
+--
+-- Dumping data for table `statuses`
+--
+
+INSERT INTO `statuses` (`id`, `name`) VALUES
+(1, 'New'),
+(2, 'More Info'),
+(3, 'In Progress'),
+(4, 'Wont Fix'),
+(5, 'Blocked'),
+(6, 'Closed');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
