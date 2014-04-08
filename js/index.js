@@ -356,6 +356,9 @@
 						t.data('at',t.prev().children().length);
 						t.text('Load More');
 					}
+					if(t.prev().children().length < 10){
+						t.hide();
+					}
 				}).click(function(){
 					var t = $(this),
 						data = {
@@ -373,6 +376,9 @@
 					apiCall(data,function(d){
 						var tmplt = Handlebars.compile(template('pages','comment')),
 							i;
+						if(d.messages.length < 10){
+							t.hide();
+						}
 						for(i in d.messages){
 							try{
 								t.prev().append(
