@@ -277,7 +277,7 @@ ALTER TABLE `scrums`
   ADD CONSTRAINT `scrums_ibfk_1` FOREIGN KEY (`u_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `scrums_ibfk_2` FOREIGN KEY (`p_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
-- Truncate table before insert `priorities`
+-- Truncate table before insert `priorities`
 --
 
 TRUNCATE TABLE `priorities`;
