@@ -13,7 +13,7 @@
 		}
 		return false;
 	}
-	function newIssue($title,$description,$user=null){
+	function newIssue($title,$description,$user=null,$sid=null){
 		global $LOGGEDIN;
 		global $mysqli;
 		if($LOGGEDIN){
@@ -22,16 +22,21 @@
 			}
 			$user = userId($user);
 			if(false != $user){
-				if($res = query("SELECT id FROM `projects` WHERE title = '%s' AND u_id = %d",array($title,$user))){
+				if($res = query("SELECT id FROM `issues` WHERE title = '%s' AND u_id = %d",array($title,$user,$sid))){
 					if($res->num_rows){
 						return false;
 					}
 				}
-				if(query("INSERT INTO `projects` (title,description,u_id) VALUES ('%s','%s',%d)",array($title,$description,$user))){
-					if($res = query("SELECT id FROM `projects` WHERE title = '%s' AND description = '%s' AND u_id = %d",array($title,$description,$user))){
+				if(is_null($sid)){
+					$sid = 'null';
+				}else{
+					$sid = intval($sid);
+				}
+				if(query("INSERT INTO `issues` (title,description,u_id,s_id,st_id) VALUES ('%s','%s',%d,%s,1)",array($title,$description,$user,$sid))){
+					if($res = query("SELECT id FROM `issues` WHERE title = '%s' AND description = '%s' AND u_id = %d",array($title,$description,$user,$sid))){
 						if($res->num_rows == 1){
 							$res = $res->fetch_assoc();
-							project_comment($res['id'],'Project created');
+							project_comment($res['id'],'Issue created');
 						}
 						return true;
 					}

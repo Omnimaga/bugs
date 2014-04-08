@@ -221,7 +221,7 @@
 		error = window.error = function(e,callback){
 			if(!flag('error')){
 				flag('error',true);
-				var msg = '['+State.url+'] '+e;
+				var msg = '['+State.url+'] '+(typeof e.error != 'undefined'?e.error:e);
 				console.error((msg.trim()+"\n"+(exists(e.state)?JSON.stringify(e.state):'')).trim());
 				alert(msg.trim(),'Error',callback);
 				console.trace();

@@ -306,6 +306,25 @@
 								}
 								retj($ret,$id);
 							break;
+							case 'issue':
+								back(true);
+								$ret['state'] = array(
+									'data'=>array(
+										'type'=>'page',
+										'id'=>$id,
+									)
+								);
+								if(isset($_GET['pid'])){
+									$ret['error'] = 'Invalid Action';
+								}elseif(is_valid('title')&&is_valid('description')){
+									if(!newIssue($_GET['title'],$_GET['description'])){
+										$ret['error'] = 'Unable to create issue. ';
+									}
+								}else{
+									$ret['error'] = 'Fill in all the details.';
+								}
+								retj($ret,$id);
+							break;
 							case 'message':
 								back(true);
 								if(isset($_GET['to'])&&isset($_GET['message'])){
