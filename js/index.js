@@ -242,7 +242,7 @@
 			getNewState();
 			if(!equal(State.data,Old)){
 				switch(State.data.type){
-					case 'page':case 'user':case 'project':case 'issue':
+					case 'page':case 'user':case 'project':case 'issue':case 'scrum':
 						apiCall(State.data,function(d){
 							if(!exists(d.error)){
 								if(exists(d.context)){

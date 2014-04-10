@@ -64,15 +64,23 @@
 				break;
 				case 'scrum':
 					back(true);
-					// TODO - handle scrum requests
-					if(false){
-						// TODO
+					$ret['template'] = array(
+						'type'=>'pages',
+						'name'=>'scrum'
+					);
+					if($context = scrumObj($id)){
+						$context['user'] = userObj($context['user']);
+						if($LOGGEDIN){
+							$context['key'] = true;
+							$context['user'] = userObj($_SESSION['username']);
+						};
+						$ret['context'] = $context;
 					}else{
 						$ret['state'] = array(
 							'url'=>isset($_GET['back'])?$_GET['back']:'page-index'
 						);
 					}
-					retj($ret);
+					retj($ret,'Scrum - '.$context['title']);
 				break;
 				case 'project':
 					back(true);

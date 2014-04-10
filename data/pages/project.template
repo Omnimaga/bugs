@@ -4,9 +4,10 @@
 <div style="font-size:large;">
 	{{description}}
 </div>
-<span style="font-size:small;">
+<br/>
+<h3>
 	Comments
-</span>
+</h3>
 <ul>
 	{{#each comments}}
 		<li>
@@ -33,4 +34,11 @@
 		"title": "Comment"
 	}
 </a>
-<a href="#page-scrums">scrums</a>
+<br/>
+<br/>
+<h3>
+	Scrums
+</h3>
+{{#each scrums}}
+	<a class="button" href="#scrum-{{id}}">{{title}}</a>
+{{/each}}

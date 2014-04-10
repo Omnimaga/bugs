@@ -8,6 +8,7 @@
 				$project = $res->fetch_assoc();
 				$project['user'] = userObj($project['user']);
 				$project['comments'] = messages($project['id'],'project');
+				$project['scrums'] = scrums($project['id']);
 				return $project;
 			}
 		}
