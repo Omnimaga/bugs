@@ -599,7 +599,7 @@
 		},
 		notify = window.notify = function(title,text,onclick,onclose){
 			var notification;
-			if(exists(window.Notification)&&!exists(window.webkitNotifications)&&!flag('default_notify')&&!hasFocus()){
+			if(exists(window['Notification'])&&!exists(window.webkitNotifications)&&!flag('default_notify')&&!hasFocus()){
 				if(Notification.permission === 'denied'){
 					flag('default_notify',true);
 					notify(title,text,onclick,onclose);
@@ -742,7 +742,7 @@
 		setKey(null);
 	}
 	$(document).ready(function(){
-		if(exists(typeof Notification.permission)&&Notification.permission !== 'granted'){
+		if(exists(window['Notification'])&&exists(Notification.permission)&&Notification.permission !== 'granted'){
 			Notification.requestPermission();
 		}
 		$.ajaxSetup({
