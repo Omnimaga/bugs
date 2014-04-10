@@ -68,13 +68,13 @@ form#form{
 	height: 100% !important;
 	top: 0 !important;
 }
-div#topbar{
+#topbar{
 	position: fixed;
 	z-index: 1000;
 	width: calc(100% + 1px);
 	background-color: #CD6723;
 	background: url(../img/headers/ui/header.png) repeat-x 0 0;
-  	background-size: auto 100%;
+	background-size: auto 100%;
 	color: black;
 	overflow: hidden;
 	min-height: 50px;
@@ -83,7 +83,7 @@ div#topbar{
 div.topbar-left{
 	height: 100%;
 }
-div#topbar .menuitem{
+#topbar .menuitem{
 	color: white;
 	text-decoration: none;
 	text-transform: capitalize;
@@ -98,18 +98,18 @@ div#topbar .menuitem{
 	min-width: 35px;
 	height: 50px;
 }
-div#topbar .menuitem:not(.topbar-home):not(.topbar-back){
+#topbar .menuitem:not(.topbar-home):not(.topbar-back){
 	background: url(../img/headers/ui/separator.png) no-repeat scroll left center transparent;
 }
-div#topbar .menuitem:hover,div#topbar .menuitem:not(.topbar-home):not(.topbar-back):hover{
+#topbar .menuitem:hover,div#topbar .menuitem:not(.topbar-home):not(.topbar-back):hover{
 	background-image: url(../img/headers/ui/negative.png);
 	background-repeat: repeat-x;
 }
-div#topbar .menuitem:active{
+#topbar .menuitem:active{
 	background: #008aaa !important;
 	color: #333;
 }
-div#topbar .menu{
+#topbar .menu{
 	color: black;
 }
 div.topbar-right{
@@ -121,13 +121,13 @@ div.topbar-left{
 .topbar-notifications{
 	display: none;
 }
-div#content{
+#content{
 	width: 100%;
 	position: absolute;
 	top: 50px;
 	padding-top: 5px;
 }
-div#loading{
+#loading{
 	width: 100%;
 	height: 100%;
 	position: absolute;
@@ -197,7 +197,7 @@ div#loading{
 	max-height: 50px;
 }
 @media screen and (max-width: 767px){
-	div#topbar a.menuitem:not(.topbar-home){
+	#topbar a.menuitem:not(.topbar-home){
 		padding-left: 5px;
 		padding-right: 5px;
 	}
@@ -252,7 +252,7 @@ div#loading{
 	}
 }
 @media screen and (min-width: 768px){
-	div#topbar .menuitem{
+	#topbar .menuitem{
 		/*font-size: 15px;*/
 		padding-left: 5px;
 		padding-right: 5px;

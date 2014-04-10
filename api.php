@@ -146,6 +146,9 @@
 							if(isset($options['title'])){
 								$title = $options['title'];
 							}
+							if(isset($options['topbar'])){
+								$ret['topbar'] = $options['topbar'];
+							}
 							if(isset($options['context'])){
 								foreach($options['context'] as $key){
 									switch($key){

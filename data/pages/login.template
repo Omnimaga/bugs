@@ -4,16 +4,10 @@
 	{{/if}}
 </script>
 <form id="form" style="display:none;">
-	<div>
-		<input name="username" class="fill-width" placeholder="Username" id="login-username" type="text"/>
-	</div>
-	<div >
-		<input id="login-password" class="fill-width" placeholder="Password" name="password" type="password"/>
-	</div>
-	<div>
-		<input type="button" value="cancel" class="cancel"/>
-		<input type="submit" value="login"/>
-	</div>
+	<input name="username" class="fill-width" placeholder="Username" id="login-username" type="text"/>
+	<input id="login-password" class="fill-width" placeholder="Password" name="password" type="password"/>
+	<button value="Cancel" class="danger">Cancel</button>
+	<button value="Login" onclick="$(this).parent().submit();">Login</button>
 </form>
 <script>
 	{{#unless key}}
@@ -38,7 +32,7 @@
 					return false;
 				});
 				return false;
-			}).find('.cancel').click(function(){
+			}).find('.danger').click(function(){
 				back(true);
 				return false;
 			});

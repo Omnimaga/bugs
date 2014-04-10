@@ -79,7 +79,30 @@
 		<link rel="icon" type="image/png" href="img/favicon-60.png" />
 		<link href="css/jquery-ui.css" rel="stylesheet" type="text/css"/>
 		<link href="css/ui.notify.css" rel="stylesheet" type="text/css"/>
-		<link href="css/style.css" rel="stylesheet" type="text/css"/>
+		<!-- <link href="css/style.css" rel="stylesheet" type="text/css"/> -->
+		<link href="css/action_menu.css" rel="stylesheet"></link>
+		<link href="css/buttons.css" rel="stylesheet"></link>
+		<link href="css/confirm.css" rel="stylesheet"></link>
+		<link href="css/edit_mode.css" rel="stylesheet"></link>
+		<link href="css/headers.css" rel="stylesheet"></link>
+		<link href="css/input_areas.css" rel="stylesheet"></link>
+		<link href="css/status.css" rel="stylesheet"></link>
+		<link href="css/switches.css" rel="stylesheet"></link>
+		<link href="css/drawer.css" rel="stylesheet"></link>
+		<link href="css/lists.css" rel="stylesheet"></link>
+		<link href="css/progress_activity.css" rel="stylesheet"></link>
+		<link href="css/scrolling.css" rel="stylesheet"></link>
+		<link href="css/seekbars.css" rel="stylesheet"></link>
+		<link href="css/tabs.css" rel="stylesheet"></link>
+		<link href="css/toolbars.css" rel="stylesheet"></link>
+		<link href="css/icons/styles/action_icons.css" rel="stylesheet"></link>
+		<link href="css/icons/styles/media_icons.css" rel="stylesheet"></link>
+		<link href="css/icons/styles/comms_icons.css" rel="stylesheet"></link>
+		<link href="css/icons/styles/settings_icons.css" rel="stylesheet"></link>
+		<link href="css/transitions.css" rel="stylesheet"></link>
+		<link href="css/util.css" rel="stylesheet"></link>
+		<link href="css/cross_browser.css" rel="stylesheet"></link>
+		<link href="css/app.css" rel="stylesheet"></link>
 		<title>Bugs</title>
 		<script src="js/modernizr.js"></script>
 		<script>
@@ -125,9 +148,18 @@
 		<script src="js/shortcut.js"></script>
 		<script src="js/index.js"></script>
 	</head>
-	<body lang="en">
-		<div id="topbar" class="overflow-hide"></div>
-		<div id="content" class="container"></div>
+	<body lang="en" role="application">
+		<section id="index" data-position="current">
+			<section data-type="sidebar" style="display:none;">
+				<header></header>
+				<nav></nav>
+			</section>
+			<section id="drawer" role="region">
+				<header class="fixed" id="topbar">
+				</header>
+				<article id="content" class="scrollable header"></article>
+			</section>
+		</section>
 		<div id="loading"></div>
 		<div id="dialog"></div>
 		<div id="comment" style="display:none;">
@@ -150,5 +182,10 @@
 				</p>
 			</div>
 		</div>
+		<script src="js/status.js" defer="" type="text/javascript"></script>
+
+<script src="js/seekbars.js" defer="" type="text/javascript"></script>
+
+<script src="js/app.js" defer="" type="text/javascript"></script>
 	</body>
 </html>

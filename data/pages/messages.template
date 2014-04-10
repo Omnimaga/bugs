@@ -1,32 +1,27 @@
 <a class="button" href="#page-newmessage">
 	New
 </a>
-<div class="accordion">
-	<span class="icons">
-		{
-			"header": "ui-icon-mail-closed",
-			"activeHeader": "ui-icon-mail-open"
-		}
-	</span>
-	{{#each messages}}
-		<h3>
-			<span style="float:right;">
-				<time style="font-size:smaller;" class="timeago">
-					{{timestamp}}
-				</time>
-			</span>
-			{{#if is_new}}
-				NEW
-			{{/if}}
-			<a class="button" href="#~{{from}}">
-				From: {{from}}
-			</a>
-			<a class="button" href="#~{{to}}">
-				To: {{to}}
-			</a>
-		</h3>
-		<div>
-			{{message}}
-		</div>
-	{{/each}}
+<div>
+	<section data-type="list">
+
+		<ul>
+			{{#each messages}}
+				<li>
+					<aside class="pack-end">
+						<time style="font-size:smaller;" class="timeago">
+							{{timestamp}}
+						</time>
+					</aside>
+					<a>
+						<p>
+							From: {{from}}
+						</p>
+						<p>
+							{{message}}
+						</p>
+					</a>
+				</li>
+			{{/each}}
+		</ul>
+	</section>
 </div>
