@@ -72,7 +72,7 @@
 						template: template,
 						type: type,
 						hash: typeof hash == 'undefined'?'':hash
-					}
+					};
 					if(id===false){
 						console.log('Storing new template for '+type+':'+name);
 						templates.push(o);
@@ -84,8 +84,7 @@
 				}
 			}else if(id!==false){
 				console.log('Using cached template for '+type+':'+name);
-				var template = templates[id].template;
-				return template;
+				return templates[id].template;
 			}else{
 				console.log('No cached template stored for: '+type+':'+name);
 				return '';
@@ -108,10 +107,15 @@
 							d.state.title = (d.state.title+'').capitalize();
 							if(location.href.substr(location.href.lastIndexOf('/')+1) != d.state.url && d.state.url !== ''){
 								console.log('Forced redirection to '+d.state.url);
+								flag('handled',true);
+								d.state.data.back = State.data.back;
 								History.replaceState(d.state.data,d.state.title,d.state.url);
-								getNewState();
+								callback = function(){
+									location.reload();
+								};
 							}
 							document.title = d.state.title;
+							loading(false);
 						}
 					}
 					if(exists(callback)){
@@ -145,6 +149,7 @@
 								d.state.title = d.state.title.capitalize();
 								d.state.url = href;
 								console.log('pushState: '+d.state.title+'['+href+']');
+								flag('handled',true);
 								History.pushState(d.state.data,d.state.title,href);
 								getNewState();
 							}
@@ -154,7 +159,6 @@
 							if(!exists(d['error'])){
 								flag('handled',true);
 								stateChange();
-								flag('handled',false);
 							}
 						},
 						error: function(x,t,e){
@@ -190,6 +194,7 @@
 							}else{
 								d.state.title = d.state.title.capitalize();
 								d.state.url = href;
+								flag('handled',true);
 								console.log('pushState: '+d.state.title+'['+href+']');
 								History.replaceState(d.state.data,d.state.title,href);
 								getNewState();
@@ -201,7 +206,6 @@
 							if(!exists(d['error'])){
 								flag('handled',true);
 								stateChange();
-								flag('handled',false);
 							}
 						},
 						error: function(x,t,e){
@@ -257,14 +261,16 @@
 									}
 									$(window).resize();
 									loading(false);
-								}else{
+								}else if(d.state.url != location.href){
 									console.error('No context given');
+									console.log(d);
 									back();
 								}
 							}else{
 								error(d);
 								back();
 							}
+							flag('handled',false);
 						});
 					break;
 					case 'action':break;
@@ -279,6 +285,7 @@
 				console.log(State.data,Old);
 				console.warn('Stopped double load of '+Old.type+'-'+Old.id);
 				loading(false);
+				flag('handled',false);
 			}
 		},
 		equal = function(o1,o2){
@@ -556,21 +563,21 @@
 		},
 		back = window.back = function(reload){
 			console.log('reload',exists(reload));
-			var go = function(url){
-				if(exists(reload)){
-					console.log('FORCING RELOAD');
-					location = url;
-				}else{
-					console.log('FORCING LOADSTATE');
-					loadState(url);
-				}
-			}
 			if(exists(State.data.back)){
+				flag('handled',true);
 				if(!History.back()){
 					loadState(State.data.back);
+				}else{
+					stateChange();
 				}
 			}else if(State.data.type != 'page' || State.data.id != 'index'){
-				go('page-index');
+				if(exists(reload)){
+					console.log('FORCING RELOAD');
+					location.assign('page-index');
+				}else{
+					console.log('FORCING LOADSTATE');
+					loadState('page-index');
+				}
 			}else{
 				location.reload();
 			}
@@ -811,7 +818,10 @@
 		$(window).on('statechange',function(){
 			if(!flag('handled')){
 				console.log('unhandled state change event');
+				console.trace();
 				stateChange();
+			}else{
+				flag('handled',false);
 			}
 		});
 		var getState = History.getState;

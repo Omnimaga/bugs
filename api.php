@@ -421,7 +421,7 @@
 	}else{
 		$_GET['type'] = '';
 		retj(array(
-		'error'=>'Type missing.'
-	));
+			'error'=>'Type missing.'
+		));
 	}
 ?>
