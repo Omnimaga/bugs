@@ -185,6 +185,9 @@
 						$ret['context'] = $context;
 					}else{
 						$ret['error'] = 'That page does not exist';
+						$ret['state'] = array(
+							'url'=>isset($_GET['back'])?$_GET['back']:'page-index'
+						);
 					}
 					retj($ret,$title);
 				break;

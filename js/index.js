@@ -102,21 +102,20 @@
 				$.get(location.href,data,function(d){
 					if(exists(d['error'])){
 						error(d);
-					}else{
-						if(exists(d.state)){
-							d.state.title = (d.state.title+'').capitalize();
-							if(location.href.substr(location.href.lastIndexOf('/')+1) != d.state.url && d.state.url !== ''){
-								console.log('Forced redirection to '+d.state.url);
-								flag('handled',true);
-								d.state.data.back = State.data.back;
-								History.replaceState(d.state.data,d.state.title,d.state.url);
-								callback = function(){
-									location.reload();
-								};
-							}
-							document.title = d.state.title;
-							loading(false);
+					}
+					if(exists(d.state)){
+						d.state.title = (d.state.title+'').capitalize();
+						if(location.href.substr(location.href.lastIndexOf('/')+1) != d.state.url && d.state.url !== ''){
+							console.log('Forced redirection to '+d.state.url);
+							flag('handled',true);
+							d.state.data.back = State.data.back;
+							History.replaceState(d.state.data,d.state.title,d.state.url);
+							callback = function(){
+								location.reload();
+							};
 						}
+						document.title = d.state.title;
+						loading(false);
 					}
 					if(exists(callback)){
 						console.log('Running apiCall callback');
