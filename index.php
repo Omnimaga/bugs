@@ -183,9 +183,7 @@
 			</div>
 		</div>
 		<script src="js/status.js" defer="" type="text/javascript"></script>
-
-<script src="js/seekbars.js" defer="" type="text/javascript"></script>
-
-<script src="js/app.js" defer="" type="text/javascript"></script>
+		<script src="js/seekbars.js" defer="" type="text/javascript"></script>
+		<script src="js/app.js" defer="" type="text/javascript"></script>
 	</body>
 </html>

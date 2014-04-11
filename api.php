@@ -13,6 +13,7 @@
 						'type'=>'pages',
 						'name'=>'user'
 					);
+					$ret['topbar'] = 'back';
 					if($user = userObj($id)){
 						$context = array(
 							'name'=>$user['name'],

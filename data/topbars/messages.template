@@ -1,15 +1,15 @@
-<a id="btn-lists-back" href="#">
+<a id="btn-lists-back">
 	<span class="icon icon-back">
 		back
 	</span>
 </a>
 <menu type="toolbar">
-	<a href="#">
+	<a>
 		<span class="icon icon-edit">
 			edit
 		</span>
 	</a>
-	<a href="#">
+	<a>
 		<span class="icon icon-add">
 			add
 		</span>

@@ -1,9 +1,9 @@
-<a href="#">
+<a>
 	<span class="icon icon-menu">
 		hide sidebar
 	</span>
 </a>
-<a href="#drawer">
+<a>
 	<span class="icon icon-menu">
 		show sidebar
 	</span>

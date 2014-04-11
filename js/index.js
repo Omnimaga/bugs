@@ -307,6 +307,19 @@
 					$('#topbar').find('.topbar-history').hide();
 				}
 				$('#topbar').addClass('overflow-hide');
+				$('#topbar .icon-back').click(function(){
+					back();
+				});
+				$('#topbar .icon-menu').click(function(){
+					if($('#drawer').hasClass('open')){
+						$('#drawer').removeClass('open').css('transform','');
+					}else{
+						$('#drawer').addClass('open').css('transform','translateX(80%)');
+					}
+				});
+				$('#topbar .icon-new').click(function(){
+					action('new');
+				});
 				//render.refresh('#topbar');
 			},
 			content: function(t,c){
