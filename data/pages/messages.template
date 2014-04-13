@@ -1,9 +1,8 @@
-<a class="button" href="#page-newmessage">
-	New
-</a>
 <div>
 	<section data-type="list">
-
+		<header>
+			Messages
+		</header>
 		<ul>
 			{{#each messages}}
 				<li>

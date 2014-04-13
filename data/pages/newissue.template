@@ -7,8 +7,8 @@
 			<textarea type="text" name="description" class="fill-width" placeholder="Description"/></textarea>
 		</div>
 		<div>
-			<input type="button" value="cancel" class="cancel"/>
-			<input type="submit" value="create"/>
+			<button value="Cancel" class="danger">Cancel</button>
+			<button value="Create" onclick="$(this).parent().submit();">Create</button>
 		</div>
 	</form>
 	<script>
@@ -30,7 +30,7 @@
 					return false;
 				});
 				return false;
-			}).find('.cancel').click(function(){
+			}).find('.danger').click(function(){
 				back();
 				return false;
 			});

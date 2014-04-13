@@ -1,1 +1,57 @@
- 
+<header>
+	<menu type="toolbar">
+		<a id="toolbar-done">
+			Done
+		</a>
+	</menu>
+	<h1>
+		Bugs
+	</h1>
+</header>
+<nav>
+	<h2>
+		Pages
+	</h2>
+	<ul>
+		<li>
+			<a href="#page-index">
+				Home
+			</a>
+		</li>
+		<li>
+			<a href="#page-projects">
+				Projects
+			</a>
+		</li>
+		<li>
+			<a href="#page-issues">
+				Issues
+			</a>
+		</li>
+		<li>
+			<a href="#page-users">
+				Users
+			</a>
+		</li>
+	</ul>
+	<h2>
+		{{user.name}}
+	</h2>
+	<ul>
+		<li>
+			<a href="#page-profile">
+				Profile
+			</a>
+		</li>
+		<li>
+			<a href="#page-messages">
+				Messages
+			</a>
+		</li>
+		<li>
+			<a href="#page-logout">
+				Logout
+			</a>
+		</li>
+	</ul>
+</nav>

@@ -1,22 +1,24 @@
-<a class="button" href="#page-newissue">
-	New
-</a>
-<div class="accordion">
-	<span class="icons">
-		{
-			"header": "ui-icon-wrench",
-			"activeHeader": "ui-icon-wrench"
-		}
-	</span>
-	{{#each issues}}
-		<h3>
-			{{#if priority}}[<span style="{{#if color}}color:{{color}};{{/if}}">{{priority}}</span>] {{/if}}{{title}}{{#if status}} ({{status}}){{/if}} - <small>{{user.name}}</small>
-			<a href="#!{{id}}" class="button">
-				Open
-			</a>
-		</h3>
-		<div>
-			{{description}}
-		</div>
-	{{/each}}
+<div>
+	<section data-type="list">
+		<header>
+			Issues
+		</header>
+		<ul>
+			{{#each issues}}
+				<li>
+					<aside class="pack-end">
+						{{user.name}}
+					</aside>
+					<a href="#!{{id}}">
+						<p>
+							{{#if priority}}[<span style="{{#if color}}color:{{color}};{{/if}}">{{priority}}</span>] {{/if}}{{title}}{{#if status}} ({{status}}){{/if}}
+						</p>
+						<p>
+							{{description}}
+						</p>
+					</a>
+				</li>
+			{{/each}}
+		</ul>
+	</section>
 </div>

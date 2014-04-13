@@ -1,4 +1,5 @@
 {
 	"title": "New Issue",
-	"secure": true
+	"secure": true,
+	"topbar": "back"
 }

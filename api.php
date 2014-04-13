@@ -49,6 +49,7 @@
 						'type'=>'pages',
 						'name'=>'issue'
 					);
+					$ret['topbar'] = 'back';
 					if($context = issueObj($id)){
 						$context['user'] = userObj($context['user']);
 						if($LOGGEDIN){
@@ -69,6 +70,7 @@
 						'type'=>'pages',
 						'name'=>'scrum'
 					);
+					$ret['topbar'] = 'back';
 					if($context = scrumObj($id)){
 						$context['user'] = userObj($context['user']);
 						if($LOGGEDIN){
@@ -89,6 +91,7 @@
 						'type'=>'pages',
 						'name'=>'project'
 					);
+					$ret['topbar'] = 'back';
 					if($context = projectObj($id)){
 						$context['user'] = userObj($context['user']);
 						if($LOGGEDIN){
@@ -175,6 +178,14 @@
 										break;
 										case 'issues':
 											if($res = query("SELECT i.id,i.title,i.description,u.name as user,s.name as status,p.name as priority,p.color FROM `issues` i JOIN `users` u ON u.id = i.u_id LEFT JOIN `statuses` s ON s.id = i.st_id LEFT JOIN `priorities` p ON p.id = i.pr_id")){
+												$context['issues'] = fetch_all($res,MYSQLI_ASSOC);
+												foreach($context['issues'] as $key => $issue){
+													$context['issues'][$key]['user'] = userObj($issue['user']);
+												}
+											}
+										break;
+										case 'latest':
+											if($res = query("SELECT i.id,i.title,i.description,u.name as user,s.name as status,p.name as priority,p.color FROM `issues` i JOIN `users` u ON u.id = i.u_id LEFT JOIN `statuses` s ON s.id = i.st_id LEFT JOIN `priorities` p ON p.id = i.pr_id LIMIT 10")){
 												$context['issues'] = fetch_all($res,MYSQLI_ASSOC);
 												foreach($context['issues'] as $key => $issue){
 													$context['issues'][$key]['user'] = userObj($issue['user']);

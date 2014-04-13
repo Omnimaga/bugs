@@ -57,6 +57,12 @@
 		}else{
 			$context = array();
 		}
+		if(file_exists(PATH_DATA.'topbars/'.$id.'.options')){
+			$options = objectToarray(json_decode(file_get_contents(PATH_DATA.'topbars/'.$id.'.options'),true));
+			foreach($options as $key => $option){
+				$context[$key] = $option;
+			}
+		}
 		$context['title'] = $title;
 		if(!isset($_GET['no_state'])){
 			$context['url'] = $url;
@@ -68,6 +74,16 @@
 		}
 		$json['topbar'] = array(
 			'template'=>$topbar,
+			'context'=>$context
+		);
+		// Sidebar
+		if(isset($json['sidebar'])){
+			$sidebar = $json['sidebar'];
+		}else{
+			$sidebar = 'default';
+		}
+		$json['sidebar'] = array(
+			'template'=>$sidebar,
 			'context'=>$context
 		);
 		header('Content-type: application/json');

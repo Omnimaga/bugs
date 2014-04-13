@@ -150,10 +150,7 @@
 	</head>
 	<body lang="en" role="application">
 		<section id="index" data-position="current">
-			<section data-type="sidebar" style="display:none;">
-				<header></header>
-				<nav></nav>
-			</section>
+			<section id="sidebar" data-type="sidebar"></section>
 			<section id="drawer" role="region">
 				<header class="fixed" id="topbar">
 				</header>

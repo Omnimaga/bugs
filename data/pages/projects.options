@@ -1,5 +1,6 @@
 {
 	"secure": true,
+	"topbar": "projects",
 	"context": [
 		"projects"
 	]
