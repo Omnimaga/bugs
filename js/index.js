@@ -282,7 +282,7 @@
 										console.log('No template used');
 									}
 									if(!exists(d.toolbar)){
-										$('#toolbar').hide();
+										$('#toolbar').parent().hide();
 									}
 									$(window).resize();
 									loading(false);
@@ -412,7 +412,8 @@
 						};
 					data.start = t.data('at');
 					apiCall(data,function(d){
-						var tmplt = Handlebars.compile(template('pages','comment')),
+						d.template = exists(d.template)?d.template:'comment';
+						var tmplt = Handlebars.compile(template('pages',d.template)),
 							i;
 						if(d.messages.length < 10){
 							t.hide();
@@ -475,7 +476,7 @@
 											if(!exists(d.error)){
 												diag.dialog('close');
 												flag('ignore_statechange',false);
-												$('.topbar-current').click();
+												stateChange();
 											}
 										});
 									}

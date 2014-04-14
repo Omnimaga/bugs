@@ -7,6 +7,9 @@
 		if(isset($_GET['id'])){
 			$id = $_GET['id'];
 			switch($_GET['type']){
+				case 'test':
+					echo time()+get('expire');
+				break;
 				case 'user':
 					back(true);
 					$ret['template'] = array(
@@ -326,7 +329,7 @@
 									$ret['error'] = 'Invalid Action';
 								}elseif(is_valid('title')&&is_valid('description')){
 									if(!newProject($_GET['title'],$_GET['description'])){
-										$ret['error'] = 'Unable to create project.';
+										$ret['error'] = 'Unable to create project. '.get_sql()->error;
 									}
 								}else{
 									$ret['error'] = 'Fill in all the details.';
@@ -422,8 +425,22 @@
 										isset($_GET['at'])?$_GET['at']:0,
 										isset($_GET['amount'])?$_GET['amount']:10
 									);
-									$ret['messages'] = messages($_GET['pid'],$_GET['of'],$limit[0],$limit[1]);
-									$ret['params'] = array($_GET['pid'],$_GET['of'],$limit[0],$limit[1]);
+									switch($_GET['of']){
+										case 'latest':
+											$ret['template'] = 'activity';
+											if($res = query("SELECT a.date, a.id FROM `activity` AS a ORDER BY a.date DESC LIMIT %d,%d",array($limit[0],$limit[1]))){
+												$ret['messages'] = fetch_all($res,MYSQLI_ASSOC);
+												foreach($ret['messages'] as $key => $activity){
+													$ret['messages'][$key] = activityObj($activity['id']);
+												}
+											}else{
+												$ret['messages'] = array();
+											}
+										break;
+										default:
+											$ret['messages'] = messages($_GET['pid'],$_GET['of'],$limit[0],$limit[1]);
+											$ret['params'] = array($_GET['pid'],$_GET['of'],$limit[0],$limit[1]);
+									}
 								}else{
 									$ret['error'] = 'Missing comment parameters';
 								}

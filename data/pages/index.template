@@ -37,7 +37,7 @@
 	<div>
 		<section data-type="list">
 			<header>
-				Latest Issues
+				Latest Activity
 			</header>
 			<ul>
 				{{#each activity}}
@@ -58,6 +58,9 @@
 					</li>
 				{{/each}}
 			</ul>
+			<a class="more">
+				latest
+			</a>
 		</section>
 	</div>
 {{else}}

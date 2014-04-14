@@ -1,0 +1,15 @@
+<li>
+	<aside class="pack-end">
+		<time style="font-size:smaller;" class="timeago">
+			{{timestamp}}
+		</time>
+	</aside>
+	<a href="{{url}}">
+		<p>
+			{{rel.title}}
+		</p>
+		<p>
+			{{action}}
+		</p>
+	</a>
+</li>
