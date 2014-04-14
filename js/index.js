@@ -281,6 +281,9 @@
 									}else{
 										console.log('No template used');
 									}
+									if(!exists(d.toolbar)){
+										$('#toolbar').hide();
+									}
 									$(window).resize();
 									loading(false);
 
@@ -364,14 +367,11 @@
 				$('#content').html(
 					Handlebars.compile(t)(c)
 				);
-				render.form('#content');
-				render.accordions('#content');
 				render.refresh('#content');
 			},
 			refresh: function(selector){
 				render.links(selector);
 				render.buttons(selector);
-				render.menus(selector);
 				render.time(selector);
 				$(window).resize();
 			},
@@ -384,20 +384,6 @@
 							'style': $(this).attr('style')
 						}).addClass($(this).attr('class')).timeago()
 					);
-				});
-			},
-			accordions: function(selector){
-				$(selector).find('.accordion').each(function(){
-					var icons = {};
-					if($(this).children('.icons').length == 1){
-						icons = JSON.parse($(this).children('.icons').text());
-					}
-					$(this).children('.icons').remove();
-					$(this).accordion({
-						collapsible: true,
-						icons: icons,
-						active: false
-					});
 				});
 			},
 			buttons: function(selector){
@@ -504,54 +490,6 @@
 						]
 					});
 				},
-			},
-			menus: function(selector){
-				$(selector).find('.menu').css({
-					'list-style':'none'
-				}).menu({
-					icons:{
-						submenu: "ui-icon-circle-triangle-e"
-					}
-				}).removeClass('ui-corner-all').addClass('ui-corner-bottom').parent().click(function(e){
-					e.stopPropagation();
-				});
-			},
-			form: function(selector){
-				render.inputs(selector);
-			},
-			inputs: function(selector){
-				/*$(selector).find('input[type=text],input[type=password]').each(function(){
-					var input = $(this),
-						height = input.height()>=17?17:input.height();
-					input.siblings('.input-clear').remove();
-					input.off('focus').off('blur').after(
-						$('<div>').css({
-							position: 'absolute',
-							right: $(window).width() - (input.outerWidth() + input.position().left)+2,
-							top: input.position().top+2,
-							'background-image': 'url(img/headers/icons/clear.png)',
-							'background-position': 'center',
-							'background-size': height+'px '+height+'px',
-							'background-repeat': 'no-repeat',
-							width: input.height(),
-							height: input.height(),
-							cursor: 'pointer'
-						}).hide().addClass('input-clear').mousedown(function(){
-							input.val('');
-						})
-					);
-					input.focus(function(){
-						input.next().show();
-					}).blur(function(e){
-						input.next().hide();
-					});
-				});
-				$(selector).find('input[type=text],input[type=password],textarea').each(function(){
-					var input = $(this);
-					if(input.hasClass('fill-width')){
-						input.css('width','calc(100% - '+(input.outerWidth()-input.width())+'px)');
-					}
-				});*/
 			},
 			dialog: function(selector,title){
 				$(selector).dialog({
@@ -802,9 +740,6 @@
 					'display': ''
 				});
 			}
-
-			render.inputs('#content');
-			render.inputs('#topbar');
 		});
 		$.get(location.href,{
 			get: 'settings',

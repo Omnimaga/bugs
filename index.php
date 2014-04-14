@@ -152,19 +152,28 @@
 		<section id="index" data-position="current">
 			<section id="sidebar" data-type="sidebar"></section>
 			<section id="drawer" role="region">
-				<header class="fixed" id="topbar">
-				</header>
+				<header class="fixed" id="topbar"></header>
 				<article id="content" class="scrollable header"></article>
+				<article class="content scrollable header fade-out">
+					<div id="toolbar" role="toolbar">
+						<ul>
+							<!-- Left -->
+						</ul>
+						<ul>
+							<!-- Right -->
+						</ul>
+					</div>
+				</article>
 			</section>
 		</section>
-		<!-- <section id="action-menu" data-position="back" class="fade-in">
+		<section id="action-menu" data-position="back" class="fade-out">
 			<form role="dialog" data-type="action">
 				<header>
 					Title
 				</header>
 				<menu></menu>
 			</form>
-		</section> -->
+		</section>
 		<div id="loading"></div>
 		<div id="dialog"></div>
 		<div id="comment" style="display:none;">
