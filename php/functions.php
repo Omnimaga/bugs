@@ -114,7 +114,7 @@
 		}
 		retj(array(
 			'state'=>array(
-				'url'=>isset($_GET['back'])?$_GET['back']:'page-index'
+				'url'=>'page-index'
 			)
 		));
 	}

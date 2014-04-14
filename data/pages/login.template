@@ -4,7 +4,7 @@
 	{{/if}}
 </script>
 <form id="form" style="display:none;">
-	<input name="username" class="fill-width" placeholder="Username" id="login-username" type="text"/>
+	<input name="username"  autocomplete="off" class="fill-width" placeholder="Username" id="login-username" type="text"/>
 	<input id="login-password" class="fill-width" placeholder="Password" name="password" type="password"/>
 	<button value="Cancel" class="danger">Cancel</button>
 	<button value="Login" onclick="$(this).parent().submit();">Login</button>
@@ -21,13 +21,16 @@
 				data.type = 'action';
 				data.id = 'login';
 				apiCall(data,function(d){
-					if(!d.error){
+					if(!exists(d.error) && exists(d.key)){
 						setKey(d.key);
 						notify('login','You have logged in successfully');
 						back(true);
 					}else{
 						setKey(null);
 						$('#loading').hide();
+						if(!exists(d.error)){
+							alert('Error communicating with the server');
+						}
 					}
 					return false;
 				});
@@ -35,6 +38,11 @@
 			}).find('.danger').click(function(){
 				back(true);
 				return false;
+			}).parent().find('input').keypress(function(e){
+				if(e.which == 13){
+					$('form#form').submit();
+					return false;
+				}
 			});
 		});
 	{{/unless}}

@@ -1,5 +1,6 @@
    // TODO - Add initial page loading and handlers
 (function($,History,console){
+	//"use strict";
 	var State = History.getState(),
 		Old = {},
 		Key = null,
@@ -9,16 +10,17 @@
 		flag = window.flag = function(name,value){
 			if(exists(value)){
 				flags[name] = value;
+				return value;
 			}else{
 				return exists(flags[name])?flags[name]:false;
 			}
 		},
 		settings = {},
-		exists = function(v){
+		exists = window.exists = function(v){
 			return typeof v != 'undefined';
 		},
 		get = window.get = function(s){
-			return settings[s];
+			return exists(settings[s])?settings[s]:null;
 		},
 		set = window.set = function(s,v){
 			settings[s] = v;
@@ -31,7 +33,8 @@
 				var d = new Date();
 				d.setTime(d.getTime()+get('expire'));
 				$.cookie('key',key,{
-					expires: d
+					expires: d,
+					path: '/'
 				});
 			}else{
 				console.log('Key deleted');
@@ -52,8 +55,14 @@
 		},
 		action = window.action = function(name){
 			if(exists(actions[name])){
-				loadState(actions[name]);
+				if(actions[name] instanceof Array){
+
+				}else{
+					loadState(actions[name]);
+					return true;
+				}
 			}
+			return false;
 		},
 		template = window.template = function(type,name,template,hash){
 			var id = (function(type,name){
@@ -71,7 +80,6 @@
 					}
 					$.localStorage('templates',templates);
 					console.log('Dropping template for '+type+':'+name);
-					return '';
 				}else{
 					var o = {
 						name: name,
@@ -93,8 +101,8 @@
 				return templates[id].template;
 			}else{
 				console.log('No cached template stored for: '+type+':'+name);
-				return '';
 			}
+			return '';
 		},
 		apiCall = window.apiCall = function(data,callback,background){
 			console.log('apiCall('+data.type+'-'+data.id+')');
@@ -194,7 +202,7 @@
 						async: true,
 						type: 'GET',
 						success: function(d){
-							if(exists(d['error'])){
+							if(exists(d.error)){
 								error(d);
 							}else{
 								d.state.title = d.state.title.capitalize();
@@ -275,6 +283,7 @@
 									}
 									$(window).resize();
 									loading(false);
+
 								}else if(d.state.url != location.href){
 									console.error('No context given');
 									console.log(d);
@@ -625,7 +634,7 @@
 		},
 		notify = window.notify = function(title,text,onclick,onclose){
 			var notification;
-			if(exists(window['Notification'])&&!exists(window.webkitNotifications)&&!flag('default_notify')&&!hasFocus()){
+			if(exists(window['Notification'])&&!exists(window.webkitNotifications)&&!flag('default_notify')){
 				if(Notification.permission === 'denied'){
 					flag('default_notify',true);
 					notify(title,text,onclick,onclose);
@@ -643,7 +652,7 @@
 						notify(title,text,onclick,onclose);
 					});
 				}
-			}else if(exists(window.navigator.mozNotification)&&!hasFocus()){
+			}else if(exists(window.navigator.mozNotification)){
 				notification = window.navigator.mozNotification.createNotification(title,text,location.origin+'/img/favicon.ico');
 				notification.onclick = onclick;
 				notification.onclose = onclose;

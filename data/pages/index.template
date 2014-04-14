@@ -40,17 +40,19 @@
 				Latest Issues
 			</header>
 			<ul>
-				{{#each issues}}
+				{{#each activity}}
 					<li>
 						<aside class="pack-end">
-							{{user.name}}
+							<time style="font-size:smaller;" class="timeago">
+								{{timestamp}}
+							</time>
 						</aside>
-						<a href="#!{{id}}">
+						<a href="{{url}}">
 							<p>
-								{{#if priority}}[<span style="{{#if color}}color:{{color}};{{/if}}">{{priority}}</span>] {{/if}}{{title}}{{#if status}} ({{status}}){{/if}}
+								{{rel.title}}
 							</p>
 							<p>
-								{{description}}
+								{{action}}
 							</p>
 						</a>
 					</li>

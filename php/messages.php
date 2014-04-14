@@ -43,14 +43,21 @@
 		}
 		return array();
 	}
+	function messageObj($id){
+		$message = array();
+
+		return $message;
+	}
 	function project_comment($project,$message){
 		if(query("INSERT INTO `bugs`.`messages` (`id`,`timestamp`,`from_id`,`to_id`,`p_id`,`s_id`,`i_id`,`message`) VALUES(NULL,CURRENT_TIMESTAMP,'%d',NULL,'%d',NULL,NULL,'%s');",array(userId($_SESSION['username']),$project,$message))){
+			alog('p',$project,'Comment added');
 			return true;
 		}
 		return false;
 	}
 	function issue_comment($issue,$message){
 		if(query("INSERT INTO `bugs`.`messages` (`id`,`timestamp`,`from_id`,`to_id`,`p_id`,`s_id`,`i_id`,`message`) VALUES(NULL,CURRENT_TIMESTAMP,'%d',NULL,NULL,NULL,'%d','%s');",array(userId($_SESSION['username']),$issue,$message))){
+			alog('i',$issue,'Comment added');
 			return true;
 		}
 		return false;

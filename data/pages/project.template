@@ -39,6 +39,27 @@
 <h3>
 	Scrums
 </h3>
-{{#each scrums}}
-	<a class="button" href="#scrum-{{id}}">{{title}}</a>
-{{/each}}
+<div>
+	<section data-type="list">
+		<header>
+			Scrums
+		</header>
+		<ul>
+			{{#each scrums}}
+				<li>
+					<aside class="pack-end">
+						{{user.name}}
+					</aside>
+					<a href="#scrum-{{id}}">
+						<p>
+							{{title}}
+						</p>
+						<p>
+							{{description}}
+						</p>
+					</a>
+				</li>
+			{{/each}}
+		</ul>
+	</section>
+</div>

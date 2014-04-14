@@ -35,7 +35,7 @@
 			break;
 			case 'settings':
 				$settings = array();
-				$keys = array();
+				$keys = array('expire');
 				foreach($keys as $key){
 					$settings[$key] = get($key);
 				}
@@ -157,6 +157,14 @@
 				<article id="content" class="scrollable header"></article>
 			</section>
 		</section>
+		<!-- <section id="action-menu" data-position="back" class="fade-in">
+			<form role="dialog" data-type="action">
+				<header>
+					Title
+				</header>
+				<menu></menu>
+			</form>
+		</section> -->
 		<div id="loading"></div>
 		<div id="dialog"></div>
 		<div id="comment" style="display:none;">

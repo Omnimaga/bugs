@@ -91,7 +91,7 @@
 						'type'=>'pages',
 						'name'=>'project'
 					);
-					$ret['topbar'] = 'back';
+					$ret['topbar'] = 'project';
 					if($context = projectObj($id)){
 						$context['user'] = userObj($context['user']);
 						if($LOGGEDIN){
@@ -185,10 +185,10 @@
 											}
 										break;
 										case 'latest':
-											if($res = query("SELECT i.id,i.title,i.description,u.name as user,s.name as status,p.name as priority,p.color FROM `issues` i JOIN `users` u ON u.id = i.u_id LEFT JOIN `statuses` s ON s.id = i.st_id LEFT JOIN `priorities` p ON p.id = i.pr_id LIMIT 10")){
-												$context['issues'] = fetch_all($res,MYSQLI_ASSOC);
-												foreach($context['issues'] as $key => $issue){
-													$context['issues'][$key]['user'] = userObj($issue['user']);
+											if($res = query("SELECT a.date, a.id FROM `activity` AS a ORDER BY a.date DESC LIMIT 10")){
+												$context['activity'] = fetch_all($res,MYSQLI_ASSOC);
+												foreach($context['activity'] as $key => $activity){
+													$context['activity'][$key] = activityObj($activity['id']);
 												}
 											}
 										break;
@@ -277,6 +277,7 @@
 									$key = login($_GET['username'],$_GET['password']);
 									if($key){
 										$_SESSION['username'] = $_GET['username'];
+										$ret['key'] = $key;
 									}else{
 										$ret['error'] = "Login failed. Username or Password didn't match.";
 									}
@@ -300,7 +301,7 @@
 												$_SESSION['username'] = $_GET['username'];
 												sendMail('welcome','Welcome!',$_GET['email'],get('email'),array($_GET['username'],$_GET['password'],get('email')));
 											}else{
-												$ret['error'] = "Could not add user. ".$mysqli->error;
+												$ret['error'] = "Could not add user. ".get_sql()->error;
 											}
 										}else{
 											$ret['error'] = "Captcha did not match.";
@@ -344,7 +345,7 @@
 									$ret['error'] = 'Invalid Action';
 								}elseif(is_valid('title')&&is_valid('description')){
 									if(!newIssue($_GET['title'],$_GET['description'])){
-										$ret['error'] = 'Unable to create issue. ';
+										$ret['error'] = 'Unable to create issue. '.get_sql()->error;
 									}
 								}else{
 									$ret['error'] = 'Fill in all the details.';
