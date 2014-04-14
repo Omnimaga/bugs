@@ -234,8 +234,78 @@ CREATE TABLE IF NOT EXISTS `users` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20 ;
 
 --
+-- Table structure for table `actions`
+--
+-- Creation: Apr 13, 2014 at 10:14 PM
+--
+
+DROP TABLE IF EXISTS `actions`;
+CREATE TABLE IF NOT EXISTS `actions` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `activity`
+--
+-- Creation: Apr 14, 2014 at 12:47 AM
+--
+
+DROP TABLE IF EXISTS `activity`;
+CREATE TABLE IF NOT EXISTS `activity` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `u_id` int(100) DEFAULT NULL,
+  `p_id` int(100) DEFAULT NULL,
+  `s_id` int(100) DEFAULT NULL,
+  `i_id` int(100) DEFAULT NULL,
+  `m_id` int(100) DEFAULT NULL,
+  `a_id` int(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `u_id` (`u_id`,`p_id`,`s_id`,`i_id`,`m_id`,`a_id`),
+  KEY `u_id_2` (`u_id`),
+  KEY `p_id` (`p_id`),
+  KEY `s_id` (`s_id`),
+  KEY `i_id` (`i_id`),
+  KEY `m_id` (`m_id`),
+  KEY `a_id` (`a_id`),
+  KEY `date` (`date`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
+
+--
+-- RELATIONS FOR TABLE `activity`:
+--   `a_id`
+--       `actions` -> `id`
+--   `i_id`
+--       `issues` -> `id`
+--   `m_id`
+--       `messages` -> `id`
+--   `p_id`
+--       `projects` -> `id`
+--   `s_id`
+--       `scrums` -> `id`
+--   `u_id`
+--       `users` -> `id`
+--
+
+--
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `activity`
+--
+ALTER TABLE `activity`
+  ADD CONSTRAINT `activity_ibfk_1` FOREIGN KEY (`u_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `activity_ibfk_2` FOREIGN KEY (`p_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `activity_ibfk_3` FOREIGN KEY (`s_id`) REFERENCES `scrums` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `activity_ibfk_4` FOREIGN KEY (`i_id`) REFERENCES `issues` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `activity_ibfk_5` FOREIGN KEY (`m_id`) REFERENCES `messages` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `activity_ibfk_6` FOREIGN KEY (`a_id`) REFERENCES `actions` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `issues`
