@@ -32,7 +32,7 @@
 		if(is_string($id)){
 			$id = userId($id);
 		}
-		if($res = query("SELECT * FROM `users` WHERE id='%d'",Array($id))){
+		if($res = query("SELECT u.id,u.name,u.email,u.password,u.salt,u.key,u.last_pm_check FROM `users` AS u WHERE id=%d",Array($id))){
 			if($res->num_rows == 1){
 				if($user = $res->fetch_assoc()){
 					unset($user['password']);

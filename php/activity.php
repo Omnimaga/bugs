@@ -54,8 +54,11 @@
 				);
 				switch($activity['type']){
 					case 'u':
-						$ret['rel'] = userObj($activity['u_id']);
-						$ret['url'] = '#~'.$ret['rel']['name'];
+						$ret['rel'] = userObj((int)$activity['u_id']);
+						if(isset($ret['rel']['name'])){
+							$ret['rel']['title'] = $ret['rel']['name'];
+							$ret['url'] = '#~'.$ret['rel']['name'];
+						}
 					break;
 					case 'p':
 						$ret['rel'] = projectObj($activity['p_id']);
