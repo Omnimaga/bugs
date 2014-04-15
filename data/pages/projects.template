@@ -1,22 +1,24 @@
-<a class="button" href="#page-newproject">
-	New
-</a>
-<div class="accordion">
-	<span class="icons">
-		{
-			"header": "ui-icon-wrench",
-			"activeHeader": "ui-icon-wrench"
-		}
-	</span>
-	{{#each projects}}
-		<h3>
-			{{title}} - <small>{{user.name}}</small>
-			<a href="#project-{{id}}" class="button">
-				Open
-			</a>
-		</h3>
-		<div>
-			{{description}}
-		</div>
-	{{/each}}
+<div>
+	<section data-type="list">
+		<header>
+			Projects
+		</header>
+		<ul>
+			{{#each projects}}
+				<li>
+					<aside class="pack-end">
+						{{user.name}}
+					</aside>
+					<a href="#project-{{id}}">
+						<p>
+							{{title}}
+						</p>
+						<p>
+							{{description}}
+						</p>
+					</a>
+				</li>
+			{{/each}}
+		</ul>
+	</section>
 </div>

@@ -48,30 +48,44 @@
 				$url = $json['state']['url'];
 			}
 		}
-		if(!isset($_GET['topbar'])){
-			// Tobar
-			if($LOGGEDIN){
-				$context = array(
-					'user'=>userObj($_SESSION['username']),
-					'key'=>true
-				);
-			}else{
-				$context = array();
-			}
-			$context['title'] = $title;
-			if(!isset($_GET['no_state'])){
-				$context['url'] = $url;
-			}
-			if(file_exists(PATH_DATA.'topbars/'.$type.'-'.$id)){
-				$topbar = $type.'-'.$id;
-			}else{
-				$topbar = 'default';
-			}
-			$json['topbar'] = array(
-				'template'=>$topbar,
-				'context'=>$context
+		// Tobar
+		if($LOGGEDIN){
+			$context = array(
+				'user'=>userObj($_SESSION['username']),
+				'key'=>true
 			);
+		}else{
+			$context = array();
 		}
+		if(file_exists(PATH_DATA.'topbars/'.$id.'.options')){
+			$options = objectToarray(json_decode(file_get_contents(PATH_DATA.'topbars/'.$id.'.options'),true));
+			foreach($options as $key => $option){
+				$context[$key] = $option;
+			}
+		}
+		$context['title'] = $title;
+		if(!isset($_GET['no_state'])){
+			$context['url'] = $url;
+		}
+		if(isset($json['topbar'])){
+			$topbar = $json['topbar'];
+		}else{
+			$topbar = 'default';
+		}
+		$json['topbar'] = array(
+			'template'=>$topbar,
+			'context'=>$context
+		);
+		// Sidebar
+		if(isset($json['sidebar'])){
+			$sidebar = $json['sidebar'];
+		}else{
+			$sidebar = 'default';
+		}
+		$json['sidebar'] = array(
+			'template'=>$sidebar,
+			'context'=>$context
+		);
 		header('Content-type: application/json');
 		die(json_encode($json));
 	}
@@ -100,7 +114,7 @@
 		}
 		retj(array(
 			'state'=>array(
-				'url'=>isset($_GET['back'])?$_GET['back']:'page-index'
+				'url'=>'page-index'
 			)
 		));
 	}

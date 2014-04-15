@@ -16,9 +16,9 @@
 	<div>
 		<input name="password1" class="fill-width"  placeholder="Verify Password" type="password"/>
 	</div>
-	<div class="fill-width" style="height:20px;background-repeat:no-repeat;background-position:center;background-size:165px 20px;" id="captcha"></div>
+	<div class="fill-width" style="height:50px;background-repeat:no-repeat;background-position:center;background-size:165px 50px;" id="captcha"></div>
 	<div>
-		<input name="captcha" class="fill-width" placeholder="Captcha" type="text"/>
+		<input name="captcha" autocomplete="off" class="fill-width" placeholder="Captcha" type="text"/>
 	</div>
 	<div>
 		<input type="button" value="cancel" class="cancel left"/>

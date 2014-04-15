@@ -7,12 +7,16 @@
 		if(isset($_GET['id'])){
 			$id = $_GET['id'];
 			switch($_GET['type']){
+				case 'test':
+					echo time()+get('expire');
+				break;
 				case 'user':
 					back(true);
 					$ret['template'] = array(
 						'type'=>'pages',
 						'name'=>'user'
 					);
+					$ret['topbar'] = 'back';
 					if($user = userObj($id)){
 						$context = array(
 							'name'=>$user['name'],
@@ -48,6 +52,7 @@
 						'type'=>'pages',
 						'name'=>'issue'
 					);
+					$ret['topbar'] = 'back';
 					if($context = issueObj($id)){
 						$context['user'] = userObj($context['user']);
 						if($LOGGEDIN){
@@ -68,6 +73,7 @@
 						'type'=>'pages',
 						'name'=>'scrum'
 					);
+					$ret['topbar'] = 'back';
 					if($context = scrumObj($id)){
 						$context['user'] = userObj($context['user']);
 						if($LOGGEDIN){
@@ -88,6 +94,7 @@
 						'type'=>'pages',
 						'name'=>'project'
 					);
+					$ret['topbar'] = 'project';
 					if($context = projectObj($id)){
 						$context['user'] = userObj($context['user']);
 						if($LOGGEDIN){
@@ -146,6 +153,9 @@
 							if(isset($options['title'])){
 								$title = $options['title'];
 							}
+							if(isset($options['topbar'])){
+								$ret['topbar'] = $options['topbar'];
+							}
 							if(isset($options['context'])){
 								foreach($options['context'] as $key){
 									switch($key){
@@ -174,6 +184,14 @@
 												$context['issues'] = fetch_all($res,MYSQLI_ASSOC);
 												foreach($context['issues'] as $key => $issue){
 													$context['issues'][$key]['user'] = userObj($issue['user']);
+												}
+											}
+										break;
+										case 'latest':
+											if($res = query("SELECT a.date, a.id FROM `activity` AS a ORDER BY a.date DESC LIMIT 10")){
+												$context['activity'] = fetch_all($res,MYSQLI_ASSOC);
+												foreach($context['activity'] as $key => $activity){
+													$context['activity'][$key] = activityObj($activity['id']);
 												}
 											}
 										break;
@@ -262,6 +280,7 @@
 									$key = login($_GET['username'],$_GET['password']);
 									if($key){
 										$_SESSION['username'] = $_GET['username'];
+										$ret['key'] = $key;
 									}else{
 										$ret['error'] = "Login failed. Username or Password didn't match.";
 									}
@@ -277,7 +296,7 @@
 										'id'=>'register'
 									)
 								);
-								if(is_valid('username')&& strpos($_GET['username'],' ') !== false&&is_valid('password')&&is_valid('password1')&&is_valid('email')&&is_valid('captcha')){
+								if(is_valid('username')&& strpos($_GET['username'],' ') === false&&is_valid('password')&&is_valid('password1')&&is_valid('email')&&is_valid('captcha')){
 									if($_GET['password']==$_GET['password1']){
 										if(compare_captcha($_GET['captcha'])){
 											if(addUser($_GET['username'],$_GET['password'],$_GET['email'])){
@@ -285,7 +304,7 @@
 												$_SESSION['username'] = $_GET['username'];
 												sendMail('welcome','Welcome!',$_GET['email'],get('email'),array($_GET['username'],$_GET['password'],get('email')));
 											}else{
-												$ret['error'] = "Could not add user. ".$mysqli->error;
+												$ret['error'] = "Could not add user. ".get_sql()->error;
 											}
 										}else{
 											$ret['error'] = "Captcha did not match.";
@@ -310,7 +329,7 @@
 									$ret['error'] = 'Invalid Action';
 								}elseif(is_valid('title')&&is_valid('description')){
 									if(!newProject($_GET['title'],$_GET['description'])){
-										$ret['error'] = 'Unable to create project.';
+										$ret['error'] = 'Unable to create project. '.get_sql()->error;
 									}
 								}else{
 									$ret['error'] = 'Fill in all the details.';
@@ -329,7 +348,7 @@
 									$ret['error'] = 'Invalid Action';
 								}elseif(is_valid('title')&&is_valid('description')){
 									if(!newIssue($_GET['title'],$_GET['description'])){
-										$ret['error'] = 'Unable to create issue. ';
+										$ret['error'] = 'Unable to create issue. '.get_sql()->error;
 									}
 								}else{
 									$ret['error'] = 'Fill in all the details.';
@@ -406,8 +425,22 @@
 										isset($_GET['at'])?$_GET['at']:0,
 										isset($_GET['amount'])?$_GET['amount']:10
 									);
-									$ret['messages'] = messages($_GET['pid'],$_GET['of'],$limit[0],$limit[1]);
-									$ret['params'] = array($_GET['pid'],$_GET['of'],$limit[0],$limit[1]);
+									switch($_GET['of']){
+										case 'latest':
+											$ret['template'] = 'activity';
+											if($res = query("SELECT a.date, a.id FROM `activity` AS a ORDER BY a.date DESC LIMIT %d,%d",array($limit[0],$limit[1]))){
+												$ret['messages'] = fetch_all($res,MYSQLI_ASSOC);
+												foreach($ret['messages'] as $key => $activity){
+													$ret['messages'][$key] = activityObj($activity['id']);
+												}
+											}else{
+												$ret['messages'] = array();
+											}
+										break;
+										default:
+											$ret['messages'] = messages($_GET['pid'],$_GET['of'],$limit[0],$limit[1]);
+											$ret['params'] = array($_GET['pid'],$_GET['of'],$limit[0],$limit[1]);
+									}
 								}else{
 									$ret['error'] = 'Missing comment parameters';
 								}

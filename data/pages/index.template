@@ -34,15 +34,35 @@
 	Bugs is a project issue tracker.
 </p>
 {{#if key}}
-	<a class="button" href="#page-projects">
-		Projects
-	</a>
-	<a class="button" href="#page-issues">
-		Issues
-	</a>
-	<a class="button" href="#page-users">
-		Users
-	</a>
+	<div>
+		<section data-type="list">
+			<header>
+				Latest Activity
+			</header>
+			<ul>
+				{{#each activity}}
+					<li>
+						<aside class="pack-end">
+							<time style="font-size:smaller;" class="timeago">
+								{{timestamp}}
+							</time>
+						</aside>
+						<a href="{{url}}">
+							<p>
+								{{rel.title}}
+							</p>
+							<p>
+								{{action}}
+							</p>
+						</a>
+					</li>
+				{{/each}}
+			</ul>
+			<a class="more">
+				latest
+			</a>
+		</section>
+	</div>
 {{else}}
 	<a class="button" href="#page-register">
 		Register

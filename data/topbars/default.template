@@ -1,11 +1,17 @@
+<a>
+	<span class="icon icon-menu">
+		hide sidebar
+	</span>
+</a>
+<a>
+	<span class="icon icon-menu">
+		show sidebar
+	</span>
+</a>
+<h1>
+	{{title}}
+</h1>
 <!--
-	Unicodes for icons:
-		&#127968;	large house
-		&#8689;		open with
-		&#8962;		small house
-		&#8801;		triple line
-		&#128281;	Arrow with back under
--->
 <div class="topbar-left">
 	<a class="topbar-home menuitem" href="#page-index">
 		<span class="screen-small" style="background-image:url(img/headers/icons/menu.png);background-repeat:no-repeat;height:50px;background-position:center;"></span>
@@ -107,4 +113,4 @@
 			</a>
 		</span>
 	{{/unless}}
-</div>
+</div>-->

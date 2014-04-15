@@ -1,23 +1,26 @@
    // TODO - Add initial page loading and handlers
 (function($,History,console){
+	//"use strict";
 	var State = History.getState(),
 		Old = {},
 		Key = null,
 		flags = [],
+		actions = [],
 		templates = [],
 		flag = window.flag = function(name,value){
 			if(exists(value)){
 				flags[name] = value;
+				return value;
 			}else{
 				return exists(flags[name])?flags[name]:false;
 			}
 		},
 		settings = {},
-		exists = function(v){
+		exists = window.exists = function(v){
 			return typeof v != 'undefined';
 		},
 		get = window.get = function(s){
-			return settings[s];
+			return exists(settings[s])?settings[s]:null;
 		},
 		set = window.set = function(s,v){
 			settings[s] = v;
@@ -30,7 +33,8 @@
 				var d = new Date();
 				d.setTime(d.getTime()+get('expire'));
 				$.cookie('key',key,{
-					expires: d
+					expires: d,
+					path: '/'
 				});
 			}else{
 				console.log('Key deleted');
@@ -45,6 +49,17 @@
 			for(var i in templates){
 				if(templates[i].name == name && templates[i].type == type){
 					return templates[i].hash;
+				}
+			}
+			return false;
+		},
+		action = window.action = function(name){
+			if(exists(actions[name])){
+				if(actions[name] instanceof Array){
+
+				}else{
+					loadState(actions[name]);
+					return true;
 				}
 			}
 			return false;
@@ -65,7 +80,6 @@
 					}
 					$.localStorage('templates',templates);
 					console.log('Dropping template for '+type+':'+name);
-					return '';
 				}else{
 					var o = {
 						name: name,
@@ -87,8 +101,8 @@
 				return templates[id].template;
 			}else{
 				console.log('No cached template stored for: '+type+':'+name);
-				return '';
 			}
+			return '';
 		},
 		apiCall = window.apiCall = function(data,callback,background){
 			console.log('apiCall('+data.type+'-'+data.id+')');
@@ -188,7 +202,7 @@
 						async: true,
 						type: 'GET',
 						success: function(d){
-							if(exists(d['error'])){
+							if(exists(d.error)){
 								error(d);
 							}else{
 								d.state.title = d.state.title.capitalize();
@@ -250,7 +264,16 @@
 										console.log('Context detected console.logout');
 										setKey(null);
 									}
-									render.topbar(template('topbars',d.topbar.template),d.topbar.context);
+									actions = [];
+									if(exists(d.topbar)){
+										render.topbar(template('topbars',d.topbar.template),d.topbar.context);
+										if(exists(d.topbar.context.actions)){
+											actions = d.topbar.context.actions;
+										}
+									}
+									if(exists(d.sidebar)){
+										render.sidebar(template('sidebars',d.sidebar.template),d.sidebar.context);
+									}
 									if(exists(d.template)){
 										console.log('Using template: '+d.template.type+':'+d.template.name);
 										d.template = template(d.template.type,d.template.name);
@@ -258,8 +281,12 @@
 									}else{
 										console.log('No template used');
 									}
+									if(!exists(d.toolbar)){
+										$('#toolbar').parent().hide();
+									}
 									$(window).resize();
 									loading(false);
+
 								}else if(d.state.url != location.href){
 									console.error('No context given');
 									console.log(d);
@@ -307,21 +334,44 @@
 					$('#topbar').find('.topbar-history').hide();
 				}
 				$('#topbar').addClass('overflow-hide');
-				render.refresh('#topbar');
+				$('#topbar .icon-back').click(function(){
+					back();
+				});
+				$('#topbar h1').text($('#topbar h1').text().capitalize());
+				$('#topbar .icon-menu').click(function(){
+					if($('#drawer').hasClass('open')){
+						$('#drawer').removeClass('open').css('transform','');
+					}else{
+						$('#drawer').addClass('open').css('transform','translateX(80%)');
+					}
+				});
+				$('#topbar .icon-add').click(function(){
+					action('new');
+				});
+				render.links('#topbar');
+			},
+			sidebar: function(t,c){
+				$('#sidebar').html(Handlebars.compile(t)(c));
+				$('#toolbar-done').click(function(){
+					$('#drawer').removeClass('open').css('transform','');
+				});
+				render.links('#sidebar');
+				$('#sidebar').find('a').click(function(e){
+					$('#drawer').removeClass('open').css('transform','');
+					e.preventDefault();
+					return false;
+				});
 			},
 			content: function(t,c){
 				$(document).unbind('ready');
 				$('#content').html(
 					Handlebars.compile(t)(c)
 				);
-				render.form('#content');
-				render.accordions('#content');
 				render.refresh('#content');
 			},
 			refresh: function(selector){
 				render.links(selector);
 				render.buttons(selector);
-				render.menus(selector);
 				render.time(selector);
 				$(window).resize();
 			},
@@ -336,25 +386,7 @@
 					);
 				});
 			},
-			accordions: function(selector){
-				$(selector).find('.accordion').each(function(){
-					var icons = {};
-					if($(this).children('.icons').length == 1){
-						icons = JSON.parse($(this).children('.icons').text());
-					}
-					$(this).children('.icons').remove();
-					$(this).accordion({
-						collapsible: true,
-						icons: icons,
-						active: false
-					});
-				});
-			},
 			buttons: function(selector){
-				$(selector).find('.button').button();
-				$(selector).find('input[type=submit]').button();
-				$(selector).find('input[type=button]').button();
-				$(selector).find('button').button();
 				$(selector).find('.more').off().each(function(){
 					var t = $(this);
 					if(!$.hasData(t)){
@@ -380,7 +412,8 @@
 						};
 					data.start = t.data('at');
 					apiCall(data,function(d){
-						var tmplt = Handlebars.compile(template('pages','comment')),
+						d.template = exists(d.template)?d.template:'comment';
+						var tmplt = Handlebars.compile(template('pages',d.template)),
 							i;
 						if(d.messages.length < 10){
 							t.hide();
@@ -443,7 +476,7 @@
 											if(!exists(d.error)){
 												diag.dialog('close');
 												flag('ignore_statechange',false);
-												$('.topbar-current').click();
+												stateChange();
 											}
 										});
 									}
@@ -458,55 +491,6 @@
 						]
 					});
 				},
-			},
-			menus: function(selector){
-				$(selector).find('.menu').css({
-					'list-style':'none'
-				}).menu({
-					icons:{
-						submenu: "ui-icon-circle-triangle-e"
-					}
-				}).removeClass('ui-corner-all').addClass('ui-corner-bottom').parent().click(function(e){
-					e.stopPropagation();
-				});
-			},
-			form: function(selector){
-				$(selector).find('#form').width('320px').children();
-				render.inputs(selector);
-			},
-			inputs: function(selector){
-				$(selector).find('input[type=text],input[type=password]').each(function(){
-					var input = $(this),
-						height = input.height()>=17?17:input.height();
-					input.siblings('.input-clear').remove();
-					input.off('focus').off('blur').after(
-						$('<div>').css({
-							position: 'absolute',
-							right: $(window).width() - (input.outerWidth() + input.position().left)+2,
-							top: input.position().top+2,
-							'background-image': 'url(img/headers/icons/clear.png)',
-							'background-position': 'center',
-							'background-size': height+'px '+height+'px',
-							'background-repeat': 'no-repeat',
-							width: input.height(),
-							height: input.height(),
-							cursor: 'pointer'
-						}).hide().addClass('input-clear').mousedown(function(){
-							input.val('');
-						})
-					);
-					input.focus(function(){
-						input.next().show();
-					}).blur(function(e){
-						input.next().hide();
-					});
-				});
-				$(selector).find('input[type=text],input[type=password],textarea').each(function(){
-					var input = $(this);
-					if(input.hasClass('fill-width')){
-						input.css('width','calc(100% - '+(input.outerWidth()-input.width())+'px)');
-					}
-				});
 			},
 			dialog: function(selector,title){
 				$(selector).dialog({
@@ -535,21 +519,11 @@
 			links: function(selector){
 				$(selector).find('a').each(function(){
 					var href = this.href;
-					if(href.indexOf('#')!=-1&&(href.indexOf(location.origin)!=-1||href.indexOf('#')==0)){
+					if(href.indexOf('#')!=-1&&(href.indexOf(location.origin)!=-1||href.indexOf('#')===0)){
 						href = href.substr(href.indexOf('#')+1);
 						$(this).click(function(e){
 							try{
-								if(($(this).hasClass('topbar-home') || $(this).hasClass('topbar-back'))&&$(window).width()<767){
-									$('#topbar').children('div.topbar-right,div.topbar-left').toggle();
-									$('#topbar').toggleClass('overflow-hide');
-									$(window).resize();
-								}else if($(this).hasClass('topbar-history')){
-									back();
-								}else if($(this).hasClass('topbar-current')){
-									replaceState(href);
-								}else{
-									loadState(href);
-								}
+								loadState(href);
 							}catch(error){
 								console.error(error);
 							}
@@ -593,13 +567,13 @@
 			if(typeof document.hasFocus === 'undefined'){
 				document.hasFocus = function(){
 					return document.visibilityState == 'visible';
-				}
+				};
 			}
 			return document.hasFocus();
 		},
 		notify = window.notify = function(title,text,onclick,onclose){
 			var notification;
-			if(exists(window['Notification'])&&!exists(window.webkitNotifications)&&!flag('default_notify')&&!hasFocus()){
+			if(exists(window['Notification'])&&!exists(window.webkitNotifications)&&!flag('default_notify')){
 				if(Notification.permission === 'denied'){
 					flag('default_notify',true);
 					notify(title,text,onclick,onclose);
@@ -617,7 +591,7 @@
 						notify(title,text,onclick,onclose);
 					});
 				}
-			}else if(exists(window.navigator.mozNotification)&&!hasFocus()){
+			}else if(exists(window.navigator.mozNotification)){
 				notification = window.navigator.mozNotification.createNotification(title,text,location.origin+'/img/favicon.ico');
 				notification.onclick = onclick;
 				notification.onclose = onclose;
@@ -731,8 +705,10 @@
 				},'json');
 			};
 			fn('topbars',function(){
-				fn('pages',function(){
-					callback();
+				fn('sidebars',function(){
+					fn('pages',function(){
+						callback();
+					});
 				});
 			});
 		};
@@ -765,8 +741,6 @@
 					'display': ''
 				});
 			}
-			render.inputs('#content');
-			render.inputs('#topbar');
 		});
 		$.get(location.href,{
 			get: 'settings',
@@ -832,10 +806,6 @@
 			}
 		};
 		$('#notification-container').notify();
-		$('body').css('margin-top','48px');
-		setTimeout(function(){
-			$('body').css('margin-top','0px').show();
-		},100);
 	});
 	shortcut.add('f12',function(){
 		debug.firebug();
