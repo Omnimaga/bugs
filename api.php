@@ -302,7 +302,10 @@
 											if(addUser($_GET['username'],$_GET['password'],$_GET['email'])){
 												$key = login($_GET['username'],$_GET['password']);
 												$_SESSION['username'] = $_GET['username'];
-												sendMail('welcome','Welcome!',$_GET['email'],get('email'),array($_GET['username'],$_GET['password'],get('email')));
+												sendMail('welcome','Welcome!',$_GET['email'],get('email'),array(
+													'username'=>$_GET['username'],
+													'password'=>$_GET['password'],
+													'email'=>get('email')));
 											}else{
 												$ret['error'] = "Could not add user. ".get_sql()->error;
 											}
@@ -328,7 +331,13 @@
 								if(isset($_GET['pid'])){
 									$ret['error'] = 'Invalid Action';
 								}elseif(is_valid('title')&&is_valid('description')){
-									if(!newProject($_GET['title'],$_GET['description'])){
+									if($pid = newProject($_GET['title'],$_GET['description'])){
+										sendMailAll('newproject','New Project - '.$_GET['title'],array(
+											'title'=>$_GET['title'],
+											'url'=>'http://'.$_SERVER['HTTP_HOST'],
+											'id'=>$pid
+										));
+									}else{
 										$ret['error'] = 'Unable to create project. '.get_sql()->error;
 									}
 								}else{
@@ -347,7 +356,13 @@
 								if(isset($_GET['pid'])){
 									$ret['error'] = 'Invalid Action';
 								}elseif(is_valid('title')&&is_valid('description')){
-									if(!newIssue($_GET['title'],$_GET['description'])){
+									if($id = newIssue($_GET['title'],$_GET['description'])){
+										sendMailAll('newissue','New Issue - '.$_GET['title'],array(
+											'title'=>$_GET['title'],
+											'url'=>'http://'.$_SERVER['HTTP_HOST'],
+											'id'=>$id
+										));
+									}else{
 										$ret['error'] = 'Unable to create issue. '.get_sql()->error;
 									}
 								}else{

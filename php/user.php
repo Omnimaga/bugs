@@ -13,11 +13,7 @@
 	}
 	function isUser($name){
 		$res = query("SELECT id FROM `users` WHERE name='%s'",Array($name));
-		if($res->num_rows == 1){
-			return true;
-		}else{
-			return false;
-		}
+		return $res && $res->num_rows == 1;
 	}
 	function userId($name){
 		if($user = query("SELECT id FROM `users` WHERE name='%s'",Array($name))){
