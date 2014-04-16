@@ -19,4 +19,5 @@
 	require_once(PATH_PHP.'issue.php');
 	require_once(PATH_PHP.'emails.php');
 	authenticate();
+	sendFromQueue();
 ?>

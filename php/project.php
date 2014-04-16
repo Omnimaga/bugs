@@ -32,7 +32,7 @@
 					$id = mysqli_insert_id(get_sql());
 					project_comment($id,'Project created');
 					alog('p',$id,"Project created");
-					return true;
+					return $id;
 				}
 			}
 		}

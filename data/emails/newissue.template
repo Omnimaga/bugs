@@ -1,0 +1,14 @@
+<html>
+	<head>
+		<title>
+			New Issue
+		</title>
+	</head>
+	<body>
+		<p>
+			The project %title$s was created.
+			<br/>
+			<a href="%url$s/!%id$d">Open</a>
+		</p>
+	</body>
+</html>
