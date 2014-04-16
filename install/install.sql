@@ -293,8 +293,38 @@ CREATE TABLE IF NOT EXISTS `activity` (
 --
 
 --
+-- Table structure for table `emails`
+--
+-- Creation: Apr 16, 2014 at 05:35 PM
+--
+
+DROP TABLE IF EXISTS `emails`;
+CREATE TABLE IF NOT EXISTS `emails` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `to_id` int(100) NOT NULL,
+  `subject` varchar(4000) NOT NULL,
+  `template` varchar(4000) NOT NULL,
+  `context` text NOT NULL,
+  `failed` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `to_id` (`to_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+--
+-- RELATIONS FOR TABLE `emails`:
+--   `to_id`
+--       `users` -> `id`
+--
+
+--
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `emails`
+--
+ALTER TABLE `emails`
+  ADD CONSTRAINT `emails_ibfk_1` FOREIGN KEY (`to_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `activity`
