@@ -18,5 +18,9 @@
 	},
 	"permissions": {
 		"desktop-notification": {}
-	}
+	},
+	"appcache_path": "bugs.appcache",
+	"orientation": [
+		"portrait"
+	]
 }
