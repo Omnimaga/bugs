@@ -208,6 +208,7 @@ DROP TABLE IF EXISTS `statuses`;
 CREATE TABLE IF NOT EXISTS `statuses` (
   `id` int(100) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
+  `isopen` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
