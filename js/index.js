@@ -777,7 +777,7 @@
 										loadState('page-messages');
 									});
 								}
-								$('.topbar-notifications').css('display',d.count>0?'block':'').text('('+d.count+')');
+								$('.message-count').text(d.count>0?'('+d.count+')':'');
 								$.localStorage('last_pm_check',d.timestamp);
 							}
 							setTimeout(notifications,5*1000); // every 5 seconds

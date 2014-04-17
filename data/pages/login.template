@@ -23,7 +23,6 @@
 				apiCall(data,function(d){
 					if(!exists(d.error) && exists(d.key)){
 						setKey(d.key);
-						notify('login','You have logged in successfully');
 						back(true);
 					}else{
 						setKey(null);
