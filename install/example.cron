@@ -1,0 +1,1 @@
+*/5 * * * * wget -q http://your.url.here/api.php?type=action&id=mailqueue > /dev/null 2>&1

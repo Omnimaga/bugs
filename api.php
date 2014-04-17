@@ -461,6 +461,9 @@
 								}
 								retj($ret);
 							break;
+							case 'mailqueue':
+								die();
+							break;
 							default:
 								retj(array(
 									'error'=>'Invalid action.'
