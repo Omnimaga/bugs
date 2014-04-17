@@ -5,7 +5,7 @@
 		</header>
 		<ul>
 			{{#each issues}}
-				<li>
+				<li class="isopen-{{isopen}}">
 					<aside class="pack-end">
 						{{user.name}}
 					</aside>
@@ -22,3 +22,6 @@
 		</ul>
 	</section>
 </div>
+<script>
+	$('.isopen-0').hide();
+</script>

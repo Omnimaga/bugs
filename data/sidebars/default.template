@@ -46,7 +46,7 @@
 			</li>
 			<li>
 				<a href="#page-messages">
-					Messages
+					Messages <span class="message-count"></span>
 				</a>
 			</li>
 			<li>

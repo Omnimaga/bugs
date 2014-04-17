@@ -9,6 +9,8 @@
 				$issue = $res->fetch_assoc();
 				$issue['user'] = userObj($issue['user']);
 				$issue['comments'] = messages($issue['id'],'issue');
+				$issue['statuses'] = possibleStatuses();
+				$issue['priorities'] = possiblePriorities();
 				return $issue;
 			}
 		}
@@ -41,5 +43,43 @@
 			}
 		}
 		return false;
+	}
+	function possibleStatuses(){
+		$ret = array();
+		if($res = query("SELECT id,name FROM `statuses` ORDER BY id")){
+			while($status = $res->fetch_assoc()){
+				array_push($ret,$status);
+			}
+		}
+		return $ret;
+	}
+	function possiblePriorities(){
+		$ret = array();
+		if($res = query("SELECT id,name,color FROM `priorities` ORDER BY id")){
+			while($priority = $res->fetch_assoc()){
+				array_push($ret,$priority);
+			}
+		}
+		return $ret;
+	}
+	function setStatus($id,$sid){
+		return query("UPDATE `issues` SET st_id = %d WHERE id = %d",array($sid,$id)) !== false;
+	}
+	function setPriority($id,$pid){
+		return query("UPDATE `issues` SET pr_id = %d WHERE id = %d",array($pid,$id)) !== false;
+	}
+	function statusName($id){
+		if($res = query("SELECT name FROM `statuses` WHERE id = %d",array($id))){
+			$res = $res->fetch_assoc();
+			return $res['name'];
+		}
+		return '(none)';
+	}
+	function priorityName($id){
+		if($res = query("SELECT name FROM `proiorities` WHERE id = %d",array($id))){
+			$res = $res->fetch_assoc();
+			return $res['name'];
+		}
+		return '(none)';
 	}
 ?>
