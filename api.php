@@ -347,43 +347,62 @@
 							break;
 							case 'issue':
 								back(true);
-								$ret['state'] = array(
-									'data'=>array(
-										'type'=>'page',
-										'id'=>$id,
-									)
-								);
-								if(isset($_GET['pid'])){
-									$ret['error'] = 'Invalid Action';
-								}elseif(is_valid('title')&&is_valid('description')){
-									if($id = newIssue($_GET['title'],$_GET['description'])){
-										sendMailAll('newissue','New Issue - '.$_GET['title'],array(
-											'title'=>$_GET['title'],
-											'url'=>'http://'.$_SERVER['HTTP_HOST'],
-											'id'=>$id
-										));
-									}else{
-										$ret['error'] = 'Unable to create issue. '.get_sql()->error;
-									}
-								}else{
-									$ret['error'] = 'Fill in all the details.';
-								}
-								retj($ret,$id);
-							break;
-							case 'message':
-								back(true);
-								if(isset($_GET['to'])&&isset($_GET['message'])){
-									if($uid = userId($_GET['to'])){
-										if(!personal_message($uid,$_GET['message'])){
-											$ret['error'] = 'Could not send message';
+								switch($_GET['action']){
+									case 'status':
+										if(!setStatus($_GET['issue'],$_GET['status'])){
+											$ret['error'] = 'Could not update status.';
+										}else{
+											alog('i',$_GET['issue'],'Status changed to '.statusName($_GET['status']));
 										}
-									}else{
-										$ret['error'] = "That user doesn't exist";
-									}
-								}else{
-									$ret['error'] = 'Empty details';
+										retj($ret);
+									break;
+									case 'priority':
+										if(!setPriority($_GET['issue'],$_GET['priority'])){
+											$ret['error'] = 'Could not update priority.';
+										}else{
+											alog('i',$_GET['issue'],'Priority changed to '.priorityName($_GET['priority']));
+										}
+										retj($ret);
+									break;
+									default:
+										$ret['state'] = array(
+											'data'=>array(
+												'type'=>'page',
+												'id'=>$id,
+											)
+										);
+										if(isset($_GET['pid'])){
+											$ret['error'] = 'Invalid Action';
+										}elseif(is_valid('title')&&is_valid('description')){
+											if($id = newIssue($_GET['title'],$_GET['description'])){
+												sendMailAll('newissue','New Issue - '.$_GET['title'],array(
+													'title'=>$_GET['title'],
+													'url'=>'http://'.$_SERVER['HTTP_HOST'],
+													'id'=>$id
+												));
+											}else{
+												$ret['error'] = 'Unable to create issue. '.get_sql()->error;
+											}
+										}else{
+											$ret['error'] = 'Fill in all the details.';
+										}
+										retj($ret,$id);
+									break;
+									case 'message':
+										back(true);
+										if(isset($_GET['to'])&&isset($_GET['message'])){
+											if($uid = userId($_GET['to'])){
+												if(!personal_message($uid,$_GET['message'])){
+													$ret['error'] = 'Could not send message';
+												}
+											}else{
+												$ret['error'] = "That user doesn't exist";
+											}
+										}else{
+											$ret['error'] = 'Empty details';
+										}
+										retj($ret,$id);
 								}
-								retj($ret,$id);
 							break;
 							case 'notifications':
 								if($LOGGEDIN){

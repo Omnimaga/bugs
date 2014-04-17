@@ -5,10 +5,30 @@
 	Description: {{description}}
 </div>
 <div>
-	Priority: <span style="{{#if color}}color:{{color}};{{/if}}">{{priority}}</span>
+	Priority:
+	<select name="priority">
+		<option style="background-color:white;">
+			(none)
+		</option>
+		{{#each priorities}}
+			<option style="background-color:{{color}};" value="{{id}}">
+				{{name}}
+			</option>
+		{{/each}}
+	</select>
 </div>
 <div>
-	Status: {{status}}
+	Status:
+	<select name="status">
+		<option style="background-color:white;">
+			(none)
+		</option>
+		{{#each statuses}}
+			<option value="{{id}}">
+				{{name}}
+			</option>
+		{{/each}}
+	</select>
 </div>
 <span style="font-size:small;">
 	Comments
@@ -36,3 +56,67 @@
 		"title": "Comment"
 	}
 </a>
+<script>
+	(function(){
+		var status = false,
+			priority = false;
+		$('select[name=status]').change(function(){
+			var t = $(this);
+			if(status != t.val()){
+				apiCall({
+					type: 'action',
+					id: 'issue',
+					action: 'status',
+					status: t.val(),
+					issue: {{id}}
+				},function(d){
+					if(!d.error){
+						status = t.val();
+					}else{
+						alert(d.error);
+					}
+				});
+			}
+		}).children('option').each(function(){
+			if($(this).text().trim() == '{{status}}'){
+				$(this).prop('selected',true);
+				status = $(this).val();
+				$(this).parent().css(
+					'background-color',
+					this.style.backgroundColor
+				);
+			}
+		});
+		$('select[name=priority]').change(function(){
+			var t = $(this);
+			t.css(
+				'background-color',
+				t.children('option:selected').get(0).style.backgroundColor
+			);
+			if(priority != t.val()){
+				apiCall({
+					type: 'action',
+					id: 'issue',
+					action: 'priority',
+					priority: t.val(),
+					issue: {{id}}
+				},function(d){
+					if(!d.error){
+						priority = t.val();
+					}else{
+						alert(d.error);
+					}
+				});
+			}
+		}).children('option').each(function(){
+			if($(this).text().trim() == '{{priority}}'){
+				$(this).prop('selected',true);
+				priority = $(this).val();
+				$(this).parent().css(
+					'background-color',
+					this.style.backgroundColor
+				);
+			}
+		});
+	})();
+</script>

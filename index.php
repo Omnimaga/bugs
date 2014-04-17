@@ -135,7 +135,6 @@
 					window.screen.lockOrientation('portrait');
 				}
 			})(window,Modernizr);
-			Screen.lockOrientation();
 		</script>
 		<style>
 			@viewport{
