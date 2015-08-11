@@ -1,8 +1,0 @@
-<a id="btn-lists-back">
-	<span class="icon icon-back">
-		back
-	</span>
-</a>
-<h1>
-	{{title}}
-</h1>

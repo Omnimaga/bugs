@@ -1,7 +1,0 @@
-{
-	"secure": true,
-	"topbar": "issues",
-	"context": [
-		"issues"
-	]
-}

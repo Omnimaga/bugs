@@ -1,7 +1,0 @@
-<h2>
-	{{title}} <a style="font-size:small;color:gray;text-decoration:none;" href="#~{{user.name}}">{{user.name}}</a>
-</h2>
-<div style="font-size:large;">
-	{{description}}
-</div>
-<br/>

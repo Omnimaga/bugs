@@ -1,21 +1,13 @@
+DirectoryIndex index.php
 # Redirects
 <IfModule mod_rewrite.c>
 	RewriteEngine On
-	RewriteBase /
+	RewriteBase /bugs/
 	RewriteCond %{REQUEST_FILENAME} !-d
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteCond %{ENV:REDIRECT_STATUS} ^.
 	RewriteRule .* - [L]
-	RewriteRule ^.+/page-([^/]*)$ / [R=301,L]
-	RewriteRule ^\~([^/]*)$ /index.php?type=user&id=$1 [QSA,L]
-	RewriteRule ^\+([^/]*)$ /index.php?type=group&id=$1 [QSA,L]
-	RewriteRule ^\!([^/]*)$ /index.php?type=issue&id=$1 [QSA,L]
-	RewriteRule ^scrum-([^/]*)$ /index.php?type=scrum&id=$1 [QSA,L]
-	RewriteRule ^project-([^/]*)$ /index.php?type=project&id=$1 [QSA,L]
-	RewriteRule ^admin-([^/]*)$ /index.php?type=admin&id=$1 [QSA,L]
-	RewriteRule ^page-([^/]*)$ /index.php?type=page&id=$1 [QSA,L]
-	RewriteRule ^message-([^/]*)$ /index.php?type=message&id=$1 [QSA,L]
-	ErrorDocument 404 /
+	RewriteRule ^(?!(index\.php)|(login\.php)) index.php
 </IfModule>
 # File security
 <FilesMatch ".(bak|config|sql|fla|psd|ini|log|sh|inc|~|swp)$">

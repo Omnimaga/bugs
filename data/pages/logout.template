@@ -1,5 +1,0 @@
-<script>
-	setKey(null);
-	notify('logout','You have successfully logged out');
-	replaceState('page-index');
-</script>
