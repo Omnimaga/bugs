@@ -42,13 +42,14 @@
 		$_DATA = array();
 	}
 	require_once('lib/router.class.php');
-	require_once('lib/sql.class.php');
+	require_once('lib/bugs.class.php');
 	foreach(glob("paths/*.php") as $filename){
 		require_once($filename);
 	}
+	Bugs::connect();
 	Router::base('/bugs/');
 	Router::handle(rtrim($_SERVER['REDIRECT_URL'],'/'),null,function($res,$url){
-		header('Content-Type: application/json');
+		$res->header('Content-Type','application/json');
 		$res->json(array(
 			'error'=> 'Not implemented',
 			'url'=> $url,

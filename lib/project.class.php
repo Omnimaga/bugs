@@ -1,20 +1,27 @@
 <?php
-	class User implements JsonSerializable{
+	require_once('issue.class.php');
+	class Project implements JsonSerializable{
 		public $id;
 		public $cache = array(
+			'p_id'=>null,
+			's_id'=>null,
+			'u_id'=>null,
 			'name'=>null,
-			'email'=>null,
-			'date_registered'=>null,
+			'description'=>null,
+			'date_created'=>null,
 			'date_modified'=>null
 		);
 		public function __construct($id){
 			$this->id = intval($id);
 			$cache = Bugs::$sql->query("
-				SELECT	name,
-						email,
-						date_registered,
+				SELECT	p_id,
+						s_id,
+						u_id,
+						name,
+						description,
+						date_created,
 						date_modified
-				FROM users
+				FROM issues
 				WHERE id = ?;
 			",'i',$this->id)->assoc_result;
 			foreach($cache as $key => $value){
@@ -25,8 +32,8 @@
 			return array(
 				'id'=> $this->id,
 				'name'=> $this->name,
-				'email'=> $this->email,
-				'date_registered'=> $this->date_registered,
+				'description'=> $this->description,
+				'date_created'=> $this->date_created,
 				'date_modified'=> $this->date_modified
 			);
 		}

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 12, 2015 at 01:15 AM
+-- Generation Time: Aug 12, 2015 at 10:25 PM
 -- Server version: 5.6.25
 -- PHP Version: 5.6.11
 
@@ -62,9 +62,29 @@ CREATE TABLE IF NOT EXISTS `activities` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `emails`
+--
+-- Creation: Aug 12, 2015 at 07:34 PM
+--
+
+DROP TABLE IF EXISTS `emails`;
+CREATE TABLE IF NOT EXISTS `emails` (
+  `u_id` int(10) NOT NULL,
+  `subject` varchar(77) NOT NULL,
+  `body` text NOT NULL,
+  `date` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- RELATIONS FOR TABLE `emails`:
+--
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `issues`
 --
--- Creation: Aug 11, 2015 at 10:52 PM
+-- Creation: Aug 12, 2015 at 07:42 PM
 --
 
 DROP TABLE IF EXISTS `issues`;
@@ -75,7 +95,9 @@ CREATE TABLE IF NOT EXISTS `issues` (
   `pr_id` int(10) NOT NULL,
   `s_id` int(10) NOT NULL,
   `name` varchar(50) NOT NULL,
-  `description` varchar(100) NOT NULL
+  `description` varchar(100) NOT NULL,
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -97,6 +119,85 @@ CREATE TABLE IF NOT EXISTS `issues` (
 --   `s_id`
 --       `statuses` -> `id`
 --
+
+--
+-- Triggers `issues`
+--
+DROP TRIGGER IF EXISTS `issue_update_date_modified`;
+DELIMITER $$
+CREATE TRIGGER `issue_update_date_modified` BEFORE UPDATE ON `issues`
+ FOR EACH ROW SET new.date_modified = NOW()
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `issue_roles`
+--
+-- Creation: Aug 12, 2015 at 05:21 PM
+--
+
+DROP TABLE IF EXISTS `issue_roles`;
+CREATE TABLE IF NOT EXISTS `issue_roles` (
+  `id` int(10) NOT NULL,
+  `name` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- RELATIONS FOR TABLE `issue_roles`:
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `messages`
+--
+-- Creation: Aug 12, 2015 at 07:45 PM
+--
+
+DROP TABLE IF EXISTS `messages`;
+CREATE TABLE IF NOT EXISTS `messages` (
+  `id` int(10) NOT NULL,
+  `u_id` int(10) NOT NULL,
+  `i_id` int(10) DEFAULT NULL,
+  `p_id` int(10) DEFAULT NULL,
+  `subject` varchar(50) NOT NULL,
+  `message` text NOT NULL,
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- RELATIONS FOR TABLE `messages`:
+--   `i_id`
+--       `issues` -> `id`
+--   `p_id`
+--       `projects` -> `id`
+--   `u_id`
+--       `users` -> `id`
+--   `u_id`
+--       `users` -> `id`
+--   `i_id`
+--       `issues` -> `id`
+--   `p_id`
+--       `projects` -> `id`
+--
+
+--
+-- Triggers `messages`
+--
+DROP TRIGGER IF EXISTS `message_update`;
+DELIMITER $$
+CREATE TRIGGER `message_update` BEFORE UPDATE ON `messages`
+ FOR EACH ROW IF new.i_id IS NOT NULL AND new.p_id IS NOT NULL THEN
+  SIGNAL SQLSTATE '45000'
+  SET MESSAGE_TEXT = 'Messages can only be related to one thing';
+ELSE
+  SET new.date_modified = NOW();
+END IF
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -131,7 +232,7 @@ INSERT INTO `priorities` (`id`, `name`) VALUES
 --
 -- Table structure for table `projects`
 --
--- Creation: Aug 11, 2015 at 10:48 PM
+-- Creation: Aug 12, 2015 at 07:43 PM
 --
 
 DROP TABLE IF EXISTS `projects`;
@@ -139,9 +240,11 @@ CREATE TABLE IF NOT EXISTS `projects` (
   `id` int(10) NOT NULL,
   `p_id` int(10) NOT NULL,
   `s_id` int(10) NOT NULL,
+  `u_id` int(10) NOT NULL,
   `name` varchar(50) NOT NULL,
   `description` varchar(100) DEFAULT NULL,
-  `u_id` int(10) NOT NULL
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `date_modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -160,29 +263,39 @@ CREATE TABLE IF NOT EXISTS `projects` (
 --       `statuses` -> `id`
 --
 
+--
+-- Triggers `projects`
+--
+DROP TRIGGER IF EXISTS `project_update_date_modified`;
+DELIMITER $$
+CREATE TRIGGER `project_update_date_modified` BEFORE UPDATE ON `projects`
+ FOR EACH ROW SET new.date_modified = NOW()
+$$
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `roles`
+-- Table structure for table `project_roles`
 --
 -- Creation: Aug 11, 2015 at 10:16 PM
 --
 
-DROP TABLE IF EXISTS `roles`;
-CREATE TABLE IF NOT EXISTS `roles` (
+DROP TABLE IF EXISTS `project_roles`;
+CREATE TABLE IF NOT EXISTS `project_roles` (
   `id` int(10) NOT NULL,
   `name` varchar(10) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
--- RELATIONS FOR TABLE `roles`:
+-- RELATIONS FOR TABLE `project_roles`:
 --
 
 --
--- Dumping data for table `roles`
+-- Dumping data for table `project_roles`
 --
 
-INSERT INTO `roles` (`id`, `name`) VALUES
+INSERT INTO `project_roles` (`id`, `name`) VALUES
 (1, 'Developer'),
 (2, 'Tester');
 
@@ -191,21 +304,56 @@ INSERT INTO `roles` (`id`, `name`) VALUES
 --
 -- Table structure for table `r_issue_user`
 --
--- Creation: Aug 11, 2015 at 10:27 PM
+-- Creation: Aug 12, 2015 at 05:20 PM
 --
 
 DROP TABLE IF EXISTS `r_issue_user`;
 CREATE TABLE IF NOT EXISTS `r_issue_user` (
   `i_id` int(10) NOT NULL,
-  `u_id` int(10) NOT NULL
+  `u_id` int(10) NOT NULL,
+  `r_id` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- RELATIONS FOR TABLE `r_issue_user`:
 --   `i_id`
 --       `issues` -> `id`
+--   `r_id`
+--       `issue_roles` -> `id`
 --   `u_id`
 --       `users` -> `id`
+--   `i_id`
+--       `issues` -> `id`
+--   `u_id`
+--       `users` -> `id`
+--   `r_id`
+--       `issue_roles` -> `id`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `r_message_user`
+--
+-- Creation: Aug 12, 2015 at 05:39 PM
+--
+
+DROP TABLE IF EXISTS `r_message_user`;
+CREATE TABLE IF NOT EXISTS `r_message_user` (
+  `m_id` int(10) NOT NULL,
+  `u_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- RELATIONS FOR TABLE `r_message_user`:
+--   `m_id`
+--       `messages` -> `id`
+--   `u_id`
+--       `users` -> `id`
+--   `u_id`
+--       `users` -> `id`
+--   `m_id`
+--       `messages` -> `id`
 --
 
 -- --------------------------------------------------------
@@ -228,7 +376,7 @@ CREATE TABLE IF NOT EXISTS `r_project_user` (
 --   `p_id`
 --       `projects` -> `id`
 --   `r_id`
---       `roles` -> `id`
+--       `project_roles` -> `id`
 --   `u_id`
 --       `users` -> `id`
 --   `p_id`
@@ -236,7 +384,7 @@ CREATE TABLE IF NOT EXISTS `r_project_user` (
 --   `u_id`
 --       `users` -> `id`
 --   `r_id`
---       `roles` -> `id`
+--       `project_roles` -> `id`
 --
 
 -- --------------------------------------------------------
@@ -281,6 +429,16 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 --
+-- Triggers `users`
+--
+DROP TRIGGER IF EXISTS `user_update_date_modified`;
+DELIMITER $$
+CREATE TRIGGER `user_update_date_modified` BEFORE UPDATE ON `users`
+ FOR EACH ROW SET new.date_modified = NOW()
+$$
+DELIMITER ;
+
+--
 -- Indexes for dumped tables
 --
 
@@ -299,6 +457,13 @@ ALTER TABLE `activities`
   ADD KEY `a_id` (`a_id`);
 
 --
+-- Indexes for table `emails`
+--
+ALTER TABLE `emails`
+  ADD KEY `u_id` (`u_id`),
+  ADD KEY `date` (`date`);
+
+--
 -- Indexes for table `issues`
 --
 ALTER TABLE `issues`
@@ -308,6 +473,22 @@ ALTER TABLE `issues`
   ADD KEY `p_id` (`p_id`),
   ADD KEY `i_id` (`pr_id`),
   ADD KEY `s_id` (`s_id`);
+
+--
+-- Indexes for table `issue_roles`
+--
+ALTER TABLE `issue_roles`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`);
+
+--
+-- Indexes for table `messages`
+--
+ALTER TABLE `messages`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `u_id` (`u_id`),
+  ADD KEY `i_id` (`i_id`),
+  ADD KEY `p_id` (`p_id`);
 
 --
 -- Indexes for table `priorities`
@@ -322,12 +503,13 @@ ALTER TABLE `projects`
   ADD PRIMARY KEY (`id`),
   ADD KEY `u_id` (`u_id`),
   ADD KEY `p_id` (`p_id`),
-  ADD KEY `s_id` (`s_id`);
+  ADD KEY `s_id` (`s_id`),
+  ADD UNIQUE KEY `name` (`name`);
 
 --
--- Indexes for table `roles`
+-- Indexes for table `project_roles`
 --
-ALTER TABLE `roles`
+ALTER TABLE `project_roles`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -335,6 +517,14 @@ ALTER TABLE `roles`
 --
 ALTER TABLE `r_issue_user`
   ADD UNIQUE KEY `i_id` (`i_id`,`u_id`),
+  ADD KEY `u_id` (`u_id`),
+  ADD KEY `r_id` (`r_id`);
+
+--
+-- Indexes for table `r_message_user`
+--
+ALTER TABLE `r_message_user`
+  ADD UNIQUE KEY `m_id` (`m_id`,`u_id`),
   ADD KEY `u_id` (`u_id`);
 
 --
@@ -375,6 +565,16 @@ ALTER TABLE `actions`
 ALTER TABLE `issues`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT for table `issue_roles`
+--
+ALTER TABLE `issue_roles`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `messages`
+--
+ALTER TABLE `messages`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `priorities`
 --
 ALTER TABLE `priorities`
@@ -385,9 +585,9 @@ ALTER TABLE `priorities`
 ALTER TABLE `projects`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `roles`
+-- AUTO_INCREMENT for table `project_roles`
 --
-ALTER TABLE `roles`
+ALTER TABLE `project_roles`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `statuses`
@@ -419,6 +619,14 @@ ALTER TABLE `issues`
   ADD CONSTRAINT `issues_ibfk_4` FOREIGN KEY (`s_id`) REFERENCES `statuses` (`id`);
 
 --
+-- Constraints for table `messages`
+--
+ALTER TABLE `messages`
+  ADD CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`u_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `messages_ibfk_2` FOREIGN KEY (`i_id`) REFERENCES `issues` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `messages_ibfk_3` FOREIGN KEY (`p_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `projects`
 --
 ALTER TABLE `projects`
@@ -431,7 +639,15 @@ ALTER TABLE `projects`
 --
 ALTER TABLE `r_issue_user`
   ADD CONSTRAINT `r_issue_user_ibfk_1` FOREIGN KEY (`i_id`) REFERENCES `issues` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `r_issue_user_ibfk_2` FOREIGN KEY (`u_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `r_issue_user_ibfk_2` FOREIGN KEY (`u_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `r_issue_user_ibfk_3` FOREIGN KEY (`r_id`) REFERENCES `issue_roles` (`id`);
+
+--
+-- Constraints for table `r_message_user`
+--
+ALTER TABLE `r_message_user`
+  ADD CONSTRAINT `r_message_user_ibfk_1` FOREIGN KEY (`u_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `r_message_user_ibfk_2` FOREIGN KEY (`m_id`) REFERENCES `messages` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `r_project_user`
@@ -439,5 +655,5 @@ ALTER TABLE `r_issue_user`
 ALTER TABLE `r_project_user`
   ADD CONSTRAINT `r_project_user_ibfk_1` FOREIGN KEY (`p_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `r_project_user_ibfk_2` FOREIGN KEY (`u_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `r_project_user_ibfk_3` FOREIGN KEY (`r_id`) REFERENCES `roles` (`id`);
+  ADD CONSTRAINT `r_project_user_ibfk_3` FOREIGN KEY (`r_id`) REFERENCES `project_roles` (`id`);
 COMMIT;

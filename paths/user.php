@@ -1,7 +1,16 @@
 <?php
 	Router::paths(array(
 		'/~{user}'=>function($res,$args){
-			$res->write($args->user);
+			$res->write(
+				Bugs::template('user')
+					->run(Bugs::user($args->user))
+			);
+		},
+		'/user/{user}'=>function($res,$args){
+			$res->header(
+				'Location',
+				Router::url(Router::$base.'/~'.$args->user)
+			);
 		}
 	));
 ?>

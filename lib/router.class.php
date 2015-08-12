@@ -3,7 +3,7 @@
 	require_once('response.class.php');
 	class Router {
 		public static $paths = array();
-		private static $base = '/';
+		public static $base = '/';
 		private static $responses = array();
 		public function __construct(){
 			// No Constructing
@@ -19,6 +19,9 @@
 		}
 		public static function base($base){
 			static::$base = $base;
+		}
+		public static function url($url){
+			return preg_replace('/(\/+)/','/',$url);
 		}
 		// fn = function(response,args){}
 		public static function path($path,$fn){
