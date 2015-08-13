@@ -27,6 +27,9 @@
 				case 'error':
 					return $this->sql->error;
 				break;
+				case 'insert_id':
+					return $this->sql->insert_id;
+				break;
 			}
 		}
 		/**

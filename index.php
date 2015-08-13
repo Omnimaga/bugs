@@ -43,11 +43,11 @@
 	}
 	require_once('lib/router.class.php');
 	require_once('lib/bugs.class.php');
+	Bugs::connect();
+	Router::base('/bugs/');
 	foreach(glob("paths/*.php") as $filename){
 		require_once($filename);
 	}
-	Bugs::connect();
-	Router::base('/bugs/');
 	Router::handle(rtrim($_SERVER['REDIRECT_URL'],'/'),null,function($res,$url){
 		$res->header('Content-Type','application/json');
 		$res->json(array(

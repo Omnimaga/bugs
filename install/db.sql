@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 12, 2015 at 10:25 PM
+-- Generation Time: Aug 13, 2015 at 08:25 PM
 -- Server version: 5.6.25
 -- PHP Version: 5.6.11
 
@@ -23,7 +23,7 @@ USE `bugs`;
 --
 -- Table structure for table `actions`
 --
--- Creation: Aug 11, 2015 at 10:42 PM
+-- Creation: Aug 13, 2015 at 06:24 PM
 --
 
 DROP TABLE IF EXISTS `actions`;
@@ -123,6 +123,12 @@ CREATE TABLE IF NOT EXISTS `issues` (
 --
 -- Triggers `issues`
 --
+DROP TRIGGER IF EXISTS `issue_insert_date_modified`;
+DELIMITER $$
+CREATE TRIGGER `issue_insert_date_modified` BEFORE INSERT ON `issues`
+ FOR EACH ROW SET new.date_modified = NOW()
+$$
+DELIMITER ;
 DROP TRIGGER IF EXISTS `issue_update_date_modified`;
 DELIMITER $$
 CREATE TRIGGER `issue_update_date_modified` BEFORE UPDATE ON `issues`
@@ -187,6 +193,17 @@ CREATE TABLE IF NOT EXISTS `messages` (
 --
 -- Triggers `messages`
 --
+DROP TRIGGER IF EXISTS `message_insert`;
+DELIMITER $$
+CREATE TRIGGER `message_insert` BEFORE INSERT ON `messages`
+ FOR EACH ROW IF new.i_id IS NOT NULL AND new.p_id IS NOT NULL THEN
+  SIGNAL SQLSTATE '45000'
+  SET MESSAGE_TEXT = 'Messages can only be related to one thing';
+ELSE
+  SET new.date_modified = NOW();
+END IF
+$$
+DELIMITER ;
 DROP TRIGGER IF EXISTS `message_update`;
 DELIMITER $$
 CREATE TRIGGER `message_update` BEFORE UPDATE ON `messages`
@@ -232,7 +249,7 @@ INSERT INTO `priorities` (`id`, `name`) VALUES
 --
 -- Table structure for table `projects`
 --
--- Creation: Aug 12, 2015 at 07:43 PM
+-- Creation: Aug 12, 2015 at 08:52 PM
 --
 
 DROP TABLE IF EXISTS `projects`;
@@ -266,6 +283,12 @@ CREATE TABLE IF NOT EXISTS `projects` (
 --
 -- Triggers `projects`
 --
+DROP TRIGGER IF EXISTS `project_insert_date_modified`;
+DELIMITER $$
+CREATE TRIGGER `project_insert_date_modified` BEFORE INSERT ON `projects`
+ FOR EACH ROW SET new.date_modified = NOW()
+$$
+DELIMITER ;
 DROP TRIGGER IF EXISTS `project_update_date_modified`;
 DELIMITER $$
 CREATE TRIGGER `project_update_date_modified` BEFORE UPDATE ON `projects`
@@ -400,18 +423,29 @@ CREATE TABLE IF NOT EXISTS `statuses` (
   `id` int(10) NOT NULL,
   `name` varchar(50) NOT NULL,
   `open` tinyint(1) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
 -- RELATIONS FOR TABLE `statuses`:
 --
+
+--
+-- Dumping data for table `statuses`
+--
+
+INSERT INTO `statuses` (`id`, `name`, `open`) VALUES
+(1, 'New', 1),
+(2, 'In Progress', 1),
+(3, 'On Hold', 1),
+(4, 'Completed', 0),
+(5, 'Cancelled', 0);
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `users`
 --
--- Creation: Aug 11, 2015 at 10:10 PM
+-- Creation: Aug 13, 2015 at 06:24 PM
 --
 
 DROP TABLE IF EXISTS `users`;
@@ -431,6 +465,12 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 -- Triggers `users`
 --
+DROP TRIGGER IF EXISTS `user_insert_date_modified`;
+DELIMITER $$
+CREATE TRIGGER `user_insert_date_modified` BEFORE INSERT ON `users`
+ FOR EACH ROW SET new.date_modified = NOW()
+$$
+DELIMITER ;
 DROP TRIGGER IF EXISTS `user_update_date_modified`;
 DELIMITER $$
 CREATE TRIGGER `user_update_date_modified` BEFORE UPDATE ON `users`
@@ -501,10 +541,10 @@ ALTER TABLE `priorities`
 --
 ALTER TABLE `projects`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`),
   ADD KEY `u_id` (`u_id`),
   ADD KEY `p_id` (`p_id`),
-  ADD KEY `s_id` (`s_id`),
-  ADD UNIQUE KEY `name` (`name`);
+  ADD KEY `s_id` (`s_id`);
 
 --
 -- Indexes for table `project_roles`
@@ -593,7 +633,7 @@ ALTER TABLE `project_roles`
 -- AUTO_INCREMENT for table `statuses`
 --
 ALTER TABLE `statuses`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `users`
 --

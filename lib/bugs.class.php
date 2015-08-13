@@ -64,5 +64,34 @@
 		static function template($name){
 			return new Template($name);
 		}
+		static function actions(){
+			$args = func_get_args();
+			foreach($args as $action){
+				static::action($action);
+			}
+		}
+		static function action($action){
+			$id = static::$sql->query("
+				SELECT id
+				FROM actions
+				where name = ?
+			",'s',$action)->assoc_result;
+			if($id){
+				$id = $id['id'];
+			}else{
+				static::$sql->query("
+					INSERT INTO actions (name)
+					VALUES (?)
+				",'s',$action)->execute();
+				$id = static::$sql->insert_id;
+			}
+			return $id;
+		}
+		static function activity($action,$description){
+			static::$sql->query("
+				INSERT INTO activities (a_id,description)
+				VALUES (?,?)
+			",'is',static::action($action),$description)->execute();
+		}
 	}
 ?>

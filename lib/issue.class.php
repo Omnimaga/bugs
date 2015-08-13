@@ -49,6 +49,9 @@
 		}
 		public function __get($name){
 			switch($name){
+				case 'date_registered':case 'date_modified':
+					return strtotime($this->cache[$name]);
+				break;
 				default:
 					if(isset($this->cache)){
 						return $this->cache[$name];

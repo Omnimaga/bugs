@@ -1,6 +1,10 @@
 <?php
+	Bugs::actions(
+		'test'
+	);
 	Router::paths(array(
 		'/~{user}'=>function($res,$args){
+			Bugs::activity('test','test');
 			$res->write(
 				Bugs::template('user')
 					->run(Bugs::user($args->user))
