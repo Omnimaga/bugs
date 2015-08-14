@@ -2,35 +2,32 @@
 	error_reporting(E_ALL);
 	ini_set('display_errors', 'Off');
 	set_error_handler(function($errno, $errstr, $errfile, $errline){
-		header('Content-Type: application/json');
-		die(
-			json_encode(
-				array(
-					'number'=> $errno,
-					'msg'=> $errstr,
-					'file'=> $errfile,
-					'line'=> $errline,
+		Router::write(
+			Bugs::template('error')
+				->run(new Arguments(array(
+					'error'=> array(
+						'type'=> $errno,
+						'message'=> $errstr,
+						'file'=> $errfile,
+						'line'=> $errline
+					),
 					'backtrace'=> debug_backtrace(),
 					'included'=> get_included_files()
-				)
-			)
+				)))
 		);
+		die();
 	},E_ALL);
 	register_shutdown_function(function(){
 		$error = error_get_last();
-		if ($error['type'] == 1) {
-			header('Content-Type: application/json');
-			die(
-				json_encode(
-					array(
-						'number'=> $error['type'],
-						'msg'=> $error['message'],
-						'file'=> $error['file'],
-						'line'=> $error['line'],
-						'backtrace'=> array(),
+		if(!is_null($error) && $error['type'] == 1){
+			Router::clear();
+			Router::write(
+				Bugs::template('error')
+					->run(new Arguments(array(
+						'error'=> $error,
+						'backtrace'=> debug_backtrace(),
 						'included'=> get_included_files()
-					)
-				)
+					)))
 			);
 		} 
 	});

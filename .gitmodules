@@ -1,0 +1,3 @@
+[submodule "js/juju"]
+	path = js/juju
+	url = https://github.com/Eeems/juju.git

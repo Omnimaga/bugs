@@ -1,14 +1,14 @@
 <?php
 	Bugs::actions(
-		'test'
+		'view_profile'
 	);
 	Router::paths(array(
 		'/~{user}'=>function($res,$args){
-			Bugs::activity('test','test');
 			$res->write(
 				Bugs::template('user')
 					->run(Bugs::user($args->user))
 			);
+			Bugs::activity('view_profile',$args->user);
 		},
 		'/user/{user}'=>function($res,$args){
 			$res->header(

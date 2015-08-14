@@ -80,6 +80,12 @@
 				}
 			}
 		}
+		public static function write($chunk){
+			if(!isset(static::$responses[0])){
+				array_push($responses,new Response($_SERVER['REQUEST_URI']));
+			}
+			static::$responses[0]->write($chunk);
+		}
 	}
 	register_shutdown_function(function(){
 		Router::shutdown();

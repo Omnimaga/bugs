@@ -16,7 +16,7 @@
 			if($this->open){
 				$this->body = '';
 			}
-			return this;
+			return $this;
 		}
 		public function write($chunk){
 			if($this->open){

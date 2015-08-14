@@ -6,6 +6,12 @@
 	<head>
 		<meta charset="utf8"/>
 		<title>User - <?=$context->name;?></title>
+		<script src="js/juju/core.js"></script>
+		<script src="js/juju/page.js"></script>
+		<script src="js/juju/dom.js"></script>
+		<script src="js/juju/keyboard.js"></script>
+		<script src="js/juju/mouse.js"></script>
+		<script src="js/user.js"></script>
 	</head>
 	<body>
 		<form>

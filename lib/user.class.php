@@ -17,8 +17,12 @@
 				FROM users
 				WHERE id = ?;
 			",'i',$this->id)->assoc_result;
-			foreach($cache as $key => $value){
-				$this->cache[$key] = $value;
+			if($cache){
+				foreach($cache as $key => $value){
+					$this->cache[$key] = $value;
+				}
+			}else{
+				trigger_error("User with id {$id} does not exist");
 			}
 		}
 		public function jsonSerialize(){
