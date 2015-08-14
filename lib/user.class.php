@@ -39,8 +39,17 @@
 		}
 		public function __set($name,$value){
 			switch($name){
+				case 'name':case 'email':
+					Bugs::$sql->query("
+						UPDATE users
+						SET {$name} = ?
+						WHERE id = ?
+					",'si',$value,$this->id)->execute();
+				break;
 				default:
-					$this->cache[$name] = $value;
+					if(isset($this->cache[$name])){
+						$this->cache[$name] = $value;
+					}
 			}
 		}
 		public function __get($name){

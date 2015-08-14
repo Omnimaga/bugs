@@ -42,12 +42,43 @@
 		}
 		public function __set($name,$value){
 			switch($name){
+				case 'name':case 'description':
+					Bugs::$sql->query("
+						UPDATE users
+						SET {$name} = ?
+						WHERE id = ?
+					",'si',$value,$this->id)->execute();
+				break;
+				case 'p_id':case 's_id':case 'u_id':
+					Bugs::$sql->query("
+						UPDATE users
+						SET {$name} = ?
+						WHERE id = ?
+					",'ii',$value,$this->id)->execute();
+				break;
+				case 'parent':
+					if($value instanceof Project){
+						$this->p_id = $value->id;
+					}
+				break;
+				case 'user':
+					if($value instanceof User){
+						$this->u_id = $value->id;
+					}
+				break;
 				default:
-					$this->cache[$name] = $value;
+					if(isset($this->cache[$name])){
+						$this->cache[$name] = $value;
+					}
 			}
 		}
 		public function __get($name){
 			switch($name){
+				case 'parent':
+					if(isset($this->p_id)){
+						return Bugs::Project($this->p_id);
+					}
+				break;
 				case 'date_registered':case 'date_modified':
 					return strtotime($this->cache[$name]);
 				break;
