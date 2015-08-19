@@ -23,7 +23,7 @@ div.error>div.collapsable>div.odd{
 div.error>div.collapsable>div:hover{
 	background-color: lightblue;
 }
-div.error>div ul{
+div.error ul, div.error ul>li, div.error pre{
 	margin: 0;
 }
 div.collapsed{
@@ -35,4 +35,12 @@ span.collapse-arrow{
 span.collapse-arrow:not(.collapsed){
 	display: inline-block;
 	transform: rotate(90deg) translateY(-3px);
+}
+span.right{
+	float: right;
+	clear: none;
+}
+span.left{
+	float: left;
+	clear: none;
 }

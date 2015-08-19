@@ -35,12 +35,6 @@
 		<h2>
 			<?=$context->error['message']?>
 		</h2>
-		<div>
-			<strong>
-				File:
-			</strong>
-			<?=$context->error['file']?>:<?=$context->error['line']?>
-		</div>
 		<br/>
 		<div class="error">
 			<span class="collapse-arrow collapsed">
@@ -51,17 +45,17 @@
 			</span>
 			<div class="collapsable collapsed">
 				<?php
-					foreach($context->backtrace as $trace){
+					foreach($context->backtrace as $k => $trace){
 						echo "<div><span class=\"collapse-arrow collapsed\">&#10097;</span>&nbsp;";
 						if(isset($trace['class'])){
-							echo "<span>Function: {$trace['class']}{$trace['type']}{$trace['function']}</span>";
+							echo "<span>{$trace['class']}{$trace['type']}{$trace['function']}</span>";
 						}elseif(isset($trace['function'])){
-							echo "<span>Function: {$trace['function']}</span>";
+							echo "<span>{$trace['function']}</span>";
+						}
+						if(isset($trace['file'])){
+							echo "<span class=\"right\">{$trace['file']}:{$trace['line']}</span>";
 						}
 						echo "<div class=\"collapsable collapsed\">";
-						if(isset($trace['file'])){
-							echo "<div>Location: {$trace['file']}:{$trace['line']}</div>";
-						}
 						if(isset($trace['args'])){
 							echo "<div>Arguments:<ul>";
 							foreach($trace['args'] as $arg){
