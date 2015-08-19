@@ -3,10 +3,10 @@ DirectoryIndex index.php
 <IfModule mod_rewrite.c>
 	RewriteEngine On
 	RewriteBase /bugs/
-	RewriteCond %{REQUEST_FILENAME} !-d
-	RewriteCond %{REQUEST_FILENAME} !-f
-	RewriteCond %{ENV:REDIRECT_STATUS} ^.
-	RewriteRule .* - [L]
+	RewriteCond %{REQUEST_FILENAME} -s [OR]
+	RewriteCond %{REQUEST_FILENAME} -l [OR]
+	RewriteCond %{REQUEST_FILENAME} -d
+	RewriteRule ^.*$ - [NC,L]
 	RewriteRule ^(?!(index\.php)|(login\.php)) index.php
 </IfModule>
 # File security
