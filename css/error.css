@@ -1,0 +1,26 @@
+body>div.error>div{
+	margin: 0;
+	padding: 5px;
+	font-size: 10px;
+	font-family: monospace;
+	cursor: pointer;
+}
+body>div.error>div.odd{
+	background-color: lightgrey;
+}
+body>div.error>div:hover{
+	background-color: lightblue;
+}
+body>div.error>div ul{
+	margin: 0;
+}
+body>div.error>div>div.collapsed{
+	display: none;
+}
+body>div.error>div>span.collapse-arrow{
+	width: 5px;
+}
+body>div.error>div>span.collapse-arrow:not(.collapsed){
+	display: inline-block;
+	transform: rotate(90deg) translateY(-3px);
+}
