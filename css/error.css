@@ -1,26 +1,38 @@
-body>div.error>div{
+div.error{
+	border: solid;
+	border-width: 1px;
+	font-family: monospace;
+	cursor: pointer;
+	margin: 0;
+	padding: 5px;
+}
+div.error>div{
+	margin: 0;
+	padding: 0;
+	border: solid;
+	border-width: 1px;
+}
+div.error>div.collapsable>div{
 	margin: 0;
 	padding: 5px;
 	font-size: 10px;
-	font-family: monospace;
-	cursor: pointer;
 }
-body>div.error>div.odd{
+div.error>div.collapsable>div.odd{
 	background-color: lightgrey;
 }
-body>div.error>div:hover{
+div.error>div.collapsable>div:hover{
 	background-color: lightblue;
 }
-body>div.error>div ul{
+div.error>div ul{
 	margin: 0;
 }
-body>div.error>div>div.collapsed{
+div.collapsed{
 	display: none;
 }
-body>div.error>div>span.collapse-arrow{
+span.collapse-arrow{
 	width: 5px;
 }
-body>div.error>div>span.collapse-arrow:not(.collapsed){
+span.collapse-arrow:not(.collapsed){
 	display: inline-block;
 	transform: rotate(90deg) translateY(-3px);
 }
