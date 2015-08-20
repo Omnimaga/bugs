@@ -31,11 +31,16 @@
 		}
 		static function user($id){
 			if(is_string($id)){
-				$id = static::$sql->query("
+				$user = static::$sql->query("
 					SELECT id
 					FROM users
 					WHERE name = ?;
-				",'s',$id)->assoc_result['id'];
+				",'s',$id)->assoc_result;
+				if(is_null($user)){
+					trigger_error("User {$id} does not exist");
+				}else{
+					$id = $user['id'];
+				}
 			}
 			if(!isset(static::$cache['users'][$id])){
 				static::$cache['users'][$id] = new User($id);

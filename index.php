@@ -1,36 +1,5 @@
 <?php
-	error_reporting(E_ALL);
-	ini_set('display_errors', 'Off');
-	set_error_handler(function($errno, $errstr, $errfile, $errline){
-		Router::write(
-			Bugs::template('error')
-				->run(new Arguments(array(
-					'error'=> array(
-						'type'=> $errno,
-						'message'=> $errstr,
-						'file'=> $errfile,
-						'line'=> $errline
-					),
-					'backtrace'=> debug_backtrace(),
-					'included'=> get_included_files()
-				)))
-		);
-		die();
-	},E_ALL);
-	register_shutdown_function(function(){
-		$error = error_get_last();
-		if(!is_null($error) && $error['type'] == 1){
-			Router::clear();
-			Router::write(
-				Bugs::template('error')
-					->run(new Arguments(array(
-						'error'=> $error,
-						'backtrace'=> debug_backtrace(),
-						'included'=> get_included_files()
-					)))
-			);
-		} 
-	});
+	global $_RAWDATA, $_DATA;
 	if($_SERVER['REQUEST_METHOD']!='GET'){
 		$_RAWDATA = file_get_contents( 'php://input','r');
 		$_DATA = json_decode($_RAWDATA,true);
@@ -38,20 +7,16 @@
 		$_RAWDATA = '';
 		$_DATA = array();
 	}
-	require_once('lib/router.class.php');
+	require_once('config.php');
 	require_once('lib/bugs.class.php');
-	Bugs::connect();
-	Router::base('/bugs/');
+	require_once('lib/router.class.php');
+	require_once('lib/errorhandler.php');
+	Bugs::connect(DB_HOST,DB_USER,DB_PASS,DB);
 	foreach(glob("paths/*.php") as $filename){
 		require_once($filename);
 	}
+	Router::base(URL_BASE);
 	Router::handle(rtrim($_SERVER['REDIRECT_URL'],'/'),null,function($res,$url){
-		$res->header('Content-Type','application/json');
-		$res->json(array(
-			'error'=> 'Not implemented',
-			'url'=> $url,
-			'included'=> get_included_files(),
-			'paths'=> Router::$paths
-		));
+		trigger_error("Not implemented");
 	});
 ?>

@@ -29,6 +29,7 @@
 		<script src="js/juju/keyboard.js"></script>
 		<script src="js/juju/mouse.js"></script>
 		<script src="js/error.js"></script>
+		<link rel="stylesheet" href="css/main.css"></link>
 		<link rel="stylesheet" href="css/error.css"></link>
 	</head>
 	<body>
@@ -36,40 +37,61 @@
 			<?=$context->error['message']?>
 		</h2>
 		<br/>
-		<div class="error">
-			<span class="collapse-arrow collapsed">
-				&#10097;
-			</span>
-			<span>
-				Call Stack
-			</span>
-			<div class="collapsable collapsed">
-				<?php
-					foreach($context->backtrace as $k => $trace){
-						echo "<div><span class=\"collapse-arrow collapsed\">&#10097;</span>&nbsp;";
-						if(isset($trace['class'])){
-							echo "<span>{$trace['class']}{$trace['type']}{$trace['function']}</span>";
-						}elseif(isset($trace['function'])){
-							echo "<span>{$trace['function']}</span>";
-						}
-						if(isset($trace['file'])){
-							echo "<span class=\"right\">{$trace['file']}:{$trace['line']}</span>";
-						}
-						echo "<div class=\"collapsable collapsed\">";
-						if(isset($trace['args'])){
-							echo "<div>Arguments:<ul>";
-							foreach($trace['args'] as $arg){
-								echo "<li><pre title=\"".get_class_name($arg)."\">".json_encode($arg,JSON_PRETTY_PRINT)."</pre></li>";
+		<?php
+			if(defined('DEBUG') && DEBUG){
+		?>
+			<div class="error">
+				<span class="collapse-arrow collapsed">
+					&#10097;
+				</span>
+				<span>
+					Call Stack
+				</span>
+				<div class="collapsable collapsed">
+					<?php
+						foreach($context->backtrace as $k => $trace){
+							echo "<div><span class=\"collapse-arrow collapsed\">&#10097;</span>&nbsp;";
+							if(isset($trace['class'])){
+								echo "<span>{$trace['class']}{$trace['type']}{$trace['function']}</span>";
+							}elseif(isset($trace['function'])){
+								echo "<span>{$trace['function']}</span>";
 							}
-							echo "</ul></div>";
+							if(isset($trace['file'])){
+								echo "<span class=\"right\">{$trace['file']}:{$trace['line']}</span>";
+							}
+							echo "<div class=\"collapsable collapsed\">";
+							if(isset($trace['args'])){
+								echo "<div>Arguments:<ul>";
+								foreach($trace['args'] as $arg){
+									echo "<li><pre title=\"".get_class_name($arg)."\">".json_encode($arg,JSON_PRETTY_PRINT)."</pre></li>";
+								}
+								echo "</ul></div>";
+							}
+							if(isset($trace['object'])){
+								echo "<div>Object:<pre title=\"".get_class_name($arg)."\">".json_encode($trace['object'],JSON_PRETTY_PRINT)."</pre></div>";
+							}
+							echo "</div><div class=\"clear\"></div></div>";
 						}
-						if(isset($trace['object'])){
-							echo "<div>Object:<pre title=\"".get_class_name($arg)."\">".json_encode($trace['object'],JSON_PRETTY_PRINT)."</pre></div>";
-						}
-						echo "</div></div>";
-					}
-				?>
+					?>
+				</div>
 			</div>
-		</div>
+			<div class="error">
+				<span class="collapse-arrow collapsed">
+					&#10097;
+				</span>
+				<span>
+					Included Files
+				</span>
+				<div class="collapsable collapsed">
+					<?php
+						foreach($context->included as $file){
+							echo "<div>{$file}</div>";
+						}
+					?>
+				</div>
+			</div>
+		<?php
+			}
+		?>
 	</body>
 </html>

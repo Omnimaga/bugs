@@ -12,6 +12,7 @@
 		<script src="js/juju/keyboard.js"></script>
 		<script src="js/juju/mouse.js"></script>
 		<script src="js/user.js"></script>
+		<link rel="stylesheet" href="css/main.css"></link>
 	</head>
 	<body>
 		<form>
