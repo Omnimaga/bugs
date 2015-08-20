@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 13, 2015 at 08:25 PM
+-- Generation Time: Aug 20, 2015 at 02:07 AM
 -- Server version: 5.6.25
 -- PHP Version: 5.6.11
 
@@ -15,7 +15,7 @@ SET time_zone = "+00:00";
 --
 -- Database: `bugs`
 --
-CREATE DATABASE IF NOT EXISTS `bugs` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+CREATE DATABASE IF NOT EXISTS `bugs` DEFAULT CHARSET=utf8 COLLATE utf8_bin;
 USE `bugs`;
 
 -- --------------------------------------------------------
@@ -23,25 +23,32 @@ USE `bugs`;
 --
 -- Table structure for table `actions`
 --
--- Creation: Aug 13, 2015 at 06:24 PM
+-- Creation: Aug 14, 2015 at 10:21 PM
 --
 
 DROP TABLE IF EXISTS `actions`;
 CREATE TABLE IF NOT EXISTS `actions` (
   `id` int(10) NOT NULL,
   `name` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- RELATIONS FOR TABLE `actions`:
 --
+
+--
+-- Dumping data for table `actions`
+--
+
+INSERT INTO `actions` (`id`, `name`) VALUES
+(1, 'view_profile');
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `activities`
 --
--- Creation: Aug 11, 2015 at 10:59 PM
+-- Creation: Aug 14, 2015 at 09:14 PM
 --
 
 DROP TABLE IF EXISTS `activities`;
@@ -49,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `activities` (
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `a_id` int(10) NOT NULL,
   `description` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- RELATIONS FOR TABLE `activities`:
@@ -64,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `activities` (
 --
 -- Table structure for table `emails`
 --
--- Creation: Aug 12, 2015 at 07:34 PM
+-- Creation: Aug 14, 2015 at 09:14 PM
 --
 
 DROP TABLE IF EXISTS `emails`;
@@ -73,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `emails` (
   `subject` varchar(77) NOT NULL,
   `body` text NOT NULL,
   `date` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- RELATIONS FOR TABLE `emails`:
@@ -84,7 +91,7 @@ CREATE TABLE IF NOT EXISTS `emails` (
 --
 -- Table structure for table `issues`
 --
--- Creation: Aug 12, 2015 at 07:42 PM
+-- Creation: Aug 14, 2015 at 09:14 PM
 --
 
 DROP TABLE IF EXISTS `issues`;
@@ -98,7 +105,7 @@ CREATE TABLE IF NOT EXISTS `issues` (
   `description` varchar(100) NOT NULL,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- RELATIONS FOR TABLE `issues`:
@@ -141,14 +148,14 @@ DELIMITER ;
 --
 -- Table structure for table `issue_roles`
 --
--- Creation: Aug 12, 2015 at 05:21 PM
+-- Creation: Aug 14, 2015 at 10:19 PM
 --
 
 DROP TABLE IF EXISTS `issue_roles`;
 CREATE TABLE IF NOT EXISTS `issue_roles` (
   `id` int(10) NOT NULL,
   `name` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- RELATIONS FOR TABLE `issue_roles`:
@@ -159,7 +166,7 @@ CREATE TABLE IF NOT EXISTS `issue_roles` (
 --
 -- Table structure for table `messages`
 --
--- Creation: Aug 12, 2015 at 07:45 PM
+-- Creation: Aug 14, 2015 at 10:19 PM
 --
 
 DROP TABLE IF EXISTS `messages`;
@@ -172,7 +179,7 @@ CREATE TABLE IF NOT EXISTS `messages` (
   `message` text NOT NULL,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- RELATIONS FOR TABLE `messages`:
@@ -221,14 +228,14 @@ DELIMITER ;
 --
 -- Table structure for table `priorities`
 --
--- Creation: Aug 11, 2015 at 10:49 PM
+-- Creation: Aug 14, 2015 at 10:19 PM
 --
 
 DROP TABLE IF EXISTS `priorities`;
 CREATE TABLE IF NOT EXISTS `priorities` (
   `id` int(10) NOT NULL,
   `name` varchar(50) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- RELATIONS FOR TABLE `priorities`:
@@ -249,7 +256,7 @@ INSERT INTO `priorities` (`id`, `name`) VALUES
 --
 -- Table structure for table `projects`
 --
--- Creation: Aug 12, 2015 at 08:52 PM
+-- Creation: Aug 14, 2015 at 10:20 PM
 --
 
 DROP TABLE IF EXISTS `projects`;
@@ -262,7 +269,7 @@ CREATE TABLE IF NOT EXISTS `projects` (
   `description` varchar(100) DEFAULT NULL,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `date_modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- RELATIONS FOR TABLE `projects`:
@@ -301,14 +308,14 @@ DELIMITER ;
 --
 -- Table structure for table `project_roles`
 --
--- Creation: Aug 11, 2015 at 10:16 PM
+-- Creation: Aug 14, 2015 at 10:20 PM
 --
 
 DROP TABLE IF EXISTS `project_roles`;
 CREATE TABLE IF NOT EXISTS `project_roles` (
   `id` int(10) NOT NULL,
   `name` varchar(10) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- RELATIONS FOR TABLE `project_roles`:
@@ -327,7 +334,7 @@ INSERT INTO `project_roles` (`id`, `name`) VALUES
 --
 -- Table structure for table `r_issue_user`
 --
--- Creation: Aug 12, 2015 at 05:20 PM
+-- Creation: Aug 14, 2015 at 10:20 PM
 --
 
 DROP TABLE IF EXISTS `r_issue_user`;
@@ -335,7 +342,7 @@ CREATE TABLE IF NOT EXISTS `r_issue_user` (
   `i_id` int(10) NOT NULL,
   `u_id` int(10) NOT NULL,
   `r_id` int(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- RELATIONS FOR TABLE `r_issue_user`:
@@ -358,14 +365,14 @@ CREATE TABLE IF NOT EXISTS `r_issue_user` (
 --
 -- Table structure for table `r_message_user`
 --
--- Creation: Aug 12, 2015 at 05:39 PM
+-- Creation: Aug 14, 2015 at 10:20 PM
 --
 
 DROP TABLE IF EXISTS `r_message_user`;
 CREATE TABLE IF NOT EXISTS `r_message_user` (
   `m_id` int(10) NOT NULL,
   `u_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- RELATIONS FOR TABLE `r_message_user`:
@@ -384,7 +391,7 @@ CREATE TABLE IF NOT EXISTS `r_message_user` (
 --
 -- Table structure for table `r_project_user`
 --
--- Creation: Aug 11, 2015 at 10:16 PM
+-- Creation: Aug 14, 2015 at 10:20 PM
 --
 
 DROP TABLE IF EXISTS `r_project_user`;
@@ -392,7 +399,7 @@ CREATE TABLE IF NOT EXISTS `r_project_user` (
   `p_id` int(10) NOT NULL,
   `u_id` int(11) NOT NULL,
   `r_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_bin;
 
 --
 -- RELATIONS FOR TABLE `r_project_user`:
@@ -415,7 +422,7 @@ CREATE TABLE IF NOT EXISTS `r_project_user` (
 --
 -- Table structure for table `statuses`
 --
--- Creation: Aug 11, 2015 at 10:47 PM
+-- Creation: Aug 14, 2015 at 10:20 PM
 --
 
 DROP TABLE IF EXISTS `statuses`;
@@ -423,7 +430,7 @@ CREATE TABLE IF NOT EXISTS `statuses` (
   `id` int(10) NOT NULL,
   `name` varchar(50) NOT NULL,
   `open` tinyint(1) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- RELATIONS FOR TABLE `statuses`:
@@ -445,7 +452,7 @@ INSERT INTO `statuses` (`id`, `name`, `open`) VALUES
 --
 -- Table structure for table `users`
 --
--- Creation: Aug 13, 2015 at 06:24 PM
+-- Creation: Aug 20, 2015 at 12:06 AM
 --
 
 DROP TABLE IF EXISTS `users`;
@@ -455,8 +462,9 @@ CREATE TABLE IF NOT EXISTS `users` (
   `email` varchar(254) NOT NULL,
   `date_registered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `password` varchar(256) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `password` varchar(256) NOT NULL,
+  `salt` varchar(256) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- RELATIONS FOR TABLE `users`:
@@ -598,7 +606,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `actions`
 --
 ALTER TABLE `actions`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `issues`
 --
