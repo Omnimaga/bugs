@@ -5,24 +5,44 @@
 			'name'=>null,
 			'email'=>null,
 			'date_registered'=>null,
-			'date_modified'=>null
+			'date_modified'=>null,
+			'active'=>null
 		);
 		public function __construct($id){
-			$this->id = intval($id);
-			$cache = Bugs::$sql->query("
-				SELECT	name,
-						email,
-						date_registered,
-						date_modified
-				FROM users
-				WHERE id = ?;
-			",'i',$this->id)->assoc_result;
-			if($cache){
-				foreach($cache as $key => $value){
-					$this->cache[$key] = $value;
-				}
-			}else{
-				trigger_error("User with id {$id} does not exist");
+			switch(func_num_args()){
+				// name, email, password
+				case 3:
+					$name = func_get_arg(0);
+					$email= func_get_arg(1);
+					$salt = md5($name.$email);
+					$pass = hash_hmac('sha512',func_get_arg(2),$salt);
+					Bugs::$sql->query("
+						INSERT INTO users (name,email,password,salt)
+						VALUES (?,?,?,?)
+					",'ssss',$name,$email,$pass,$salt)->execute();
+					$id = Bugs::$sql->insert_id;
+				// id
+				case 1:
+					$this->id = intval($id);
+					$cache = Bugs::$sql->query("
+						SELECT	name,
+								email,
+								date_registered,
+								date_modified,
+								active
+						FROM users
+						WHERE id = ?;
+					",'i',$this->id)->assoc_result;
+					if($cache){
+						foreach($cache as $key => $value){
+							$this->cache[$key] = $value;
+						}
+					}else{
+						trigger_error("User with id {$id} does not exist");
+					}
+				break;
+				default:
+					trigger_error("Invalid Arguments");
 			}
 		}
 		public function jsonSerialize(){
@@ -46,6 +66,14 @@
 						WHERE id = ?
 					",'si',$value,$this->id)->execute();
 				break;
+				case 'active':
+					$value = $value?1:0;
+					Bugs::$sql->query("
+						UPDATE users
+						SET active = ?
+						WHERE id = ?
+					",'is',$value,$this->id)->execute();
+				break;
 				default:
 					if(isset($this->cache[$name])){
 						$this->cache[$name] = $value;
@@ -54,14 +82,26 @@
 		}
 		public function __get($name){
 			switch($name){
+				case 'active':
+					return $this->cache['active']==1;
+				break;
 				case 'date_registered':case 'date_modified':
 					return strtotime($this->cache[$name]);
+				break;
+				case 'activation_code':
+					return hash_hmac('sha512',$this->name.$this->email.$this->date_registered,md5($this->name.$this->email));
 				break;
 				default:
 					if(isset($this->cache)){
 						return $this->cache[$name];
 					}
 			}
+		}
+		public function email($subject,$body){
+			Bugs::$sql->query("
+				INSERT INTO emails (u_id,subject,body)
+				VALUES(?,?,?)
+			",'iss',$this->id,$subject,$body)->execute();
 		}
 	}
 ?>

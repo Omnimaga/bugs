@@ -16,6 +16,7 @@
 		* @required
 		*/
 		private $sql;
+		public $insert_id;
 		public function __construct($server,$user,$pass,$db){
 			$this->sql = new mysqli($server,$user,$pass,$db) or die('Unable to connect to mysql');
 		}
@@ -26,9 +27,6 @@
 			switch($name){
 				case 'error':
 					return $this->sql->error;
-				break;
-				case 'insert_id':
-					return $this->sql->insert_id;
 				break;
 			}
 		}
@@ -62,9 +60,11 @@
 	class Query {
 		private $query;
 		private $sql;
+		private $parent;
 		public function __construct($sql,$source,$types=null){
 			$args = func_get_args();
 			$args = array_splice($args,2);
+			$this->parent = $sql;
 			$this->sql = $sql();
 			$this->query = $sql()->prepare($source);
 			if(!is_null($types)){
@@ -77,6 +77,7 @@
 		public function execute(){
 			if($this->query){
 				$r = $this->query->execute();
+				$this->parent->insert_id = $this->sql->insert_id;
 				$this->sql->commit();
 				return $r;
 			}else{
@@ -172,7 +173,7 @@
 					}
 				break;
 				case 'insert_id':
-					return $this->sql->insert_id;
+					return $this->parent->insert_id;
 				break;
 			}
 		}

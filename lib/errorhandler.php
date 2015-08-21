@@ -1,6 +1,6 @@
 <?php
 	error_reporting(E_ALL);
-	ini_set('display_errors', 'Off');
+	//ini_set('display_errors', 'Off');
 	set_error_handler(function($errno, $errstr, $errfile, $errline){
 		Router::write(
 			Bugs::template('error')

@@ -4,11 +4,15 @@
 	);
 	Router::paths(array(
 		'/~{user}'=>function($res,$args){
-			$res->write(
-				Bugs::template('user')
-					->run(Bugs::user($args->user))
-			);
-			Bugs::activity('view_profile',$args->user);
+			$user = Bugs::user($args->user);
+			if($user->active){
+				$res->write(
+					Bugs::template('user')
+						->run($user)
+				);
+			}else{
+				trigger_error("User {$args->user} is inactive");
+			}
 		},
 		'/user/{user}'=>function($res,$args){
 			$res->header(

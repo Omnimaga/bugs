@@ -30,22 +30,33 @@
 			static::$sql = new SQL($server,$user,$pass,$db);
 		}
 		static function user($id){
-			if(is_string($id)){
-				$user = static::$sql->query("
-					SELECT id
-					FROM users
-					WHERE name = ?;
-				",'s',$id)->assoc_result;
-				if(is_null($user)){
-					trigger_error("User {$id} does not exist");
-				}else{
-					$id = $user['id'];
+			if(func_num_args()==1){
+				if(is_string($id)){
+					$id = Bugs::user_id($id);
+					if(!$id){
+						trigger_error("User {$id} does not exist");
+					}
 				}
+			}else{
+				$id = new User(func_get_arg(0),func_get_arg(1),func_get_arg(2));
+				$id = $id->id;
 			}
 			if(!isset(static::$cache['users'][$id])){
 				static::$cache['users'][$id] = new User($id);
 			}
 			return static::$cache['users'][$id];
+		}
+		static function user_id($name){
+			$user = static::$sql->query("
+				SELECT id
+				FROM users
+				WHERE name = ?;
+			",'s',$name)->assoc_result;
+			if(is_null($user)){
+				return false;
+			}else{
+				return $user['id'];
+			}
 		}
 		static function issue($id){
 			if(!isset(static::$cache['issues'][$id])){
@@ -99,4 +110,28 @@
 			",'is',static::action($action),$description)->execute();
 		}
 	}
+	register_shutdown_function(function(){
+		$emails = Bugs::$sql->query("
+			SELECT	u.email,
+					u_id,
+					e.subject,
+					e.body,
+					e.date_created
+			FROM emails e
+			JOIN users u
+				ON u.id = e.u_id
+			ORDER by e.date_created ASC
+		")->assoc_results;
+		foreach($emails as $email){
+			$status = @mail($email['email'],$email['subject'],$email['body'],"From: ".ADMIN_EMAIL."\r\nMIME-Version: 1.0\r\nContent-type: text/html; charset=iso-8859-1\r\n");
+			if($status){
+				Bugs::$sql->query("
+					DELETE FROM emails
+					WHERE subject = ?
+					AND body = ?
+					AND u_id = ?
+				",'ssi',$email['subject'],$email['body'],$email['u_id'])->execute();
+			}
+		}
+	});
 ?>

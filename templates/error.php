@@ -1,36 +1,38 @@
 <?php
 	global $context;
-	function get_class_name($obj){
-		$name = get_class($obj);
-		if(!$name){
-			if(is_string($obj)){
-				$name = 'String';
-			}elseif(is_numeric($obj)){
-				$name = 'Number';
-			}elseif(is_array($obj)){
-				$name = 'Array';
-			}elseif(is_null($obj)){
-				$name = 'Null';
-			}else{
-				$name = 'Object';
-			}
+	if(!function_exists('get_class_name')){
+		function get_class_name($obj){
+			$name = @get_class($obj);
+			if(!$name){
+				if(is_string($obj)){
+					$name = 'String';
+				}elseif(is_numeric($obj)){
+					$name = 'Number';
+				}elseif(is_array($obj)){
+					$name = 'Array';
+				}elseif(is_null($obj)){
+					$name = 'Null';
+				}else{
+					$name = 'Object';
+				}
 
+			}
+			return $name;
 		}
-		return $name;
 	}
 ?>
 <!doctype html>
 	<head>
 		<meta charset="utf8"/>
 		<title>Error</title>
-		<script src="js/juju/core.js"></script>
-		<script src="js/juju/page.js"></script>
-		<script src="js/juju/dom.js"></script>
-		<script src="js/juju/keyboard.js"></script>
-		<script src="js/juju/mouse.js"></script>
-		<script src="js/error.js"></script>
-		<link rel="stylesheet" href="css/main.css"></link>
-		<link rel="stylesheet" href="css/error.css"></link>
+		<script src="<?=Router::$base?>/js/juju/core.js"></script>
+		<script src="<?=Router::$base?>/js/juju/page.js"></script>
+		<script src="<?=Router::$base?>/js/juju/dom.js"></script>
+		<script src="<?=Router::$base?>/js/juju/keyboard.js"></script>
+		<script src="<?=Router::$base?>/js/juju/mouse.js"></script>
+		<script src="<?=Router::$base?>/js/error.js"></script>
+		<link rel="stylesheet" href="<?=Router::$base?>/css/main.css"></link>
+		<link rel="stylesheet" href="<?=Router::$base?>/css/error.css"></link>
 	</head>
 	<body>
 		<h2>

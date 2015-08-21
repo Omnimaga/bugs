@@ -47,8 +47,8 @@
 		}
 		public static function handle($url,$res = null,$fn = null){
 			if(strpos($url,static::$base) !== false){
-				$url = substr($url,strpos($url,static::$base)+strlen(static::$base));
-				if($url[0] != '/'){
+				$url = rtrim(substr($url,strpos($url,static::$base)+strlen(static::$base)),'/');
+				if(empty($url) || $url[0] != '/'){
 					$url = '/'.$url;
 				}
 				if(is_null($res)){
@@ -82,7 +82,7 @@
 		}
 		public static function write($chunk){
 			if(!isset(static::$responses[0])){
-				array_push($responses,new Response($_SERVER['REQUEST_URI']));
+				array_push(static::$responses,new Response($_SERVER['REQUEST_URI']));
 			}
 			static::$responses[0]->write($chunk);
 		}
