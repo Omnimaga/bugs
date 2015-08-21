@@ -88,8 +88,7 @@
 		}
 		public static function redirect($url){
 			static::clear();
-			header('Location',$url);
-			die();
+			header("Location: {$url}");
 		}
 	}
 	register_shutdown_function(function(){
