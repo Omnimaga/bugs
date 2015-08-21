@@ -36,9 +36,9 @@
 			}
 			if($user instanceof User && $user->hash($pass) == $user->password){
 				$_SESSION['user'] = $user->name;
-				setcookie('user',$user->name);
+				setcookie('user',$user->name,0,Router::$base);
 				$_SESSION['key'] = $user->login_key;
-				setcookie('key',$_SESSION['key']);
+				setcookie('key',$_SESSION['key'],0,Router::$base);
 			}else{
 				return false;
 			}
