@@ -7,7 +7,7 @@
 			));
 		},
 		'/issue/{issue}'=>function($res,$args){
-			$res->header('Location',Router::url(Router::$base.'/!'.$args->issue));
+			Router::redirect(Router::url(Router::$base.'/!'.$args->issue));
 		}
 	));
 ?>

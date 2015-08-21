@@ -86,6 +86,11 @@
 			}
 			static::$responses[0]->write($chunk);
 		}
+		public static function redirect($url){
+			static::clear();
+			header('Location',$url);
+			die();
+		}
 	}
 	register_shutdown_function(function(){
 		Router::shutdown();

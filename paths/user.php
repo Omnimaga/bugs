@@ -15,10 +15,7 @@
 			}
 		},
 		'/user/{user}'=>function($res,$args){
-			$res->header(
-				'Location',
-				Router::url(Router::$base.'/~'.$args->user)
-			);
+			Router::redirect(Router::url(Router::$base.'/~'.$args->user));
 		}
 	));
 ?>

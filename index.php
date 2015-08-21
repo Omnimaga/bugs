@@ -13,7 +13,9 @@
 	require_once('lib/errorhandler.php');
 	Bugs::connect(DB_HOST,DB_USER,DB_PASS,DB);
 	foreach(glob("paths/*.php") as $filename){
-		require_once($filename);
+		if(basename($filename)!='index.php'){
+			require_once($filename);
+		}
 	}
 	Router::base(URL_BASE);
 	if(empty($_SERVER['REDIRECT_URL'])){

@@ -1,0 +1,9 @@
+<?php
+	Router::paths(array(
+		'/'=>function($res,$args){
+			$res->write(
+				Bugs::template('main')
+			);
+		}
+	));
+?>

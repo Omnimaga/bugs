@@ -9,6 +9,7 @@
 			'users'=>array(),
 			'issue'=>array()
 		);
+		public static $user = false;
 		public function __construct(){
 
 		}
@@ -28,6 +29,20 @@
 		}
 		static function connect($server='localhost',$user='bugs',$pass='bugs',$db='bugs'){
 			static::$sql = new SQL($server,$user,$pass,$db);
+		}
+		static function login($user,$pass){
+			if(!$user instanceof User && static::user_id($user)){
+				$user = static::user($user);
+			}
+			if($user instanceof User && $user->hash($pass) == $user->password){
+				$_SESSION['user'] = $user->name;
+				setcookie('user',$user->name);
+				$_SESSION['key'] = $user->login_key;
+				setcookie('key',$_SESSION['key']);
+			}else{
+				return false;
+			}
+			return true;
 		}
 		static function user($id){
 			if(func_num_args()==1){
@@ -134,4 +149,7 @@
 			}
 		}
 	});
+	if(isset($_COOKIE['key']) && isset($_SESSION['key']) && isset($_SESSION['user']) && static::user_id($_SESSION['user']) && $_SESSION['key'] == $_COOKIE['key']){
+		Bugs::$user = static::user($_SESSION['user']);
+	}
 ?>

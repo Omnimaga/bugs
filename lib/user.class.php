@@ -6,7 +6,9 @@
 			'email'=>null,
 			'date_registered'=>null,
 			'date_modified'=>null,
-			'active'=>null
+			'active'=>null,
+			'password'=>null,
+			'salt'=> null
 		);
 		public function __construct($id){
 			switch(func_num_args()){
@@ -14,13 +16,16 @@
 				case 3:
 					$name = func_get_arg(0);
 					$email= func_get_arg(1);
-					$salt = md5($name.$email);
-					$pass = hash_hmac('sha512',func_get_arg(2),$salt);
+					$this->cache['salt'] = md5($name.$email);
+					$this->cache['password'] = $this->hash(func_get_arg(2));
 					Bugs::$sql->query("
 						INSERT INTO users (name,email,password,salt)
 						VALUES (?,?,?,?)
-					",'ssss',$name,$email,$pass,$salt)->execute();
+					",'ssss',$name,$email,$this->password,$this->salt)->execute();
 					$id = Bugs::$sql->insert_id;
+					if($id === 0){
+						trigger_error("Failed to create user with name {$name}.");
+					}
 				// id
 				case 1:
 					$this->id = intval($id);
@@ -29,7 +34,9 @@
 								email,
 								date_registered,
 								date_modified,
-								active
+								active,
+								password,
+								salt
 						FROM users
 						WHERE id = ?;
 					",'i',$this->id)->assoc_result;
@@ -91,6 +98,9 @@
 				case 'activation_code':
 					return hash_hmac('sha512',$this->name.$this->email.$this->date_registered,md5($this->name.$this->email));
 				break;
+				case 'login_key':
+					return hash_hmac('sha512',date('c'),md5($this->date_registered));
+				break;
 				default:
 					if(isset($this->cache)){
 						return $this->cache[$name];
@@ -102,6 +112,9 @@
 				INSERT INTO emails (u_id,subject,body)
 				VALUES(?,?,?)
 			",'iss',$this->id,$subject,$body)->execute();
+		}
+		public function hash($str){
+			return hash_hmac('sha512',$str,$this->salt);
 		}
 	}
 ?>

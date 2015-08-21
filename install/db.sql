@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 21, 2015 at 01:47 AM
+-- Generation Time: Aug 21, 2015 at 11:45 PM
 -- Server version: 5.6.25
 -- PHP Version: 5.6.11
 
@@ -23,14 +23,14 @@ USE `bugs`;
 --
 -- Table structure for table `actions`
 --
--- Creation: Aug 20, 2015 at 10:04 PM
+-- Creation: Aug 21, 2015 at 09:44 PM
 --
 
 DROP TABLE IF EXISTS `actions`;
 CREATE TABLE IF NOT EXISTS `actions` (
   `id` int(10) NOT NULL,
   `name` varchar(50) COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- RELATIONS FOR TABLE `actions`:
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `actions` (
 --
 -- Table structure for table `activities`
 --
--- Creation: Aug 20, 2015 at 11:20 PM
+-- Creation: Aug 21, 2015 at 06:53 PM
 --
 
 DROP TABLE IF EXISTS `activities`;
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `activities` (
 --
 -- Table structure for table `emails`
 --
--- Creation: Aug 20, 2015 at 11:30 PM
+-- Creation: Aug 21, 2015 at 06:53 PM
 --
 
 DROP TABLE IF EXISTS `emails`;
@@ -306,7 +306,7 @@ INSERT INTO `project_roles` (`id`, `name`) VALUES
 --
 -- Table structure for table `r_issue_user`
 --
--- Creation: Aug 20, 2015 at 10:03 PM
+-- Creation: Aug 21, 2015 at 06:53 PM
 --
 
 DROP TABLE IF EXISTS `r_issue_user`;
@@ -331,7 +331,7 @@ CREATE TABLE IF NOT EXISTS `r_issue_user` (
 --
 -- Table structure for table `r_message_user`
 --
--- Creation: Aug 20, 2015 at 10:03 PM
+-- Creation: Aug 21, 2015 at 06:53 PM
 --
 
 DROP TABLE IF EXISTS `r_message_user`;
@@ -353,7 +353,7 @@ CREATE TABLE IF NOT EXISTS `r_message_user` (
 --
 -- Table structure for table `r_project_user`
 --
--- Creation: Aug 20, 2015 at 10:03 PM
+-- Creation: Aug 21, 2015 at 06:53 PM
 --
 
 DROP TABLE IF EXISTS `r_project_user`;
@@ -372,6 +372,57 @@ CREATE TABLE IF NOT EXISTS `r_project_user` (
 --   `r_id`
 --       `project_roles` -> `id`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sessions`
+--
+-- Creation: Aug 21, 2015 at 06:55 PM
+--
+
+DROP TABLE IF EXISTS `sessions`;
+CREATE TABLE IF NOT EXISTS `sessions` (
+  `id` varchar(256) COLLATE utf8_bin NOT NULL,
+  `u_id` int(11) NOT NULL,
+  `ip` varchar(39) COLLATE utf8_bin NOT NULL
+) ENGINE=MEMORY DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- RELATIONS FOR TABLE `sessions`:
+--   `u_id`
+--       `users` -> `id`
+--
+
+--
+-- Triggers `sessions`
+--
+DROP TRIGGER IF EXISTS `session_insert`;
+DELIMITER $$
+CREATE TRIGGER `session_insert` BEFORE INSERT ON `sessions`
+ FOR EACH ROW IF new.u_id NOT IN (
+  SELECT id
+    FROM users
+    WHERE active = 1
+) THEN
+  SIGNAL SQLSTATE '45000'
+  SET MESSAGE_TEXT = 'Cannot create a session for this user';
+END IF
+$$
+DELIMITER ;
+DROP TRIGGER IF EXISTS `session_update`;
+DELIMITER $$
+CREATE TRIGGER `session_update` BEFORE UPDATE ON `sessions`
+ FOR EACH ROW IF new.u_id NOT IN (
+  SELECT id
+    FROM users
+    WHERE active = 1
+) THEN
+  SIGNAL SQLSTATE '45000'
+  SET MESSAGE_TEXT = 'Cannot create a session for this user';
+END IF
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -430,6 +481,12 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 -- Triggers `users`
 --
+DROP TRIGGER IF EXISTS `user_delete`;
+DELIMITER $$
+CREATE TRIGGER `user_delete` BEFORE DELETE ON `users`
+ FOR EACH ROW DELETE FROM sessions WHERE u_id = old.id
+$$
+DELIMITER ;
 DROP TRIGGER IF EXISTS `user_insert_date_modified`;
 DELIMITER $$
 CREATE TRIGGER `user_insert_date_modified` BEFORE INSERT ON `users`
@@ -541,6 +598,13 @@ ALTER TABLE `r_project_user`
   ADD KEY `r_id` (`r_id`);
 
 --
+-- Indexes for table `sessions`
+--
+ALTER TABLE `sessions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `u_id` (`u_id`,`ip`);
+
+--
 -- Indexes for table `statuses`
 --
 ALTER TABLE `statuses`
@@ -563,7 +627,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `actions`
 --
 ALTER TABLE `actions`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `issues`
 --

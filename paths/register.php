@@ -12,7 +12,7 @@
 			$res->write(
 				Bugs::template('register')
 					->run(array(
-						'error'=>'Invalid input'
+						'error'=>'Invalid input.'
 					))
 			);
 		},
@@ -26,8 +26,7 @@
 		},
 		'/register/complete'=>function($res,$args){
 			if(empty($_POST['name']) || empty($_POST['email']) || empty($_POST['password'])){
-				$res->header(
-					'Location',
+				Router::redirect(
 					Router::url(Router::$base.'/register/error')
 				);
 			}else{
@@ -42,9 +41,8 @@
 					");
 					Bugs::activity('register',$_POST['name'].' has registered.');
 				}else{
-					$res->header(
-						'Location',
-						Router::url(Router::$base."/register/error/User {$_POST['name']} already exists")
+					Router::redirect(
+						Router::url(Router::$base."/register/error/User {$_POST['name']} already exists.")
 					);
 				}
 			}
