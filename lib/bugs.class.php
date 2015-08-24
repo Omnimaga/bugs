@@ -29,6 +29,12 @@
 		}
 		static function connect($server='localhost',$user='bugs',$pass='bugs',$db='bugs'){
 			static::$sql = new SQL($server,$user,$pass,$db);
+			if(session_status() == PHP_SESSION_NONE){
+				session_start();
+			}
+			if(isset($_COOKIE['key']) && isset($_SESSION['key']) && isset($_SESSION['user']) && static::user_id($_SESSION['user']) && $_SESSION['key'] == $_COOKIE['key']){
+				static::$user = static::user($_SESSION['user']);
+			}
 		}
 		static function login($user,$pass){
 			if(!$user instanceof User && static::user_id($user)){
@@ -47,7 +53,7 @@
 		static function user($id){
 			if(func_num_args()==1){
 				if(is_string($id)){
-					$id = Bugs::user_id($id);
+					$id = static::user_id($id);
 					if(!$id){
 						trigger_error("User {$id} does not exist");
 					}
@@ -149,7 +155,4 @@
 			}
 		}
 	});
-	if(isset($_COOKIE['key']) && isset($_SESSION['key']) && isset($_SESSION['user']) && static::user_id($_SESSION['user']) && $_SESSION['key'] == $_COOKIE['key']){
-		Bugs::$user = static::user($_SESSION['user']);
-	}
 ?>

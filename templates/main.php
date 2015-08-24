@@ -17,6 +17,7 @@
 			if(Bugs::$user){
 		?>
 			Hello World!
+			<a href="<?=Router::url(Router::$base.'/logout')?>">Logout</a>
 		<?php
 			}else{
 		?>
