@@ -5,7 +5,7 @@
 <!doctype html>
 	<head>
 		<meta charset="utf8"/>
-		<title>Register</title>
+		<title>Sessions for <?=$context->name?></title>
 		<script src="js/juju/core.js"></script>
 		<script src="js/juju/page.js"></script>
 		<script src="js/juju/dom.js"></script>
@@ -15,8 +15,12 @@
 	</head>
 	<body>
 		<a href="<?=Router::url(Router::$base)?>">Home</a>
-		<div>
-			<?=$context->name?> has been registered. An email has been sent to your email address with a link to activate your account.
-		</div>
+		<ul>
+			<?php
+				foreach($context->sessions as $session){
+					echo "<li>{$session['ip']}<br/>{$session['info']}</li>";
+				}
+			?>
+		</ul>
 	</body>
 </html>

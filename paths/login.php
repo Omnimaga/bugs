@@ -26,7 +26,7 @@
 				Router::redirect(Router::url(Router::$base.'/login/error'));
 			}elseif(Bugs::login($_POST['name'],$_POST['password'])){
 				// Manual header to fix issue
-				$res->header('Location',Router::url(Router::$base));
+				Router::redirect(Router::url(Router::$base));
 			}else{
 				Router::redirect(Router::url(Router::$base.'/login/error/Login failed.'));
 			}

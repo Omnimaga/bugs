@@ -33,22 +33,69 @@
 				session_start();
 			}
 			if(isset($_COOKIE['key']) && isset($_SESSION['key']) && isset($_SESSION['user']) && static::user_id($_SESSION['user']) && $_SESSION['key'] == $_COOKIE['key']){
-				static::$user = static::user($_SESSION['user']);
+				$user = static::user($_SESSION['user']);
+				$session = static::$sql->query("
+					SELECT count(id) AS count
+					FROM sessions
+					WHERE id = ?
+					AND u_id = ?
+					AND ip = ?
+				",'sis',$_SESSION['key'],$user->id,static::ip())->assoc_result;
+				if($session && intval($session['count']) == 1){
+					static::$user = $user;
+				}else{
+					static::logout();
+				}
 			}
+		}
+		static function ip(){
+		    if(getenv('HTTP_CLIENT_IP')){
+				$ipaddress = getenv('HTTP_CLIENT_IP');
+		    }else if(getenv('HTTP_X_FORWAR0DED_FOR')){
+				$ipaddress = getenv('HTTP_X_FORWARDED_FOR');
+		    }else if(getenv('HTTP_X_FORWARDED')){
+				$ipaddress = getenv('HTTP_X_FORWARDED');
+		    }else if(getenv('HTTP_FORWARDED_FOR')){
+				$ipaddress = getenv('HTTP_FORWARDED_FOR');
+		    }else if(getenv('HTTP_FORWARDED')){
+				$ipaddress = getenv('HTTP_FORWARDED');
+		    }else if(getenv('REMOTE_ADDR')){
+				$ipaddress = getenv('REMOTE_ADDR');
+		    }else{
+				$ipaddress = 'UNKNOWN';
+		    }
+		    return $ipaddress;
 		}
 		static function login($user,$pass){
 			if(!$user instanceof User && static::user_id($user)){
 				$user = static::user($user);
 			}
-			if($user instanceof User && $user->hash($pass) == $user->password){
+			if($user instanceof User && $user->active && $user->hash($pass) == $user->password){
+				$key = $user->login_key;
+				static::$sql->query("
+					INSERT INTO sessions (id,u_id,ip,info)
+					VALUES (?,?,?,?)
+				",'siss',$key,$user->id,static::ip(),substr($_SERVER['HTTP_USER_AGENT'],0,4000))->execute();
 				$_SESSION['user'] = $user->name;
 				setcookie('user',$user->name,0,Router::$base);
-				$_SESSION['key'] = $user->login_key;
-				setcookie('key',$_SESSION['key'],0,Router::$base);
-			}else{
-				return false;
+				$_SESSION['key'] = $key;
+				setcookie('key',$key,0,Router::$base);
+				static::$user = $user;
 			}
-			return true;
+			return static::$user !== false;
+		}
+		static function logout(){
+			if(static::$user){
+				static::$sql->query("
+					DELETE FROM sessions
+					WHERE id = ?
+					AND u_id = ?
+					AND ip = ?
+				",'sis',$_SESSION['key'],static::$user->id,static::ip())->execute();
+			}
+			unset($_SESSION['user']);
+			unset($_SESSION['key']);
+			static::$user = false;
 		}
 		static function user($id){
 			if(func_num_args()==1){

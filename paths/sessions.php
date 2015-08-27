@@ -1,0 +1,10 @@
+<?php
+	Router::paths(array(
+		'/sessions'=>function($res,$args){
+			$res->write(
+				Bugs::template('sessions')
+					->run(Bugs::$user)
+			);
+		}
+	));
+?>

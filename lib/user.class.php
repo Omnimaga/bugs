@@ -101,6 +101,15 @@
 				case 'login_key':
 					return hash_hmac('sha512',date('c'),md5($this->date_registered));
 				break;
+				case 'sessions':
+					return Bugs::$sql->query("
+						SELECT  id,
+								ip,
+								info
+						FROM sessions
+						where u_id = ?
+					",'i',$this->id)->assoc_results;
+				break;
 				default:
 					if(isset($this->cache)){
 						return $this->cache[$name];

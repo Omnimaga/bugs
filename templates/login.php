@@ -14,6 +14,7 @@
 		<link rel="stylesheet" href="css/main.css"></link>
 	</head>
 	<body>
+		<a href="<?=Router::url(Router::$base)?>">Home</a>
 		<?php
 			if(!empty($context['error'])){
 		?>

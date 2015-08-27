@@ -1,0 +1,26 @@
+CREATE PROCEDURE `drop_table`(
+	IN a_name VARCHAR(64)
+) BEGIN
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION BEGIN
+		ROLLBACK;
+		GET DIAGNOSTICS CONDITION 1 @error = MESSAGE_TEXT;
+		SET @error = CONCAT('Failed to remove table `',a_name,'`. ',@error);
+		RESIGNAL SET MESSAGE_TEXT = @error;
+	END;
+	SET @name = a_name;
+	IF EXISTS (
+		SELECT 1
+		FROM INFORMATION_SCHEMA.TABLES
+		WHERE TABLE_SCHEMA = DATABASE()
+		AND TABLE_NAME = @name
+	) THEN
+		SET @sql = CONCAT('DELETE FROM `',@name,'`;');
+		PREPARE stmt FROM @sql;
+		EXECUTE stmt;
+		DEALLOCATE PREPARE stmt;
+	END IF;
+	SET @sql = CONCAT('DROP TABLE IF EXISTS `',@name,'`;');
+	PREPARE stmt FROM @sql;
+	EXECUTE stmt;
+	DEALLOCATE PREPARE stmt;
+END;

@@ -68,7 +68,7 @@
 			$this->sql = $sql();
 			$this->query = $sql()->prepare($source);
 			if(!is_null($types)){
-				call_user_func_array(array($this->query, 'bind_param'),make_referenced($args)) or die($sql()->error);
+				call_user_func_array(array($this->query, 'bind_param'),make_referenced($args)) or trigger_error($sql()->error);
 			}
 		}
 		public function __invoke(){
