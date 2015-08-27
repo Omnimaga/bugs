@@ -1,5 +1,5 @@
 <?php
-	if(isset($_POST['db'])||isset($_POST['user'])||isset($_POST['password'])||isset($_POST['server'])){
+	if(isset($_POST['db'])||isset($_POST['user'])||isset($_POST['password'])||isset($_POST['server'])||isset($_POST['email'])){
 		if(!empty($_POST['db'])&&!empty($_POST['user'])&&!empty($_POST['password'])&&!empty($_POST['server'])){
 			require_once('../lib/sql.class.php');
 			function run_scripts($folder){
@@ -36,10 +36,36 @@
 			}
 			header('Content-type: application/json');
 			if(empty($_POST['uninstall'])){
-				die(json_encode(run_scripts('db_install')));
+				$res = run_scripts('db_install');
+				if(!empty($_POST['email'])){
+					require_once('../lib/bugs.class.php');
+					Bugs::connect($_POST['server'],$_POST['user'],$_POST['password'],$_POST['db']);
+					if(Bugs::$sql->query("SELECT COUNT(*) count FROM users")->assoc_result['count'] === 0){
+						$user = Bugs::user($_POST['user'],$_POST['email'],$_POST['password']);
+						$pass = true;
+						$info = '';
+						if($user){
+							$user->active = true;
+							if(!Bugs::login($user,$_POST['password'])){
+								$pass = false;
+								$info = 'Failed to automatically log in.';
+							}
+						}else{
+							$pass = false;
+							$info = 'Could not create user.';
+						}
+						$res['99_User'] = array(
+							'Created default user and logged you in'=>array(
+								$pass,
+								$info
+							)
+						);
+					}
+				}
 			}else{
-				die(json_encode(run_scripts('db_uninstall')));
+				$res = run_scripts('db_uninstall');
 			}
+			die(json_encode($res));
 		}else{
 			header('Content-type: application/json');
 			die(json_encode(false));
@@ -77,6 +103,12 @@
 					User:
 				</label>
 				<input name="user"/>
+			</div>
+			<div>
+				<label for="email">
+					Email:
+				</label>
+				<input type="email" name="email"/>
 			</div>
 			<div>
 				<label for="password">

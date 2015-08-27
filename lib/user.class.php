@@ -110,6 +110,20 @@
 						where u_id = ?
 					",'i',$this->id)->assoc_results;
 				break;
+				case 'permissions':
+					$perms = array();
+					$res = Bugs::$sql->query("
+						SELECT p.name
+						FROM r_permission_user r
+						JOIN permissions p
+							ON p.id = r.per_id
+						WHERE r.u_id = ?
+					",'i',$this->id)->assoc_results;
+					foreach($res as $row){
+						array_push($perms,$row['name']);
+					}
+					return $perms;
+				break;
 				default:
 					if(isset($this->cache)){
 						return $this->cache[$name];
@@ -124,6 +138,16 @@
 		}
 		public function hash($str){
 			return hash_hmac('sha512',$str,$this->salt);
+		}
+		public function permission($permission){
+			return Bugs::$sql->query("
+				SELECT count(1) count
+				FROM r_permission_user r
+				JOIN permissions p
+					ON p.id = r.per_id
+				WHERE u_id = ?
+				AND p.name IN (?,'*')
+			",'is',$this->id,$permission)->assoc_result['count']!==0;
 		}
 	}
 ?>
