@@ -9,8 +9,9 @@
 		<script src="js/juju/core.js"></script>
 		<script src="js/juju/page.js"></script>
 		<script src="js/juju/dom.js"></script>
-		<script src="js/juju/keyboard.js"></script>
-		<script src="js/juju/mouse.js"></script>
+		<script src="js/juju/canvas.js"></script>
+		<script src="js/juju/fetch.js"></script>
+		<script src="js/sessions.js"></script>
 		<link rel="stylesheet" href="css/main.css"></link>
 	</head>
 	<body>
@@ -18,7 +19,7 @@
 		<ul>
 			<?php
 				foreach($context->sessions as $session){
-					echo "<li>{$session['ip']}<br/>{$session['info']}</li>";
+					echo "<li>{$session['ip']}".($session['id']==Bugs::session()?" (You)":'')."<br/>{$session['info']}".($context->id == Bugs::$user->id?"<br/><button class=\"session-delete\" name=\"{$session['id']}\" value=\"Delete\">Delete</button>":'')."</li>";
 				}
 			?>
 		</ul>

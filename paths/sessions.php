@@ -1,10 +1,23 @@
 <?php
 	Router::paths(array(
 		'/sessions'=>function($res,$args){
-			$res->write(
-				Bugs::template('sessions')
-					->run(Bugs::$user)
-			);
+			if(Bugs::$user){
+				$res->write(
+					Bugs::template('sessions')
+						->run(Bugs::$user)
+				);
+			}else{
+				Router::redirect(Router::$base);
+			}
+		},
+		'/sessions/remove/{id}'=>function($res,$args){
+			if(Bugs::$user){
+				Bugs::$sql->query("
+					DELETE FROM sessions
+					WHERE u_id = ?
+					AND id = ?
+				",'is',Bugs::$user->id,$args->id)->execute();
+			}
 		}
 	));
 ?>

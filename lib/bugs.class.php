@@ -29,6 +29,10 @@
 		}
 		static function connect($server='localhost',$user='bugs',$pass='bugs',$db='bugs'){
 			static::$sql = new SQL($server,$user,$pass,$db);
+			static::$sql->query("
+				DELETE FROM sessions
+				WHERE date < TIMESTAMP(DATE_SUB(NOW(), INTERVAL 10 day))
+			")->execute();
 			if(session_status() == PHP_SESSION_NONE){
 				session_start();
 			}
@@ -43,6 +47,13 @@
 				",'sis',$_SESSION['key'],$user->id,static::ip())->assoc_result;
 				if($session && intval($session['count']) == 1){
 					static::$user = $user;
+					static::$sql->query("
+						UPDATE sessions
+						SET date = CURRENT_TIMESTAMP
+						WHERE id = ?
+						AND u_id = ?
+						AND ip = ?
+					",'sis',$_SESSION['key'],$user->id,static::ip())->execute();
 				}else{
 					static::logout();
 				}
@@ -66,6 +77,12 @@
 		    }
 		    return $ipaddress;
 		}
+		static function user_agent(){
+			return substr($_SERVER['HTTP_USER_AGENT'],0,4000);
+		}
+		static function session(){
+			return $_SESSION['key'];
+		}
 		static function login($user,$pass){
 			if(!$user instanceof User && static::user_id($user)){
 				$user = static::user($user);
@@ -75,7 +92,7 @@
 				static::$sql->query("
 					INSERT INTO sessions (id,u_id,ip,info)
 					VALUES (?,?,?,?)
-				",'siss',$key,$user->id,static::ip(),substr($_SERVER['HTTP_USER_AGENT'],0,4000))->execute();
+				",'siss',$key,$user->id,static::ip(),static::user_agent())->execute();
 				$_SESSION['user'] = $user->name;
 				setcookie('user',$user->name,0,Router::$base);
 				$_SESSION['key'] = $key;
