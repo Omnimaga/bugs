@@ -72,6 +72,7 @@
 						SET {$name} = ?
 						WHERE id = ?
 					",'si',$value,$this->id)->execute();
+					$this->cache[$name] = $value;
 				break;
 				case 'active':
 					$value = $value?1:0;
@@ -80,6 +81,7 @@
 						SET active = ?
 						WHERE id = ?
 					",'is',$value,$this->id)->execute();
+					$this->cache['active'] = $value;
 				break;
 				default:
 					if(isset($this->cache[$name])){

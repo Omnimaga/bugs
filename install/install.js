@@ -19,7 +19,9 @@ ready(function(){
 					});
 				fetch('.',{
 					method: 'post',
-					body: new FormData(this)
+					body: new FormData(this),
+					mode: 'cors',
+					credentials: 'include'
 				})
 				.then(function(res){
 					return res.json();

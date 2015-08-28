@@ -3,6 +3,10 @@
 	require_once('template.class.php');
 	require_once('user.class.php');
 	require_once('project.class.php');
+	require_once('router.class.php');
+	if(defined('URL_BASE')){
+		Router::base(URL_BASE);
+	}
 	class Bugs {
 		public static $sql;
 		public static $cache = array(
@@ -94,9 +98,9 @@
 					VALUES (?,?,?,?)
 				",'siss',$key,$user->id,static::ip(),static::user_agent())->execute();
 				$_SESSION['user'] = $user->name;
-				setcookie('user',$user->name,0,Router::$base);
+				setcookie('user',$user->name,0,'/');
 				$_SESSION['key'] = $key;
-				setcookie('key',$key,0,Router::$base);
+				setcookie('key',$key,0,'/');
 				static::$user = $user;
 			}
 			return static::$user !== false;
@@ -112,6 +116,10 @@
 			}
 			unset($_SESSION['user']);
 			unset($_SESSION['key']);
+			unset($_COOKIE['user']);
+			unset($_COOKIE['key']);
+			setcookie("user", "", time()-3600, '/');
+			setcookie("key", "", time()-3600, '/');
 			static::$user = false;
 		}
 		static function user($id){

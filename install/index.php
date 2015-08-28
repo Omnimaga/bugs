@@ -38,6 +38,7 @@
 			if(empty($_POST['uninstall'])){
 				$res = run_scripts('db_install');
 				if(!empty($_POST['email'])){
+					define('URL_BASE','/bugs/');
 					require_once('../lib/bugs.class.php');
 					Bugs::connect($_POST['server'],$_POST['user'],$_POST['password'],$_POST['db']);
 					if(Bugs::$sql->query("SELECT COUNT(*) count FROM users")->assoc_result['count'] === 0){

@@ -18,6 +18,7 @@
 		?>
 			Hello World!
 			<a href="<?=Router::url(Router::$base.'/sessions')?>">Sessions</a>
+			<a href="<?=Router::url(Router::$base.'/~'.Bugs::$user->name)?>">Profile</a>
 			<a href="<?=Router::url(Router::$base.'/logout')?>">Logout</a>
 		<?php
 			}else{

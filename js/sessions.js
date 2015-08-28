@@ -1,8 +1,11 @@
 ready(function(){
 	dom.get('button.session-delete')
 		.on('click',function(e){
-			fetch('./sessions/remove/'+this.name)
-			.then(function(data){
+			fetch('./sessions/remove/'+this.name,{
+				mode: 'cors',
+				credentials: 'include'
+			})
+			.then(function(res){
 				location.reload();
 			})
 			.catch(function(e){
