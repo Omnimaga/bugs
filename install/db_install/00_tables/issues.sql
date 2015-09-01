@@ -9,7 +9,7 @@
 DROP TABLE IF EXISTS `issues`;
 CREATE TABLE IF NOT EXISTS `issues` (
   `id` int(10) NOT NULL,
-  `p_id` int(10) NOT NULL,
+  `p_id` int(10) NULL,
   `u_id` int(10) DEFAULT NULL,
   `pr_id` int(10) NOT NULL,
   `s_id` int(10) NOT NULL,

@@ -17,6 +17,7 @@
 		*/
 		private $sql;
 		public $insert_id;
+		private $emsg;
 		public function __construct($server,$user,$pass,$db){
 			$this->sql = new mysqli($server,$user,$pass,$db) or die('Unable to connect to mysql');
 		}
@@ -26,7 +27,14 @@
 		public function __get($name){
 			switch($name){
 				case 'error':
-					return $this->sql->error;
+					return empty($this->sql->error)?$this->emsg:$this->sql->error;
+				break;
+			}
+		}
+		public function __set($name,$value){
+			switch($name){
+				case 'error':
+					$this->emsg = $value;
 				break;
 			}
 		}
@@ -67,8 +75,12 @@
 			$this->parent = $sql;
 			$this->sql = $sql();
 			$this->query = $sql()->prepare($source);
-			if(!is_null($types)){
-				call_user_func_array(array($this->query, 'bind_param'),make_referenced($args)) or trigger_error($sql()->error);
+			if($this->query){
+				if(!is_null($types)){
+					call_user_func_array(array($this->query, 'bind_param'),make_referenced($args)) or trigger_error($sql()->error);
+				}
+			}else{
+				trigger_error($sql->error);
 			}
 		}
 		public function __invoke(){
@@ -78,6 +90,7 @@
 			if($this->query){
 				$r = $this->query->execute();
 				$this->parent->insert_id = $this->sql->insert_id;
+				$this->parent->error = $this->error;
 				$this->sql->commit();
 				return $r;
 			}else{
@@ -174,6 +187,9 @@
 				break;
 				case 'insert_id':
 					return $this->parent->insert_id;
+				break;
+				case 'error':
+					return $this->query->error;
 				break;
 			}
 		}

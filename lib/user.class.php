@@ -126,6 +126,43 @@
 					}
 					return $perms;
 				break;
+				case 'admin':
+					return $this->permission('*');
+				break;
+				case 'project_ids':
+					return array_column(
+						Bugs::$sql->query("
+							SELECT id
+							FROM projects
+							where u_id = ?
+						",'i',$this->id)->assoc_results,
+						'id'
+					);
+				break;
+				case 'projects':
+					$projects = array();
+					foreach($this->project_ids as $id){
+						array_push($projects,Bugs::project($id));
+					}
+					return $projects;
+				break;
+				case 'issue_ids':
+					return array_column(
+						Bugs::$sql->query("
+							SELECT id
+							FROM issues
+							where u_id = ?
+						",'i',$this->id)->assoc_results,
+						'id'
+					);
+				break;
+				case 'issues':
+					$issues = array();
+					foreach($this->issue_ids as $id){
+						array_push($issues,Bugs::issue($id));
+					}
+					return $issues;
+				break;
 				default:
 					if(isset($this->cache)){
 						return $this->cache[$name];

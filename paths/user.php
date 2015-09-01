@@ -1,6 +1,6 @@
 <?php
 	Bugs::actions(
-		'view_profile'
+		'user_update'
 	);
 	Router::paths(array(
 		'/~{user}'=>function($res,$args){
@@ -30,6 +30,7 @@
 						if($user->id == Bugs::$user->id){
 							Bugs::login($user,$_POST['password']);
 						}
+						Bugs::activity('user_update',$_POST['name'].' has updated their profile.');
 					}else{
 						$res->json(array(
 							'error'=>'Invalid password.'

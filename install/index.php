@@ -47,6 +47,10 @@
 						$info = '';
 						if($user){
 							$user->active = true;
+							Bugs::$sql->query("
+								INSERT INTO r_permission_user (per_id,u_id)
+								VALUES (1,?)
+							",'i',$user->id)->execute();
 							if(!Bugs::login($user,$_POST['password'])){
 								$pass = false;
 								$info = 'Failed to automatically log in.';

@@ -9,7 +9,7 @@
 DROP TABLE IF EXISTS `projects`;
 CREATE TABLE IF NOT EXISTS `projects` (
   `id` int(10) NOT NULL,
-  `p_id` int(10) NOT NULL,
+  `p_id` int(10) NULL,
   `s_id` int(10) NOT NULL,
   `u_id` int(10) NOT NULL,
   `name` varchar(50) COLLATE utf8_bin NOT NULL,

@@ -7,4 +7,5 @@
 	define('URL_BASE','/bugs/');
 	define('URL_HOST','localhost');
 	define('ADMIN_EMAIL','bugs@localhost');
+	define('DEFAULT_PRIORITY',4);
 ?>

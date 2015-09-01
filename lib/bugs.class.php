@@ -11,7 +11,10 @@
 		public static $sql;
 		public static $cache = array(
 			'users'=>array(),
-			'issue'=>array()
+			'issue'=>array(),
+			'projects'=>array(),
+			'statuses'=>array(),
+			'priorities'=>array()
 		);
 		public static $user = false;
 		public function __construct(){
@@ -151,19 +154,46 @@
 				return $user['id'];
 			}
 		}
+		static function project_id($name){
+			$project = static::$sql->query("
+				SELECT id
+				FROM projects
+				WHERE name = ?;
+			",'s',$name)->assoc_result;
+			if(is_null($project)){
+				return false;
+			}else{
+				return $project['id'];
+			}
+		}
 		static function issue($id){
+			if(func_num_args()>1){
+				$id = new Issue(
+					func_get_arg(0),
+					func_get_arg(1),
+					func_num_args()>=3?func_get_arg(2):null,
+					func_num_args()>=4?func_get_arg(3):null,
+					func_num_args()==5?func_get_arg(4):null
+				);
+				$id = $id->id;
+			}
 			if(!isset(static::$cache['issues'][$id])){
 				static::$cache['issues'][$id] = new Issue($id);
 			}
 			return static::$cache['issues'][$id];
 		}
 		static function project($id){
-			if(is_string($id)){
-				$id = static::$sql->query("
-					SELECT id
-					FROM projects
-					WHERE name = ?;
-				",'s',$id)->assoc_result['id'];
+			if(func_num_args()==1){
+				if(is_string($id)){
+					$id = static::$sql->query("
+						SELECT id
+						FROM projects
+						WHERE name = ?;
+					",'s',$id)->assoc_result['id'];
+				}
+			}else{
+				$id = new Project(func_get_arg(0),func_get_arg(1),func_num_args()==3?func_get_arg(2):null);
+				$id = $id->id;
 			}
 			if(!isset(static::$cache['projects'][$id])){
 				static::$cache['projects'][$id] = new Project($id);
@@ -178,6 +208,26 @@
 			foreach($args as $action){
 				static::action($action);
 			}
+		}
+		static function status($id){
+			if(empty(static::$cache['statuses'][$id])){
+				static::$cache['statuses'][$id] = static::$sql->query("
+					SELECT max(name) name
+					FROM statuses
+					WHERE id = ?
+				",'i',intval($id))->assoc_result['name'];
+			}
+			return static::$cache['statuses'][$id];
+		}
+		static function priority($id){
+			if(empty(static::$cache['priorities'][$id])){
+				static::$cache['priorities'][$id] = static::$sql->query("
+					SELECT max(name) name
+					FROM priorities
+					WHERE id = ?
+				",'i',intval($id))->assoc_result['name'];
+			}
+			return static::$cache['priorities'][$id];
 		}
 		static function action($action){
 			$id = static::$sql->query("
