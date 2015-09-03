@@ -19,7 +19,7 @@
 					$name= func_get_arg(0);
 					Bugs::$sql->query("
 						INSERT INTO projects (name,description,u_id,s_id)
-						VALUES (?,?,?,1)
+						VALUES (?,?,?,getsetting('project.default.status'))
 					",'ssi',
 						func_get_arg(0),
 						func_get_arg(1),

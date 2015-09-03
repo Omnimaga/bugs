@@ -38,7 +38,7 @@
 							->run($user)
 					);
 					$user->email('Registered',"
-						<a href=\"http://".URL_HOST.URL_BASE."/register/activate/{$user->name}/{$user->activation_code}\">Activate Account</a>
+						<a href=\"http://".Bugs::setting('url.host').Bugs::setting('url.base')."/register/activate/{$user->name}/{$user->activation_code}\">Activate Account</a>
 					");
 					Bugs::activity('user_register',$_POST['name'].' has registered.');
 				}else{

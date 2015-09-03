@@ -15,3 +15,4 @@ CALL drop_table('statuses');
 CALL drop_table('priorities');
 CALL drop_table('permissions');
 CALL drop_table('sessions');
+CALL drop_table('settings');

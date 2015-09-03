@@ -17,7 +17,7 @@
 		}
 	}
 	if(empty($_SERVER['REDIRECT_URL'])){
-		$_SERVER['REDIRECT_URL'] = 'http://'.URL_HOST.URL_BASE;
+		$_SERVER['REDIRECT_URL'] = 'http://'.Bugs::setting('url.host').Bugs::setting('url.base');
 	}
 	Router::handle($_SERVER['REDIRECT_URL'],null,function($res,$url){
 		trigger_error("Not implemented");

@@ -14,7 +14,6 @@ ready(function(){
 				return res.json();
 			})
 			.then(function(data){
-				console.log(data);
 				if(data.error){
 					alert(data.error);
 				}else{

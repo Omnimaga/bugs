@@ -1,0 +1,2 @@
+DROP FUNCTION IF EXISTS `getsetting`;
+DROP FUNCTION IF EXISTS `setsetting`;

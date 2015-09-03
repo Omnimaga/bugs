@@ -1,0 +1,14 @@
+CREATE FUNCTION `getsetting`(
+	a_name VARCHAR(50)
+) RETURNS VARCHAR(100)
+DETERMINISTIC
+READS SQL DATA
+SQL SECURITY INVOKER
+BEGIN
+	DECLARE t_value VARCHAR(100);
+	SELECT IFNULL(value,'')
+	INTO t_value
+	FROM settings
+	WHERE name = a_name;
+	return t_value;
+END;

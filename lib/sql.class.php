@@ -180,7 +180,7 @@
 				case 'num_result':case 'result_num':
 					if($this->query){
 						$r = $this->results;
-						return $r?$r->fetch_num():false;
+						return $r?$r->fetch_row():false;
 					}else{
 						return false;
 					}

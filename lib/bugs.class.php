@@ -4,9 +4,6 @@
 	require_once('user.class.php');
 	require_once('project.class.php');
 	require_once('router.class.php');
-	if(defined('URL_BASE')){
-		Router::base(URL_BASE);
-	}
 	class Bugs {
 		public static $sql;
 		public static $cache = array(
@@ -65,6 +62,7 @@
 					static::logout();
 				}
 			}
+			Router::base(static::setting('url.base'));
 		}
 		static function ip(){
 		    if(getenv('HTTP_CLIENT_IP')){
@@ -252,6 +250,12 @@
 				VALUES (?,?)
 			",'is',static::action($action),$description)->execute();
 		}
+		static function setting($name){
+			return static::$sql->query("
+				SELECT getsetting(?)
+				FROM DUAL;
+			",'s',$name)->num_result[0];
+		}
 	}
 	register_shutdown_function(function(){
 		$emails = Bugs::$sql->query("
@@ -266,7 +270,7 @@
 			ORDER by e.date_created ASC
 		")->assoc_results;
 		foreach($emails as $email){
-			$status = @mail($email['email'],$email['subject'],$email['body'],"From: ".ADMIN_EMAIL."\r\nMIME-Version: 1.0\r\nContent-type: text/html; charset=iso-8859-1\r\n");
+			$status = @mail($email['email'],$email['subject'],$email['body'],"From: ".Bugs::setting('admin.email')."\r\nMIME-Version: 1.0\r\nContent-type: text/html; charset=iso-8859-1\r\n");
 			if($status){
 				Bugs::$sql->query("
 					DELETE FROM emails

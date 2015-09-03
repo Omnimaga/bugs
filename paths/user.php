@@ -18,6 +18,7 @@
 			Router::redirect(Router::url(Router::$base.'/~'.$args->user));
 		},
 		'/user/{user}/update'=>function($res,$args){
+			error_handle_type('json');
 			if(Bugs::$user){
 					if(!empty($_POST['password'])&&!empty($_POST['id'])&&!empty($_POST['name'])&&!empty($_POST['email'])){
 					$user = Bugs::user(intval($args->user));

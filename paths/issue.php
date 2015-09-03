@@ -10,6 +10,7 @@
 			Router::redirect(Router::url(Router::$base.'/!'.$args->issue));
 		},
 		'/issue/{issue}/update'=>function($res,$args){
+			error_handle_type('json');
 			if(!empty($_POST['name'])&&!empty($_POST['description'])){
 				$issue = Bugs::issue($args->issue);
 				$issue->name = $_POST['name'];
@@ -27,6 +28,7 @@
 			$res->write(Bugs::template('issue'));
 		},
 		'/create/issue/complete'=>function($res,$args){
+			error_handle_type('json');
 			if(!empty($_POST['name'])&&!empty($_POST['description'])){
 				$issue = Bugs::issue($_POST['name'],$_POST['description']);
 				$res->json(array(

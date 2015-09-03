@@ -1,7 +1,4 @@
 <?php
-	if(!defined('DEFAULT_PRIORITY')){
-		define('DEFAULT_PRIORITY',4);
-	}
 	class Issue implements JsonSerializable{
 		public $id;
 		public $cache = array(
@@ -22,11 +19,11 @@
 					if(
 						Bugs::$sql->query("
 							INSERT INTO issues (name,description,pr_id,u_id,p_id,s_id)
-							VALUES (?,?,?,?,?,1);
+							VALUES (?,?,?,?,?,getsetting('issue.default.status'));
 						",'ssiii',
 							$name,
 							func_get_arg(1),
-							func_num_args()>=3&&!empty(func_get_arg(2))?func_get_arg(2):DEFAULT_PRIORITY,
+							func_num_args()>=3&&!empty(func_get_arg(2))?func_get_arg(2):Bugs::setting('issue.default.priority'),
 							func_num_args()>=4&&!empty(func_get_arg(3))?func_get_arg(3)->id:Bugs::$user->id,
 							func_num_args()==5&&!empty(func_get_arg(4))?func_get_arg(4)->id:null
 						)->execute()

@@ -19,6 +19,7 @@
 			Router::redirect(Router::url(Router::$base."!{$args->issue}"));
 		},
 		'/project/{project}/update'=>function($res,$args){
+			error_handle_type('json');
 			if(!empty($_POST['name'])&&!empty($_POST['description'])){
 				$project = Bugs::project(is_numeric($args->project)?intval($args->project):$args->project);
 				$project->name = $_POST['name'];
@@ -36,6 +37,7 @@
 			$res->write(Bugs::template('issue'));
 		},
 		'/project/{project}/create/issue/complete'=>function($res,$args){
+			error_handle_type('json');
 			if(!empty($_POST['name'])&&!empty($_POST['description'])){
 				$issue = Bugs::project(is_numeric($args->project)?intval($args->project):$args->project)
 					->issue($_POST['name'],$_POST['description']);
@@ -52,6 +54,7 @@
 			$res->write(Bugs::template('project'));
 		},
 		'/create/project/complete'=>function($res,$args){
+			error_handle_type('json');
 			if(!empty($_POST['name'])){
 				if(!Bugs::project_id($_POST['name'])){
 					$project = Bugs::project($_POST['name'],$_POST['description']);

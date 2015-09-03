@@ -6,7 +6,14 @@ ready(function(){
 				credentials: 'include'
 			})
 			.then(function(res){
-				location.reload();
+				return res.json();
+			})
+			.then(function(data){
+				if(data.error){
+					alert(data.error);
+				}else{
+					location.reload();
+				}
 			})
 			.catch(function(e){
 				alert(e);

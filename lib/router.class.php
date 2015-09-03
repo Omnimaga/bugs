@@ -86,10 +86,15 @@
 			}
 			static::$responses[0]->write($chunk);
 		}
+		public static function header($name,$value){
+			static::$responses[0]->header($name,$value);
+		}
+		public static function json($json){
+			static::$responses[0]->json($json);
+		}
 		public static function redirect($url){
 			static::clear();
-			static::$responses[0]->header('Location',$url);
-
+			static::header('Location',$url);
 		}
 	}
 	register_shutdown_function(function(){
