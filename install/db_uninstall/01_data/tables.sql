@@ -3,6 +3,8 @@ CALL drop_table('activities');
 CALL drop_table('actions');
 CALL drop_table('r_permission_user');
 CALL drop_table('r_message_user');
+CALL drop_table('r_issue_role_permission');
+CALL drop_table('r_project_role_permission');
 CALL drop_table('r_issue_user');
 CALL drop_table('r_project_user');
 CALL drop_table('project_roles');
