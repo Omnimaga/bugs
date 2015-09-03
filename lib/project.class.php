@@ -177,10 +177,19 @@
 		}
 		public function permission($permission,$user=null){
 			$user = is_null($user)?Bugs::$user:$user;
-			return $user->admin || (
-				$user->permission('project_'.$permission) &&
-				in_array($user->id, $this->user_ids)
-			);
+			return $user->admin ||
+				$user->permission('project.'.$permission) ||
+				Bugs::$sql->query("
+					SELECT count(1) count
+					FROM r_project_role_permission r
+					JOIN permissions p
+						ON p.id = r.per_id
+						AND p.name IN (?,'*')
+					JOIN r_project_user pu
+						ON pu.r_id = r.r_id
+						AND pu.u_id = ?
+						AND pu.p_id = ?
+				",'sii','project.'.$permission,$user->id,$this->id)->assoc_result['count']!==0;
 		}
 		public function roles($user){
 			return array_column(

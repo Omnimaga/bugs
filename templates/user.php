@@ -1,6 +1,7 @@
 <?php
 	// Expecting the context to be a user
 	global $context;
+	Bugs::$user->permission('user.read') or trigger_error('You are not allowed to view this user');
 ?>
 <!doctype html>
 	<head>

@@ -8,7 +8,8 @@
 			'date_modified'=>null,
 			'active'=>null,
 			'password'=>null,
-			'salt'=> null
+			'salt'=> null,
+			'admin'=> null
 		);
 		public function __construct($id){
 			switch(func_num_args()){
@@ -57,12 +58,13 @@
 				'id'=> $this->id,
 				'name'=> $this->name,
 				'email'=> $this->email,
+				'admin'=> $this->admin,
 				'date_registered'=> $this->date_registered,
 				'date_modified'=> $this->date_modified
 			);
 		}
 		public function __toString(){
-			return $this->path;
+			return $this->name;
 		}
 		public function __set($name,$value){
 			switch($name){
@@ -127,7 +129,10 @@
 					return $perms;
 				break;
 				case 'admin':
-					return $this->permission('*');
+					if(is_null($this->cache['admin'])){
+						$this->cache['admin'] = $this->permission('*');
+					}
+					return $this->cache['admin'];
 				break;
 				case 'project_ids':
 					return array_column(
@@ -184,9 +189,9 @@
 				FROM r_permission_user r
 				JOIN permissions p
 					ON p.id = r.per_id
-				WHERE u_id = ?
-				AND p.name IN (?,'*')
-			",'is',$this->id,$permission)->assoc_result['count']!==0;
+					AND p.name IN (?,'*')
+				WHERE r.u_id = ?
+			",'si',$permission,$this->id)->assoc_result['count']!==0;
 		}
 	}
 ?>

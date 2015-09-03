@@ -1,9 +1,9 @@
 <?php
 	// Expecting the context to be a project or nothing at all
 	global $context;
-	($context?$context->permission('read'):Bugs::$user->permission('project_read')) or trigger_error('You are not allowed to view this project');
-	$update = $context?$context->permission('update'):Bugs::$user->permission('project_create');
-	$delete = $context?$context->permission('delete'):Bugs::$user->permission('project_delete');
+	($context?$context->permission('read'):Bugs::$user->permission('project.read')&&Bugs::$user->permission('project.create')) or trigger_error('You are not allowed to view this project');
+	$update = $context?$context->permission('update'):Bugs::$user->permission('project.create');
+	$delete = $context?$context->permission('delete'):Bugs::$user->permission('project.delete');
 	function getval($name){
 		global $context;
 		return $context?$context->{$name}:null;

@@ -1,7 +1,7 @@
 <?php
 	error_reporting(E_ALL);
 	//ini_set('display_errors', 'Off');
-	function error_handle_type($type){
+	function error_handle_type($type=null){
 		static $etype;
 		if(!$etype){
 			$etype = 'html';
