@@ -1,7 +1,7 @@
 <?php
 	// Expecting the context to be a user
 	global $context;
-	Bugs::$user->permission('user.read') or trigger_error('You are not allowed to view this user');
+	Bugs::permission('user.read') or trigger_error('You are not allowed to view this user');
 ?>
 <!doctype html>
 	<head>
@@ -45,25 +45,11 @@
 				}
 			?>
 		</form>
-		<div>
-			<h3>Projects</h3>
-			<ul>
-				<?php
-					foreach($context->projects as $project){
-						echo "<li>({$project->status}) <a href=\"".Router::url(Router::$base."/project/{$project->name}")."\">{$project->name}</a></li>";
-					}
-				?>
-			</ul>
-		</div>
-		<div>
-			<h3>Issues</h3>
-			<ul>
-				<?php
-					foreach($context->issues as $issue){
-						echo "<li>({$issue->status} - {$issue->priority}) <a href=\"".Router::url(Router::$base."/!{$issue->id}")."\">{$issue->name}</a></li>";
-					}
-				?>
-			</ul>
-		</div>
+		<?php
+			echo Bugs::template('sub.projects')
+				->run($context);
+			echo Bugs::template('sub.issues')
+				->run($context);
+		?>
 	</body>
 </html>

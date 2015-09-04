@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS `activities`;
 CREATE TABLE IF NOT EXISTS `activities` (
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `a_id` int(10) NOT NULL,
-  `description` varchar(100) COLLATE utf8_bin DEFAULT NULL
+  `data` varchar(4000) COLLATE utf8_bin DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --

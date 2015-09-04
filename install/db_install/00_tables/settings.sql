@@ -17,18 +17,6 @@ CREATE TABLE IF NOT EXISTS `settings` (
 --
 
 --
--- Dumping data for table `priorities`
---
-
-INSERT INTO `settings` (`name`, `value`) VALUES
-('issue.default.priority', '4'),
-('issue.default.status', '1'),
-('project.default.status', '1'),
-('admin.email', 'bugs@localhost'),
-('url.host', 'localhost'),
-('url.base', '/bugs/');
-
---
 -- Indexes for table `settings`
 --
 ALTER TABLE `settings`

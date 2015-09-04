@@ -204,7 +204,10 @@
 		static function actions(){
 			$args = func_get_args();
 			foreach($args as $action){
-				static::action($action);
+				static::$sql->query("
+					SELECT `action`(?)
+					FROM DUAL;
+				",'s',$action)->assoc_result;
 			}
 		}
 		static function status($id){
@@ -227,34 +230,20 @@
 			}
 			return static::$cache['priorities'][$id];
 		}
-		static function action($action){
-			$id = static::$sql->query("
-				SELECT id
-				FROM actions
-				where name = ?
-			",'s',$action)->assoc_result;
-			if($id){
-				$id = $id['id'];
-			}else{
-				static::$sql->query("
-					INSERT INTO actions (name)
-					VALUES (?)
-				",'s',$action)->execute();
-				$id = static::$sql->insert_id;
-			}
-			return $id;
-		}
-		static function activity($action,$description){
+		static function activity($action,$data){
 			static::$sql->query("
-				INSERT INTO activities (a_id,description)
-				VALUES (?,?)
-			",'is',static::action($action),$description)->execute();
+				INSERT INTO activities (a_id,data)
+				VALUES (`action`(?),?)
+			",'ss',$action,json_encode($data))->execute();
 		}
 		static function setting($name){
 			return static::$sql->query("
 				SELECT getsetting(?)
 				FROM DUAL;
 			",'s',$name)->num_result[0];
+		}
+		static function permission($permission){
+			return static::$user->permission($permission);
 		}
 	}
 	register_shutdown_function(function(){

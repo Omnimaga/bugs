@@ -1,8 +1,9 @@
 <?php
 	Bugs::actions(
-		'project_create',
-		'project_update',
-		'project_delete'
+		'project.create',
+		'project.update',
+		'project.delete',
+		'issue.create'
 	);
 	Router::paths(array(
 		'/project/{project}'=>function($res,$args){
@@ -27,6 +28,7 @@
 				$res->json(array(
 					'name'=>$project->name
 				));
+				Bugs::activity('project.update',$project);
 			}else{
 				$res->json(array(
 					'error'=>'You must specify a name and description.'
@@ -44,6 +46,7 @@
 				$res->json(array(
 					'id'=>$issue->id
 				));
+				Bugs::activity('issue.create',$issue);
 			}else{
 				$res->json(array(
 					'error'=>'You must specify a name and description.'
@@ -61,6 +64,7 @@
 					$res->json(array(
 						'name'=>$project->name
 					));
+					Bugs::activity('project.create',$project);
 				}else{
 					$res->json(array(
 						'error'=>"A project with the name {$_POST['name']} already exists."

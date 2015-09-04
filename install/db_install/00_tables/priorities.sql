@@ -17,16 +17,6 @@ CREATE TABLE IF NOT EXISTS `priorities` (
 --
 
 --
--- Dumping data for table `priorities`
---
-
-INSERT INTO `priorities` (`id`, `name`) VALUES
-(1, 'Critical'),
-(2, 'High'),
-(3, 'Medium'),
-(4, 'Low');
-
---
 -- Indexes for table `priorities`
 --
 ALTER TABLE `priorities`
@@ -36,4 +26,4 @@ ALTER TABLE `priorities`
 -- AUTO_INCREMENT for table `priorities`
 --
 ALTER TABLE `priorities`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;

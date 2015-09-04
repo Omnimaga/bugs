@@ -3,3 +3,4 @@ DROP FUNCTION IF EXISTS `setsetting`;
 DROP FUNCTION IF EXISTS `permission`;
 DROP FUNCTION IF EXISTS `project_role`;
 DROP FUNCTION IF EXISTS `issue_role`;
+DROP FUNCTION IF EXISTS `action`;

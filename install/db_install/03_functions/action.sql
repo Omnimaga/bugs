@@ -1,0 +1,19 @@
+CREATE FUNCTION `action`(
+	a_name VARCHAR(50)
+) RETURNS INT(10)
+DETERMINISTIC
+READS SQL DATA
+MODIFIES SQL DATA
+SQL SECURITY INVOKER
+BEGIN
+	DECLARE t_id INT(10);
+	INSERT IGNORE INTO actions (name)
+	VALUES (a_name);
+	
+	SELECT id
+	INTO t_id
+	FROM actions
+	WHERE name = a_name;
+
+	return t_id;
+END;

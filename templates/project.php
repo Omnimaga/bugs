@@ -1,9 +1,9 @@
 <?php
 	// Expecting the context to be a project or nothing at all
 	global $context;
-	($context?$context->permission('read'):Bugs::$user->permission('project.read')&&Bugs::$user->permission('project.create')) or trigger_error('You are not allowed to view this project');
-	$update = $context?$context->permission('update'):Bugs::$user->permission('project.create');
-	$delete = $context?$context->permission('delete'):Bugs::$user->permission('project.delete');
+	($context?$context->permission('read'):Bugs::permission('project.read')&&Bugs::permission('project.create')) or trigger_error('You are not allowed to view this project');
+	$update = $context?$context->permission('update'):Bugs::permission('project.create');
+	$delete = $context?$context->permission('delete'):Bugs::permission('project.delete');
 	function getval($name){
 		global $context;
 		return $context?$context->{$name}:null;
@@ -68,19 +68,8 @@
 		</form>
 		<?php
 			if($context){
-		?>
-			<div>
-				<h3>Issues</h3>
-				<a href="<?=Router::url(Router::$base."/project/{$context->name}/create/issue")?>">New</a>
-				<ul>
-					<?php
-						foreach($context->issues as $issue){
-							echo "<li>({$issue->status} - {$issue->priority}) <a href=\"".Router::url(Router::$base."/!{$issue->id}")."\">{$issue->name}</a></li>";
-						}
-					?>
-				</ul>
-			</div>
-		<?php
+				echo Bugs::template('sub.issues')
+						->run($context);
 			}
 		?>
 	</body>

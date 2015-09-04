@@ -1,7 +1,7 @@
 <?php
 	Bugs::actions(
-		'user_register',
-		'user_activate'
+		'user.register',
+		'user.activate'
 	);
 	Router::paths(array(
 		'/register'=>function($res,$args){
@@ -40,7 +40,7 @@
 					$user->email('Registered',"
 						<a href=\"http://".Bugs::setting('url.host').Bugs::setting('url.base')."/register/activate/{$user->name}/{$user->activation_code}\">Activate Account</a>
 					");
-					Bugs::activity('user_register',$_POST['name'].' has registered.');
+					Bugs::activity('user.register',$user);
 				}else{
 					Router::redirect(
 						Router::url(Router::$base."/register/error/User {$_POST['name']} already exists.")
@@ -57,7 +57,7 @@
 						Bugs::template('activated')
 							->run($user)
 					);
-					Bugs::activity('user_activate',$_POST['name'].' has activated their account.');
+					Bugs::activity('user.activate',$user);
 				}else{
 					trigger_error("User is already active");
 				}

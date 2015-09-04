@@ -18,17 +18,6 @@ CREATE TABLE IF NOT EXISTS `statuses` (
 --
 
 --
--- Dumping data for table `statuses`
---
-
-INSERT INTO `statuses` (`id`, `name`, `open`) VALUES
-(1, 'New', 1),
-(2, 'In Progress', 1),
-(3, 'On Hold', 1),
-(4, 'Completed', 0),
-(5, 'Cancelled', 0);
-
---
 -- Indexes for table `statuses`
 --
 ALTER TABLE `statuses`
@@ -39,4 +28,4 @@ ALTER TABLE `statuses`
 -- AUTO_INCREMENT for table `statuses`
 --
 ALTER TABLE `statuses`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;

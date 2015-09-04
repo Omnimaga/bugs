@@ -1,9 +1,9 @@
 <?php
 	// Expecting the context to be a issue or nothing at all
 	global $context;
-	($context?$context->permission('read'):Bugs::$user->permission('issue.read')) or trigger_error('You are not allowed to view this issue');
-	$update = $context?$context->permission('update'):Bugs::$user->permission('issue.create');
-	$delete = $context?$context->permission('delete'):Bugs::$user->permission('issue.delete');
+	($context?$context->permission('read'):Bugs::permission('issue.read')) or trigger_error('You are not allowed to view this issue');
+	$update = $context?$context->permission('update'):Bugs::permission('issue.create');
+	$delete = $context?$context->permission('delete'):Bugs::permission('issue.delete');
 	function getval($name){
 		global $context;
 		return $context?$context->{$name}:null;

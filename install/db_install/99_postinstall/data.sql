@@ -64,3 +64,24 @@ INSERT INTO `r_project_role_permission` (`r_id`,`per_id`) VALUES
 (project_role('Developer'),permission('issue.create')),
 (project_role('Developer'),permission('project.read')),
 (project_role('Tester'),permission('project.read'));
+
+INSERT INTO `priorities` (`name`) VALUES
+('Critical'),
+('High'),
+('Medium'),
+('Low');
+
+INSERT INTO `settings` (`name`, `value`) VALUES
+('issue.default.priority', '4'),
+('issue.default.status', '1'),
+('project.default.status', '1'),
+('admin.email', 'bugs@localhost'),
+('url.host', 'localhost'),
+('url.base', '/bugs/');
+
+INSERT INTO `statuses` (`id`, `name`, `open`) VALUES
+(1, 'New', 1),
+(2, 'In Progress', 1),
+(3, 'On Hold', 1),
+(4, 'Completed', 0),
+(5, 'Cancelled', 0);

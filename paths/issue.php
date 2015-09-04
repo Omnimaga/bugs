@@ -1,4 +1,9 @@
 <?php
+	Bugs::actions(
+		'issue.create',
+		'issue.update',
+		'issue.delete'
+	);
 	Router::paths(array(
 		'/!{issue}'=>function($res,$args){
 			$res->write(
@@ -18,6 +23,7 @@
 				$res->json(array(
 					'id'=>$issue->id
 				));
+				Bugs::activity('issue.update',$issue);
 			}else{
 				$res->json(array(
 					'error'=>'You must specify a name and description.'
@@ -34,6 +40,7 @@
 				$res->json(array(
 					'id'=>$issue->id
 				));
+				Bugs::activity('issue.create',$issue);
 			}else{
 				$res->json(array(
 					'error'=>'You must specify a name and description.'
