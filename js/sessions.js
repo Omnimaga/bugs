@@ -10,7 +10,11 @@ ready(function(){
 			})
 			.then(function(data){
 				if(data.error){
-					alert(data.error);
+					if(data.error.message){
+						alert(data.error.message);
+					}else{
+						alert(data.error);
+					}
 				}else{
 					location.reload();
 				}

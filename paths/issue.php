@@ -6,6 +6,7 @@
 	);
 	Router::paths(array(
 		'/!{issue}'=>function($res,$args){
+			Bugs::authorized('issue.read');
 			$res->write(
 				Bugs::template('issue')
 					->run(Bugs::issue($args->issue))
@@ -16,6 +17,7 @@
 		},
 		'/issue/{issue}/update'=>function($res,$args){
 			error_handle_type('json');
+			Bugs::authorized('issue.update');
 			if(!empty($_POST['name'])&&!empty($_POST['description'])){
 				$issue = Bugs::issue($args->issue);
 				$issue->name = $_POST['name'];
@@ -31,10 +33,12 @@
 			}
 		},
 		'/create/issue'=>function($res,$args){
+			Bugs::authorized('issue.create');
 			$res->write(Bugs::template('issue'));
 		},
 		'/create/issue/complete'=>function($res,$args){
 			error_handle_type('json');
+			Bugs::authorized('issue.create');
 			if(!empty($_POST['name'])&&!empty($_POST['description'])){
 				$issue = Bugs::issue($_POST['name'],$_POST['description']);
 				$res->json(array(

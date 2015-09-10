@@ -62,6 +62,7 @@
 				'id'=> $this->id,
 				'name'=> $this->name,
 				'description'=> $this->description,
+				'p_id'=> $this->p_id,
 				'date_created'=> $this->date_created,
 				'date_modified'=> $this->date_modified
 			);

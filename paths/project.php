@@ -7,6 +7,7 @@
 	);
 	Router::paths(array(
 		'/project/{project}'=>function($res,$args){
+			Bugs::authorized('project.read');
 			$res->write(
 				Bugs::template('project')
 					->run(Bugs::project(is_numeric($args->project)?intval($args->project):$args->project)
@@ -21,6 +22,7 @@
 		},
 		'/project/{project}/update'=>function($res,$args){
 			error_handle_type('json');
+			Bugs::authorized('project.update');
 			if(!empty($_POST['name'])&&!empty($_POST['description'])){
 				$project = Bugs::project(is_numeric($args->project)?intval($args->project):$args->project);
 				$project->name = $_POST['name'];
@@ -54,10 +56,12 @@
 			}
 		},
 		'/create/project'=>function($res,$args){
+			bugs::authorized('project.create');
 			$res->write(Bugs::template('project'));
 		},
 		'/create/project/complete'=>function($res,$args){
 			error_handle_type('json');
+			Bugs::authorized('project.create');
 			if(!empty($_POST['name'])){
 				if(!Bugs::project_id($_POST['name'])){
 					$project = Bugs::project($_POST['name'],$_POST['description']);

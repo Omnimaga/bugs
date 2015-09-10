@@ -245,6 +245,13 @@
 		static function permission($permission){
 			return static::$user->permission($permission);
 		}
+		static function authorized(){
+			foreach(func_get_args() as $permission){
+				if(!static::permission($permission)){
+					trigger_error("Access denied. You do not have the {$permission} permission");
+				}
+			}
+		}
 	}
 	register_shutdown_function(function(){
 		$emails = Bugs::$sql->query("

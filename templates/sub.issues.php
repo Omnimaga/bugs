@@ -15,7 +15,7 @@
 			)
 		){
 	?>
-		<a href="<?=Router::url(Router::$base.'/create/issue')?>">New</a>
+		<a href="<?=Router::url(Router::$base.($context instanceof Project?"/project/{$context->name}/":'').'/create/issue')?>">New</a>
 	<?php
 		}
 	?>

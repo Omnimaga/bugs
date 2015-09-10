@@ -33,12 +33,17 @@
 		<div>
 			<?php
 				foreach($activities as $activity){
-					echo Bugs::template('sub.activity')
-						->run(new Arguments(array(
-							'date'=> strtotime($activity['date']),
-							'action'=> $actions[intval($activity['a_id'])],
-							'data'=> new Arguments(json_decode($activity['data']))
-						)));
+					$activity = new Arguments(array(
+						'date'=> strtotime($activity['date']),
+						'action'=> $actions[intval($activity['a_id'])],
+						'data'=> new Arguments(json_decode($activity['data'],true)),
+						'template'=> 'default'
+					));
+					if(file_exists("templates/activities/{$activity->action}.php")){
+						$activity->template = $activity->action;
+					}
+					echo Bugs::template("activities/{$activity->template}")
+						->run($activity);
 				}
 			?>
 		</div>
