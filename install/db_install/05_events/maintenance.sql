@@ -1,0 +1,6 @@
+CREATE EVENT `maintenance`
+ON SCHEDULE EVERY 1 DAY
+ENABLE
+DO BEGIN
+	CALL maintain_sessions;
+END;

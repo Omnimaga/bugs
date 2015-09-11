@@ -46,9 +46,9 @@
 			?>
 		</form>
 		<?php
-			echo Bugs::template('sub.projects')
+			echo Bugs::template('subs/projects')
 				->run($context);
-			echo Bugs::template('sub.issues')
+			echo Bugs::template('subs/issues')
 				->run($context);
 		?>
 	</body>

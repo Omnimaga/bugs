@@ -68,7 +68,7 @@
 		</form>
 		<?php
 			if($context){
-				echo Bugs::template('sub.issues')
+				echo Bugs::template('subs/issues')
 						->run($context);
 			}
 		?>

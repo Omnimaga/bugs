@@ -1,0 +1,27 @@
+div.timeline>div{
+	display: flex;
+}
+div.timeline>div:nth-child(odd){
+	background-color: rgba(0,0,0,0.1);
+}
+div.timeline>div:nth-child(even){
+	background-color: rgba(0,0,0,0.2);
+}
+div.timeline>div>time{
+	float: left;
+	clear: left;
+	padding: 0;
+	margin: 0;
+	margin-right: 20px;
+	font-family: monospace;
+	vertical-align: top;
+	font-size: 100%;
+}
+div.timeline>div>div{
+	float: left;
+	clear: right;
+	padding: 0;
+	margin: 0;
+	vertical-align: top;
+	font-size: 80%;
+}

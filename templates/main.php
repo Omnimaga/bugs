@@ -22,9 +22,9 @@
 			<a href="<?=Router::url(Router::$base.'/~'.Bugs::$user->name)?>">Profile</a>
 			<a href="<?=Router::url(Router::$base.'/logout')?>">Logout</a>
 			<?php
-				echo Bugs::template('sub.projects')
+				echo Bugs::template('subs/projects')
 					->run(Bugs::$user);
-				echo Bugs::template('sub.issues')
+				echo Bugs::template('subs/issues')
 					->run(Bugs::$user);
 			}else{
 		?>

@@ -27,10 +27,11 @@
 		<script src="<?=Router::$base?>/js/juju/keyboard.js"></script>
 		<script src="<?=Router::$base?>/js/juju/mouse.js"></script>
 		<link rel="stylesheet" href="<?=Router::$base?>/css/main.css"></link>
+		<link rel="stylesheet" href="<?=Router::$base?>/css/timeline.css"></link>
 	</head>
 	<body>
 		<a href="<?=Router::url(Router::$base)?>">Home</a>
-		<div>
+		<div class="timeline">
 			<?php
 				foreach($activities as $activity){
 					$activity = new Arguments(array(

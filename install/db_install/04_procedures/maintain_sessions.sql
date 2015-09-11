@@ -1,0 +1,10 @@
+CREATE PROCEDURE `maintain_sessions` () BEGIN
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION BEGIN
+		ROLLBACK;
+		GET DIAGNOSTICS CONDITION 1 @error = MESSAGE_TEXT;
+		SET @error = CONCAT('Failed to maintain the sessions table. ',@error);
+		RESIGNAL SET MESSAGE_TEXT = @error;
+	END;
+	DELETE FROM sessions
+	WHERE date < TIMESTAMP(DATE_SUB(NOW(), INTERVAL 10 day));
+END;

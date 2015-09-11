@@ -11,10 +11,8 @@
 	require_once('lib/bugs.class.php');
 	require_once('lib/errorhandler.php');
 	Bugs::connect(DB_HOST,DB_USER,DB_PASS,DB);
-	foreach(glob("paths/*.php") as $filename){
-		if(basename($filename)!='index.php'){
-			require_once($filename);
-		}
+	foreach(glob("paths/*.path.php") as $filename){
+		require_once($filename);
 	}
 	if(empty($_SERVER['REDIRECT_URL'])){
 		$_SERVER['REDIRECT_URL'] = 'http://'.Bugs::setting('url.host').Bugs::setting('url.base');

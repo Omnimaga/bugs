@@ -4,6 +4,9 @@
 	require_once('user.class.php');
 	require_once('project.class.php');
 	require_once('router.class.php');
+	foreach(glob("widgets/*.widget.php") as $filename){
+		require_once($filename);
+	}
 	class Bugs {
 		public static $sql;
 		public static $cache = array(
@@ -33,10 +36,6 @@
 		}
 		static function connect($server='localhost',$user='bugs',$pass='bugs',$db='bugs'){
 			static::$sql = new SQL($server,$user,$pass,$db);
-			static::$sql->query("
-				DELETE FROM sessions
-				WHERE date < TIMESTAMP(DATE_SUB(NOW(), INTERVAL 10 day))
-			")->execute();
 			if(session_status() == PHP_SESSION_NONE){
 				session_start();
 			}
@@ -276,5 +275,8 @@
 				",'ssi',$email['subject'],$email['body'],$email['u_id'])->execute();
 			}
 		}
+		Bugs::$sql->query("
+			CALL maintain_sessions;
+		")->execute();
 	});
 ?>
