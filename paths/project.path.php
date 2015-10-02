@@ -23,10 +23,11 @@
 		'/project/{project}/update'=>function($res,$args){
 			error_handle_type('json');
 			Bugs::authorized('project.update');
-			if(!empty($_POST['name'])&&!empty($_POST['description'])){
+			if(!empty($_POST['name'])&&!empty($_POST['description'])&&!empty($_POST['status'])){
 				$project = Bugs::project(is_numeric($args->project)?intval($args->project):$args->project);
 				$project->name = $_POST['name'];
 				$project->description = $_POST['description'];
+				$project->s_id = $_POST['status'];
 				$res->json(array(
 					'name'=>$project->name
 				));

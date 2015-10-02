@@ -18,10 +18,12 @@
 		'/issue/{issue}/update'=>function($res,$args){
 			error_handle_type('json');
 			Bugs::authorized('issue.update');
-			if(!empty($_POST['name'])&&!empty($_POST['description'])){
+			if(!empty($_POST['name'])&&!empty($_POST['description'])&&!empty($_POST['status'])&&!empty($_POST['priority'])){
 				$issue = Bugs::issue($args->issue);
 				$issue->name = $_POST['name'];
 				$issue->description = $_POST['description'];
+				$issue->s_id = $_POST['status'];
+				$issue->pr_id = $_POST['priority'];
 				$res->json(array(
 					'id'=>$issue->id
 				));

@@ -152,9 +152,25 @@
 				case 'issue_ids':
 					return array_column(
 						Bugs::$sql->query("
-							SELECT id
-							FROM issues
-							WHERE p_id = ?
+							SELECT i.id
+							FROM issues i
+							JOIN statuses s
+								ON s.id = i.s_id
+							WHERE i.p_id = ?
+							AND s.open = 1
+						",'i',$this->id)->assoc_results,
+						'id'
+					);
+				break;
+				case 'closed_issue_ids':
+					return array_column(
+						Bugs::$sql->query("
+							SELECT i.id
+							FROM issues i
+							JOIN statuses s
+								ON s.id = i.s_id
+							WHERE i.p_id = ?
+							AND s.open = 0
 						",'i',$this->id)->assoc_results,
 						'id'
 					);
@@ -162,6 +178,13 @@
 				case 'issues':
 					$issues = array();
 					foreach($this->issue_ids as $id){
+						array_push($issues,Bugs::issue($id));
+					}
+					return $issues;
+				break;
+				case 'closed_issues':
+					$issues = array();
+					foreach($this->closed_issue_ids as $id){
 						array_push($issues,Bugs::issue($id));
 					}
 					return $issues;

@@ -137,9 +137,25 @@
 				case 'project_ids':
 					return array_column(
 						Bugs::$sql->query("
-							SELECT id
-							FROM projects
-							where u_id = ?
+							SELECT p.id
+							FROM projects p
+							JOIN statuses s
+								ON s.id = p.s_id
+							WHERE p.u_id = ?
+							AND s.open = 1
+						",'i',$this->id)->assoc_results,
+						'id'
+					);
+				break;
+				case 'closed_project_ids':
+					return array_column(
+						Bugs::$sql->query("
+							SELECT p.id
+							FROM projects p
+							JOIN statuses s
+								ON s.id = p.s_id
+							WHERE p.u_id = ?
+							AND s.open = 0
 						",'i',$this->id)->assoc_results,
 						'id'
 					);
@@ -151,12 +167,35 @@
 					}
 					return $projects;
 				break;
+				case 'closed_projects':
+					$projects = array();
+					foreach($this->closed_project_ids as $id){
+						array_push($projects,Bugs::project($id));
+					}
+					return $projects;
+				break;
 				case 'issue_ids':
 					return array_column(
 						Bugs::$sql->query("
-							SELECT id
-							FROM issues
-							where u_id = ?
+							SELECT i.id
+							FROM issues i
+							JOIN statuses s
+								ON s.id =  i.s_id
+							WHERE i.u_id = ?
+							AND s.open = 1
+						",'i',$this->id)->assoc_results,
+						'id'
+					);
+				break;
+				case 'closed_issue_ids':
+					return array_column(
+						Bugs::$sql->query("
+							SELECT i.id
+							FROM issues i
+							JOIN statuses s
+								ON s.id =  i.s_id
+							WHERE i.u_id = ?
+							AND s.open = 0
 						",'i',$this->id)->assoc_results,
 						'id'
 					);
@@ -164,6 +203,13 @@
 				case 'issues':
 					$issues = array();
 					foreach($this->issue_ids as $id){
+						array_push($issues,Bugs::issue($id));
+					}
+					return $issues;
+				break;
+				case 'closed_issues':
+					$issues = array();
+					foreach($this->closed_issue_ids as $id){
 						array_push($issues,Bugs::issue($id));
 					}
 					return $issues;

@@ -251,6 +251,30 @@
 				}
 			}
 		}
+		static function options_statuses(){
+			$res = static::$sql->query("
+				SELECT	id,
+						name
+				FROM statuses
+			")->assoc_results;
+			$ret = array();
+			foreach($res as $row){
+				$ret[$row['id']] = $row['name'];
+			}
+			return $ret;
+		}
+		static function options_priorities(){
+			$res = static::$sql->query("
+				SELECT	id,
+						name
+				FROM priorities
+			")->assoc_results;
+			$ret = array();
+			foreach($res as $row){
+				$ret[$row['id']] = $row['name'];
+			}
+			return $ret;
+		}
 	}
 	register_shutdown_function(function(){
 		$emails = Bugs::$sql->query("
