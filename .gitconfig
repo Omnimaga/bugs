@@ -1,0 +1,7 @@
+[remote "github"]
+        url = git@github.com:Omnimaga/bugs.git
+        fetch = +refs/*:refs/*
+        mirror = true
+[remote "eeems"]
+        url = git@ssh.eeems.ca:Omnimaga/bugs.git
+        fetch = +refs/*:refs/*
