@@ -242,7 +242,7 @@
 			",'s',$name)->num_result[0];
 		}
 		static function permission($permission){
-			return static::$user->permission($permission);
+			return static::$user?static::$user->permission($permission):false;
 		}
 		static function authorized(){
 			foreach(func_get_args() as $permission){
